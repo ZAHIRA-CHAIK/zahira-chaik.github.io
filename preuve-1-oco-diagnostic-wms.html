@@ -1,0 +1,136 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Preuve – Diagnostic DMAIC et pilote WMS (OCO)</title>
+<meta name="author" content="Zahira Chaik">
+<meta name="description" content="Preuve de travail de Zahira Chaik : diagnostic DMAIC des flux et pilote WMS KARMA chez Orrion Chemicals Orgaform.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;600;700&display=swap">
+<style>
+/* Identité « Plan de flux » (marque/identite.md) */
+:root{--bleu-nuit:#1F2A44;--gris-clair:#F4F5F7;--orange:#E07A1F;--orange-fonce:#B45309;--noir:#000000;--filet:#D5D9E0;
+--sans:"IBM Plex Sans","Helvetica Neue",Arial,sans-serif;--mono:"IBM Plex Mono",Menlo,Consolas,monospace}
+@page{size:A4;margin:14mm 16mm}
+*{box-sizing:border-box}
+html{background:#FFFFFF}
+body{margin:0;color:var(--noir);font-family:var(--sans);font-size:10pt;line-height:1.45;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+.page{max-width:178mm;margin:0 auto;padding:24px 16px 40px}
+@media print{.page{padding:0;max-width:none}}
+h1,h2,h3,p,ul,ol,table{margin:0}
+header{border-left:4px solid var(--bleu-nuit);background:var(--gris-clair);padding:4mm 5mm}
+.etiquette{font-family:var(--mono);font-size:8pt;letter-spacing:.08em;text-transform:uppercase;color:var(--bleu-nuit)}
+h1{color:var(--bleu-nuit);font-size:17pt;font-weight:700;line-height:1.2;margin-top:1.5mm}
+.sous{margin-top:1.5mm;font-family:var(--mono);font-size:8.5pt}
+.chiffres{border-bottom:1px solid var(--filet);margin-top:3mm}
+.chiffre{display:flex;align-items:baseline;gap:3mm;padding:1mm 0}
+.chiffre+.chiffre{border-top:1px solid var(--filet)}
+.chiffre strong{flex:none;font-family:var(--mono);font-weight:500;font-size:13pt;color:var(--orange)}
+.chiffre span{font-size:9pt}
+section{margin-top:5mm}
+h2{font-family:var(--mono);font-size:9pt;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--bleu-nuit);border-bottom:1px solid var(--filet);padding-bottom:1mm;margin-bottom:2.5mm}
+h3{color:var(--bleu-nuit);font-size:10pt;font-weight:600;margin-top:3mm;margin-bottom:1mm}
+p,li{text-align:justify;hyphens:none}
+p+p{margin-top:2mm}
+ul,ol{padding-left:5mm}
+li{margin-top:1mm}
+li::marker{color:var(--bleu-nuit)}
+.signal{font-family:var(--mono);font-weight:500;color:var(--orange-fonce)}
+table{width:100%;border-collapse:collapse;margin-top:2mm;font-size:9pt}
+th{text-align:left;color:var(--bleu-nuit);font-weight:600;border-bottom:1px solid var(--bleu-nuit);padding:1.2mm 2mm 1.2mm 0}
+td{border-bottom:1px solid var(--filet);padding:1.2mm 2mm 1.2mm 0;vertical-align:top}
+td.n{font-family:var(--mono);white-space:nowrap}
+.fictif{border:1px solid var(--bleu-nuit);padding:3mm 4mm;margin-top:3mm}
+.fictif .etiquette{display:block;margin-bottom:1mm}
+table,.fictif,.chiffres,header{break-inside:avoid}
+h2,h3{break-after:avoid}
+.retour{margin:0 0 3mm;font-family:var(--mono);font-size:9pt}.retour a{color:var(--bleu-nuit)}
+@media print{.retour{display:none}}
+footer{margin-top:6mm;border-top:1px solid var(--filet);padding-top:2mm;font-size:8.5pt}
+</style>
+</head>
+<body>
+<main class="page">
+<p class="retour"><a href="index.html">← Toutes les preuves</a></p>
+
+<header>
+  <span class="etiquette">Preuve 1 · Mémoire MOLI · Stage de fin d'études</span>
+  <h1>Fiabiliser les flux internes d'un site de chimie : diagnostic DMAIC et pilote WMS</h1>
+  <p class="sous">Orrion Chemicals Orgaform, Semoy (45) · nov. 2025 – juin 2026 · Zahira Chaik</p>
+</header>
+
+<div class="chiffres">
+  <div class="chiffre"><strong>83&nbsp;% → 90&nbsp;%</strong><span>Fiabilité d'inventaire sur la zone pilote, obtenue avec les équipes terrain</span></div>
+  <div class="chiffre"><strong>76,8&nbsp;%</strong><span>Part du coût des dysfonctionnements concentrée sur 4 familles d'irritants (Pareto)</span></div>
+  <div class="chiffre"><strong>12</strong><span>Procédures et supports opérationnels rédigés</span></div>
+</div>
+
+<section>
+  <h2>Contexte</h2>
+  <p>Orrion Chemicals Orgaform est une PME de chimie de spécialité de 49 personnes, classée SEVESO III seuil bas. Elle fabrique à façon pour des clients internationaux. La logistique doit coordonner les matières, les produits finis, les statuts qualité, les documents réglementaires et les transporteurs, avec deux ERP qui ne communiquent pas entre eux : Sage X3 pour le site et SAP côté client. Le site compte plusieurs magasins et peu de quais.</p>
+  <p>Pendant mon stage de huit mois, j'étais rattachée au Responsable Logistique. Ma mission : diagnostiquer et fiabiliser les flux internes (physiques, informationnels et documentaires), puis préparer le pilote du WMS KARMA. Ce travail est devenu mon mémoire de fin d'études.</p>
+</section>
+
+<section>
+  <h2>Ce que j'ai fait, et avec qui</h2>
+  <ul>
+    <li>J'ai mené seule le diagnostic : questionnaires, 60 chronométrages, collecte des données dans les différents services et analyses sous Excel.</li>
+    <li>J'ai conçu l'audit terrain / système sur 12 contrôles critiques, à l'initiative de mon manager, et je l'ai réalisé avec les référents magasins.</li>
+    <li>J'ai coordonné le réadressage des zones défaillantes et la correction des adresses dans Sage X3, avec l'IT, la Qualité et la Production, après validation de mon plan d'action par mon manager.</li>
+    <li>J'ai comparé trois scénarios et recommandé le pilote KARMA. La direction a décidé de le lancer sur ma recommandation. J'ai construit le GANTT, la matrice RACI et les jalons ; les équipes terrain ont réalisé la mise en œuvre.</li>
+    <li>J'ai rédigé 12 procédures et supports, une check-list marchandises dangereuses et des fiches de poste, et j'ai formé les 5 futurs utilisateurs de KARMA ainsi que les nouveaux arrivants.</li>
+  </ul>
+</section>
+
+<section>
+  <h2>Ma démarche</h2>
+
+  <h3>Définir et mesurer</h3>
+  <p>J'ai cadré le projet avec une charte DMAIC et un SIPOC, puis cartographié les flux tels qu'ils fonctionnaient (AS-IS). Faute de données exploitables, j'ai créé mes propres mesures : des questionnaires notés de 1 à 5, et 60 relevés chronométrés sur une semaine type. J'ai fixé une base de départ sur quatre indicateurs.</p>
+  <table>
+    <thead><tr><th>Indicateur</th><th>Mesuré au départ</th><th>Cible</th></tr></thead>
+    <tbody>
+      <tr><td>Fiabilité des inventaires</td><td class="n">83 %</td><td class="n">95 %</td></tr>
+      <tr><td>Attente moyenne des camions</td><td class="n">30 min</td><td class="n">20 min</td></tr>
+      <tr><td>Dossiers export retouchés</td><td class="n">15 %</td><td class="n">10 %</td></tr>
+      <tr><td>Doubles saisies par dossier</td><td class="n">2</td><td class="n">1</td></tr>
+    </tbody>
+  </table>
+
+  <h3>Analyser</h3>
+  <p>J'ai identifié 12 points de blocage, regroupés en quatre familles : stocks et emplacements ; ressources physiques et manutention ; flux internationaux, conformité export et prestataires ; systèmes d'information et coordination. L'analyse de Pareto montre que ces quatre familles représentent <span class="signal">76,8&nbsp;%</span> du coût annuel estimé des dysfonctionnements. J'ai ensuite recherché les causes racines avec un Ishikawa 5M et une analyse valeur ajoutée / non-valeur ajoutée. Le coût de non-qualité du site avait augmenté de <span class="signal">25&nbsp;%</span> entre 2024 et 2025, alors que les tonnages n'augmentaient que de <span class="signal">11&nbsp;%</span>.</p>
+
+  <h3>Améliorer</h3>
+  <p>J'ai comparé trois scénarios : standardiser d'abord, réimplanter d'abord, ou un plan global avec un pilote KARMA volontairement limité. J'ai recommandé le troisième, qui combine standardisation, fiabilisation des données, sécurisation documentaire et pilotage par indicateurs. J'ai découpé le pilote en cinq phases, de la préparation terrain jusqu'à la décision Go / No-Go, et j'ai estimé son retour sur investissement selon trois scénarios prudents.</p>
+
+  <div class="fictif">
+    <span class="etiquette">Données fictives</span>
+    <p>Les montants réels de l'estimation sont confidentiels. Le tableau ci-dessous reprend uniquement la méthode, avec des chiffres inventés pour l'illustrer.</p>
+    <table>
+      <thead><tr><th>Scénario</th><th>Gain annuel estimé</th><th>Coût du pilote</th><th>Retour sur investissement</th></tr></thead>
+      <tbody>
+        <tr><td>Prudent</td><td class="n">10 000 €</td><td class="n">15 000 €</td><td class="n">18 mois</td></tr>
+        <tr><td>Central</td><td class="n">15 000 €</td><td class="n">15 000 €</td><td class="n">12 mois</td></tr>
+        <tr><td>Favorable</td><td class="n">20 000 €</td><td class="n">15 000 €</td><td class="n">9 mois</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<section>
+  <h2>Le résultat</h2>
+  <ul>
+    <li>La fiabilité d'inventaire est passée de <span class="signal">83&nbsp;% à 90&nbsp;%</span> sur la zone pilote, mesurée par rapprochement entre KARMA et Sage X3. C'est le résultat des actions menées avec les équipes terrain. La cible de 95 % n'est pas encore atteinte.</li>
+    <li>Les recherches de produits ont diminué. Ce résultat est constaté sur le terrain, mais il n'est pas chiffré.</li>
+    <li>Les gains de l'estimation de retour sur investissement sont prévisionnels : ils devront être mesurés après la stabilisation du pilote.</li>
+    <li>Mon mémoire est candidat au concours AETL « Les Meilleurs Mémoires de la Supply Chain ». Le jury de soutenance a relevé des outils adaptés au terrain, et non l'inverse, et des limites bien abordées.</li>
+  </ul>
+</section>
+
+<footer>Aucun montant réel en euros n'apparaît sur cette page : seuls les pourcentages sont publics. Le tableau de retour sur investissement utilise des données fictives. Contact : zahirachaik@gmail.com</footer>
+
+</main>
+</body>
+</html>
