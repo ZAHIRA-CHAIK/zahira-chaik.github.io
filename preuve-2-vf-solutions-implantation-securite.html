@@ -11,56 +11,315 @@
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;600;700&display=swap">
 <style>
 /* Identité « Plan de flux », variante signalétique de quai (marque/identite.md) */
-:root{--bleu-nuit:#1F2A44;--gris-clair:#F4F5F7;--orange:#E07A1F;--orange-fonce:#B45309;--noir:#000000;--blanc:#FFFFFF;--filet:#D5D9E0;
+:root{--bleu-nuit:#1F2A44;--bleu-2:#4C5569;--bleu-3:#8A91A0;--bleu-4:#C7CBD3;--gris-clair:#F4F5F7;--orange:#E07A1F;--orange-fonce:#B45309;--noir:#000000;--blanc:#FFFFFF;--filet:#D5D9E0;
 --sans:"IBM Plex Sans","Helvetica Neue",Arial,sans-serif;--mono:"IBM Plex Mono",Menlo,Consolas,monospace;color-scheme:light}
 @page{size:A4;margin:14mm 16mm}
 *{box-sizing:border-box}
+html{scroll-behavior:smooth}
 html,body{background:var(--blanc)}
 body{margin:0;color:var(--noir);font-family:var(--sans);font-size:16px;line-height:1.55;-webkit-print-color-adjust:exact;print-color-adjust:exact}
-.page{max-width:760px;margin:0 auto;padding:20px 16px 48px}
-h1,h2,h3,p,ul,ol,table{margin:0}
+.page{max-width:860px;margin:0 auto;padding:20px 16px 48px}
+h1,h2,h3,h4,p,ul,ol,table{margin:0}
 .retour{margin:0 0 12px;font-family:var(--mono);font-size:14px}
 .retour a{color:var(--bleu-nuit);font-weight:600;text-decoration:none;border-bottom:2px solid var(--orange)}
 .retour a:hover{color:var(--orange-fonce)}
 header{background:var(--bleu-nuit);color:var(--blanc);padding:24px 22px 20px;display:grid;gap:8px}
 .etiquette{font-family:var(--mono);font-size:12px;letter-spacing:.1em;text-transform:uppercase}
-header .etiquette{color:var(--blanc)}
 h1{color:var(--blanc);font-size:clamp(22px,4.6vw,30px);font-weight:700;line-height:1.2;text-wrap:balance}
-.sous{font-family:var(--mono);font-size:13px;color:var(--blanc)}
+.sous{font-family:var(--mono);font-size:13px}
 .zebra{height:12px;background:repeating-linear-gradient(-45deg,var(--orange) 0 14px,var(--bleu-nuit) 14px 28px)}
-.chiffres{display:grid;gap:10px;margin-top:22px}
-.chiffre{position:relative;border:2px solid var(--bleu-nuit);padding:16px 16px 16px 34px;display:flex;align-items:baseline;gap:16px}
-.chiffre::before{content:"";position:absolute;top:-2px;left:-2px;width:18px;height:18px;background:var(--orange)}
-.chiffre strong{flex:none;font-family:var(--mono);font-weight:600;font-size:22px;line-height:1.15;color:var(--orange)}
-.chiffre span{font-size:15px;line-height:1.4;text-align:justify;hyphens:none}
-section{margin-top:34px}
-h2{display:flex;align-items:center;gap:10px;font-family:var(--mono);font-size:14px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--bleu-nuit);margin-bottom:14px}
-h2::before{content:"";flex:none;width:12px;height:12px;background:var(--orange)}
-h2::after{content:"";flex:1;height:2px;background:var(--bleu-nuit)}
-h3{color:var(--bleu-nuit);font-size:17px;font-weight:600;margin-top:22px;margin-bottom:6px;padding-left:10px;border-left:4px solid var(--bleu-nuit)}
 p,li{text-align:justify;hyphens:none}
 p+p{margin-top:10px}
-ul,ol{padding-left:22px}
-ul{list-style:square}
+ul{padding-left:22px;list-style:square}
 li{margin-top:6px}
 li::marker{color:var(--orange)}
 .signal{display:inline-block;font-family:var(--mono);font-weight:600;color:var(--orange-fonce)}
+.mono{font-family:var(--mono)}
+
+/* Tuiles KPI animées */
+.kpis{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:22px}
+.kpi{position:relative;border:2px solid var(--bleu-nuit);padding:24px 14px 14px;display:flex;flex-direction:column;justify-content:space-between;gap:10px;min-height:140px}
+.kpi::before,.boite::before{content:"";position:absolute;top:-2px;left:-2px;width:18px;height:18px;background:var(--orange)}
+.kpi strong{font-family:var(--mono);font-weight:600;font-size:26px;line-height:1.1;color:var(--orange);font-variant-numeric:tabular-nums}
+.kpi > span{font-size:14px;line-height:1.4}
+.kpi strong span{font:inherit;color:inherit}
+
+/* Navigation DMAIC */
+.dmaic{position:sticky;top:0;z-index:5;background:var(--blanc);margin-top:28px;padding:8px 0;border-bottom:2px solid var(--bleu-nuit)}
+.dmaic ol{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(5,1fr);gap:6px}
+.dmaic a{display:flex;align-items:center;gap:8px;text-decoration:none;color:var(--bleu-nuit);font-family:var(--mono);font-size:12px;font-weight:600;padding:4px;border:2px solid var(--bleu-nuit);background:var(--blanc)}
+.dmaic a em{font-style:normal}
+.dmaic a b{flex:none;width:30px;height:30px;display:flex;align-items:center;justify-content:center;background:var(--bleu-nuit);color:var(--blanc);font-size:16px}
+.dmaic a.actif{background:var(--bleu-nuit);color:var(--blanc)}
+.dmaic a.actif b{background:var(--orange);color:var(--bleu-nuit)}
+.dmaic a:focus-visible{outline:2px solid var(--orange-fonce);outline-offset:2px}
+
+section{margin-top:40px;scroll-margin-top:70px}
+h2{display:flex;align-items:center;gap:10px;font-family:var(--mono);font-size:14px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--bleu-nuit);margin-bottom:14px}
+h2::before{content:"";flex:none;width:12px;height:12px;background:var(--orange)}
+h2::after{content:"";flex:1;height:2px;background:var(--bleu-nuit)}
+.phase{display:grid;grid-template-columns:auto 1fr;gap:0;margin-bottom:16px;border:2px solid var(--bleu-nuit)}
+.phase b{background:var(--bleu-nuit);color:var(--blanc);font-family:var(--mono);font-size:34px;width:64px;display:flex;align-items:center;justify-content:center}
+.phase div{padding:10px 14px;display:grid;gap:2px}
+.phase .etiquette{color:var(--bleu-nuit);font-weight:600}
+.phase h2{margin:0;font-family:var(--sans);font-size:20px;letter-spacing:0;text-transform:none}
+.phase h2::before,.phase h2::after{display:none}
+h3{color:var(--bleu-nuit);font-size:17px;font-weight:600;margin-top:26px;margin-bottom:8px;padding-left:10px;border-left:4px solid var(--bleu-nuit)}
+.source{font-family:var(--mono);font-size:12px;margin-top:6px}
+
+/* Boîtes et grilles */
+.boite{position:relative;border:2px solid var(--bleu-nuit);padding:22px 16px 16px;margin-top:14px}
+.grille2{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-top:14px}
+.grille3{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:14px}
+.carte{background:var(--gris-clair);border-left:6px solid var(--bleu-nuit);padding:12px 14px}
+.carte h4{font-family:var(--mono);font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--bleu-nuit);margin-bottom:6px}
+.carte ul{padding-left:18px}
+.carte li{margin-top:3px;font-size:15px}
+.carte p{font-size:15px}
+
+/* Tableaux */
 .tableau{overflow-x:auto;margin-top:12px}
 table{width:100%;border-collapse:collapse;font-size:15px}
-th{text-align:left;background:var(--bleu-nuit);color:var(--blanc);font-weight:600;padding:8px 10px}
+th{text-align:left;background:var(--bleu-nuit);color:var(--blanc);font-weight:600;padding:8px 10px;vertical-align:bottom}
 td{border-bottom:1px solid var(--filet);padding:8px 10px;vertical-align:top}
 tbody tr:nth-child(even) td{background:var(--gris-clair)}
 td.n{font-family:var(--mono);white-space:nowrap}
+
+/* Boutons de bascule */
+.bascule{display:flex;flex-wrap:wrap;gap:6px;margin-top:12px}
+.bascule button{font-family:var(--mono);font-size:13px;font-weight:600;padding:7px 12px;border:2px solid var(--bleu-nuit);background:var(--blanc);color:var(--bleu-nuit);cursor:pointer}
+.bascule button[aria-pressed="true"]{background:var(--bleu-nuit);color:var(--blanc);box-shadow:inset 0 -3px 0 var(--orange)}
+.bascule button:focus-visible{outline:2px solid var(--orange-fonce);outline-offset:2px}
+
+/* Barres horizontales */
+.barres{display:grid;gap:10px;margin-top:14px}
+.barre{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,2fr) 64px;gap:12px;align-items:center}
+.barre .lib{font-size:14px;line-height:1.3}
+.barre .piste{position:relative;height:22px;background:var(--gris-clair)}
+.barre .rempli{position:absolute;left:0;top:0;bottom:0;width:0;background:var(--bleu-nuit);transition:width .9s ease}
+.barre .repere{position:absolute;top:-4px;bottom:-4px;width:3px;background:var(--orange)}
+.barre .val{font-family:var(--mono);font-weight:600;color:var(--orange-fonce);text-align:right;font-variant-numeric:tabular-nums}
+.legende{display:flex;flex-wrap:wrap;gap:16px;margin-top:10px;font-size:13px}
+.legende i{display:inline-block;width:14px;height:14px;vertical-align:-2px;margin-right:6px}
+
+/* Jauges baseline */
+.jauges{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-top:14px}
+.jauge{border:2px solid var(--bleu-nuit);padding:12px 14px;display:grid;gap:8px}
+.jauge h4{font-size:15px;color:var(--bleu-nuit)}
+.jauge .chif{display:flex;justify-content:space-between;font-family:var(--mono);font-size:14px}
+.jauge .chif strong{color:var(--orange);font-size:22px}
+.jauge .piste{position:relative;height:14px;background:var(--gris-clair)}
+.jauge .rempli{position:absolute;left:0;top:0;bottom:0;width:0;background:var(--bleu-nuit);transition:width .9s ease}
+.jauge .repere{position:absolute;top:-5px;bottom:-5px;width:3px;background:var(--orange)}
+
+/* Matrice B1-B12 */
+.matrice td,.matrice th{text-align:center}
+.matrice td:first-child,.matrice td:nth-child(2),.matrice th:first-child,.matrice th:nth-child(2){text-align:left}
+.carre{display:inline-block;width:20px;height:20px;background:var(--bleu-nuit)}
+.matrice tbody tr:nth-child(even) td{background:var(--blanc)}
+.matrice tbody tr:hover td{background:var(--gris-clair)}
+
+/* Graphique SVG */
+.graph{overflow-x:auto;margin-top:14px}
+.graph svg{display:block;width:100%;min-width:560px;height:auto}
+.graph text{font-family:var(--sans)}
+details{margin-top:10px}
+summary{font-family:var(--mono);font-size:13px;font-weight:600;color:var(--bleu-nuit);cursor:pointer}
+
+/* Ishikawa */
+.ishikawa{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:14px}
+.ishikawa .effet{background:var(--bleu-nuit);color:var(--blanc);padding:14px 16px;display:flex;align-items:center;gap:12px;font-weight:600}
+.ishikawa .effet::before{content:"";flex:none;width:18px;height:18px;background:var(--orange)}
+.ishikawa .m h4{display:flex;justify-content:space-between}
+.ishikawa .m h4 span{font-family:var(--mono);color:var(--orange-fonce)}
+.ishikawa .cle{border-left-color:var(--orange)}
+
+/* Audit 12 x 4 */
+.audit{display:grid;grid-template-columns:minmax(0,1.6fr) repeat(4,minmax(0,1fr));gap:4px;margin-top:14px;font-size:13px}
+.audit .t{font-family:var(--mono);font-weight:600;color:var(--blanc);background:var(--bleu-nuit);padding:6px;display:flex;align-items:flex-end}
+.audit .z{padding:6px;background:var(--gris-clair);font-size:13px;line-height:1.25}
+.audit button{font:inherit;font-family:var(--mono);font-weight:600;border:2px solid var(--bleu-nuit);background:var(--blanc);color:var(--bleu-nuit);cursor:pointer;min-height:34px}
+.audit button.ecart{background:var(--orange);border-color:var(--orange);color:var(--bleu-nuit)}
+.audit button:focus-visible{outline:2px solid var(--bleu-nuit);outline-offset:2px}
+.audit .tot{font-family:var(--mono);font-weight:600;color:var(--orange-fonce);background:var(--gris-clair);padding:6px;text-align:center;font-size:16px}
+.audit .totlib{font-family:var(--mono);font-weight:600;padding:6px;color:var(--bleu-nuit)}
+.detail{margin-top:10px;background:var(--gris-clair);border-left:6px solid var(--orange);padding:10px 14px;font-size:15px;min-height:48px}
+
+/* Matrice de décision */
+.decision td.s{text-align:center;font-family:var(--mono);font-weight:600;font-size:16px}
+.decision .s5{background:var(--bleu-nuit)!important;color:var(--blanc)}
+.decision .s4{background:var(--bleu-2)!important;color:var(--blanc)}
+.decision .s3{background:var(--bleu-4)!important;color:var(--noir)}
+.decision .s2{background:var(--gris-clair)!important;color:var(--noir)}
+.decision th.b{background:var(--orange);color:var(--bleu-nuit)}
+.decision tfoot td{font-family:var(--mono);font-weight:700;font-size:18px;text-align:center;border-top:2px solid var(--bleu-nuit);color:var(--orange-fonce)}
+.decision tfoot td:first-child{text-align:left;font-size:14px;color:var(--bleu-nuit)}
+.decision tfoot td.gagnant{outline:3px solid var(--orange);outline-offset:-3px}
+
+/* Leviers */
+.leviers{list-style:none;padding:0;display:grid;gap:8px;margin-top:14px}
+.leviers li{display:grid;grid-template-columns:44px 1fr;gap:12px;align-items:start;background:var(--gris-clair);padding:10px 12px 10px 0;border-left:6px solid var(--bleu-nuit);margin:0}
+.leviers b{width:36px;height:36px;margin-left:8px;background:var(--orange);color:var(--bleu-nuit);font-family:var(--mono);display:flex;align-items:center;justify-content:center}
+
+/* Gantt */
+.gantt{display:grid;grid-template-columns:minmax(170px,1.6fr) repeat(12,minmax(26px,1fr));gap:3px 0;min-width:640px;font-size:13px}
+.gantt .h{font-family:var(--mono);font-weight:600;color:var(--blanc);background:var(--bleu-nuit);padding:6px 4px;text-align:center}
+.gantt .h:first-child{text-align:left;padding-left:8px}
+.gantt .lib{padding:5px 8px;background:var(--gris-clair);line-height:1.25}
+.gantt .lib span{font-family:var(--mono);font-weight:600;color:var(--bleu-nuit);margin-right:6px}
+.gantt .cell{border-left:1px solid var(--filet);position:relative}
+.gantt .bar{margin:6px 2px;background:var(--bleu-nuit);height:calc(100% - 12px);min-height:14px}
+.gantt .bar.crit{background:var(--orange)}
+.gantt .jalon{width:18px;height:18px;background:var(--orange);transform:rotate(45deg);margin:auto;position:absolute;inset:0}
+
+/* RACI */
+.raci th,.raci td{text-align:center;padding:6px 4px;font-size:13px}
+.raci th:first-child,.raci td:first-child{text-align:left;padding-left:8px;min-width:230px}
+.raci .l{display:inline-flex;width:26px;height:22px;align-items:center;justify-content:center;font-family:var(--mono);font-weight:700;font-size:12px}
+.raci .R{background:var(--bleu-nuit);color:var(--blanc)}
+.raci .A{background:var(--orange);color:var(--bleu-nuit)}
+.raci .AR{background:var(--orange);color:var(--bleu-nuit);box-shadow:inset 0 -4px 0 var(--bleu-nuit);width:34px}
+.raci .C{border:2px solid var(--bleu-nuit);color:var(--bleu-nuit)}
+.raci .I{color:var(--noir)}
+.raci.filtre td:not(:first-child):not(.on),.raci.filtre th:not(:first-child):not(.on){opacity:.25}
+.raci th.on{box-shadow:inset 0 -4px 0 var(--orange)}
+
+/* KISS */
+.kiss{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-top:14px}
+.kiss .carte h4{display:flex;align-items:center;gap:8px;font-size:14px}
+.kiss .carte h4::before{content:"";width:14px;height:14px;background:var(--bleu-nuit)}
+.kiss .start h4::before,.kiss .stop h4::before{background:var(--orange)}
+
 .fictif{position:relative;border:2px solid var(--bleu-nuit);padding:22px 16px 16px;margin-top:16px;background:var(--gris-clair)}
 .fictif::before{content:"";position:absolute;top:-2px;left:-2px;width:18px;height:18px;background:var(--orange)}
 .fictif .etiquette{display:block;margin-bottom:6px;color:var(--bleu-nuit);font-weight:600}
 .fictif tbody tr:nth-child(even) td{background:var(--blanc)}
-footer{margin-top:36px;background:var(--gris-clair);border-left:6px solid var(--bleu-nuit);padding:14px 16px;font-size:14px;text-align:justify;hyphens:none}
-@media (max-width:600px){.chiffre{flex-direction:column;gap:6px;padding:24px 14px 14px}}
-@media print{body{font-size:10pt}.page{padding:0;max-width:none}.retour{display:none}
-header{padding:4mm 5mm}h1{font-size:17pt}.chiffre{padding:3mm 3mm 3mm 7mm}.chiffre strong{font-size:13pt}.chiffre span{font-size:9pt}
-section{margin-top:6mm}h2{font-size:9pt}h3{font-size:10.5pt}table{font-size:9pt}footer{font-size:8.5pt}
-table,.fictif,.chiffres,header{break-inside:avoid}h2,h3{break-after:avoid}}
+
+#bulle{position:fixed;z-index:20;pointer-events:none;background:var(--bleu-nuit);color:var(--blanc);font-size:13px;line-height:1.4;padding:8px 10px;max-width:260px;display:none;border-bottom:3px solid var(--orange)}
+#bulle b{font-family:var(--mono)}
+
+footer{margin-top:40px;background:var(--gris-clair);border-left:6px solid var(--bleu-nuit);padding:14px 16px;font-size:14px}
+
+@media (max-width:700px){
+  .kpis,.grille3{grid-template-columns:1fr 1fr}.ishikawa{grid-template-columns:1fr}
+  .grille2,.jauges,.kiss{grid-template-columns:1fr}
+  .dmaic a{justify-content:center}.dmaic a em{display:none}
+  .barre{grid-template-columns:1fr 64px}.barre .lib{grid-column:1 / -1}
+}
+@media (max-width:440px){.kpis,.grille3{grid-template-columns:1fr}.kpi{min-height:0}}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}.barre .rempli,.jauge .rempli{transition:none}}
+@media print{body{font-size:10pt}.page{padding:0;max-width:none}.retour,.dmaic,.bascule{display:none}section{break-inside:auto}table,.boite,.kpis,header{break-inside:avoid}h2,h3{break-after:avoid}}
+/* Spécifique Colis Privé */
+.machine .boite{display:flex;flex-direction:column;gap:4px}
+.gros{font-family:var(--mono);font-size:34px;font-weight:600;color:var(--orange);line-height:1}
+.gros span{font:inherit;color:inherit}
+.vide{display:inline-block;width:20px;height:20px;border:2px solid var(--bleu-4)}
+.carre.o{background:var(--orange)}
+.equip td:nth-child(2),.equip th:nth-child(2){text-align:center!important}
+.axe2{display:flex;justify-content:space-between;font-family:var(--mono);font-size:12px;font-weight:600;color:var(--bleu-nuit);margin-top:6px}
+.etapes{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:6px;margin-top:12px}
+.etapes button,.jalons button{font:inherit;text-align:left;display:flex;align-items:center;gap:8px;padding:6px;border:2px solid var(--bleu-nuit);background:var(--blanc);color:var(--bleu-nuit);cursor:pointer;font-size:13px;font-weight:600;line-height:1.25}
+.etapes button b,.jalons button b{flex:none;width:28px;height:28px;display:flex;align-items:center;justify-content:center;background:var(--bleu-nuit);color:var(--blanc);font-family:var(--mono)}
+.etapes button[aria-selected="true"],.jalons button[aria-selected="true"]{background:var(--bleu-nuit);color:var(--blanc)}
+.etapes button[aria-selected="true"] b,.jalons button[aria-selected="true"] b{background:var(--orange);color:var(--bleu-nuit)}
+.etapes button:focus-visible,.jalons button:focus-visible,.logi button:focus-visible{outline:2px solid var(--orange-fonce);outline-offset:2px}
+.jalons{display:grid;grid-template-columns:repeat(7,1fr);gap:4px;margin-top:14px}
+.jalons button{flex-direction:column;align-items:flex-start;min-height:92px}
+.montee{margin-top:10px;height:34px;background:linear-gradient(90deg,var(--bleu-4),var(--bleu-nuit));clip-path:polygon(0 70%,100% 0,100% 100%,0 100%);position:relative}
+.montee .axe{position:absolute;inset:auto 0 -22px 0;display:flex;justify-content:space-between;font-family:var(--mono);font-size:12px;font-weight:600;color:var(--bleu-nuit)}
+#piloter{padding-bottom:20px}
+.logi{margin-top:14px;border:2px solid var(--bleu-nuit);padding:14px}
+.fil{list-style:none;padding:0;margin:0;display:grid;gap:6px}
+.fil li{margin:0;padding:8px 12px;background:var(--gris-clair);border-left:6px solid var(--bleu-4);font-size:15px}
+.fil li.cour{border-left-color:var(--orange);background:var(--blanc);outline:2px solid var(--bleu-nuit);font-weight:600}
+.choix{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
+.choix button{font-family:var(--mono);font-size:14px;font-weight:600;padding:8px 16px;background:var(--bleu-nuit);color:var(--blanc);border:0;border-bottom:3px solid var(--orange);cursor:pointer}
+.chaine{list-style:none;padding:0;margin:14px 0 0;display:grid;grid-template-columns:repeat(5,1fr);gap:0}
+.chaine li{margin:0;position:relative;display:flex;flex-direction:column;align-items:center;gap:4px;text-align:center;padding:0 4px}
+.chaine li::after{content:"";position:absolute;top:22px;left:calc(50% + 24px);right:calc(-50% + 24px);height:3px;background:var(--orange)}
+.chaine li:last-child::after{display:none}
+.chaine b{width:44px;height:44px;display:flex;align-items:center;justify-content:center;background:var(--bleu-nuit);color:var(--blanc);font-family:var(--mono);font-size:18px}
+.chaine .fin b{background:var(--orange);color:var(--bleu-nuit)}
+.chaine span{font-weight:600;color:var(--bleu-nuit);font-size:14px;text-align:center}
+.chaine em{font-style:normal;font-size:13px;text-align:center}
+.semaine{display:grid;grid-template-columns:repeat(7,1fr);gap:8px;align-items:end;height:280px;margin-top:14px;border-bottom:2px solid var(--bleu-nuit);padding-top:10px}
+.semaine .col{display:flex;flex-direction:column;justify-content:flex-end;height:100%;cursor:default}
+.semaine .col:focus-visible{outline:2px solid var(--orange-fonce)}
+.semaine .val{font-family:var(--mono);font-size:12px;font-weight:600;color:var(--orange-fonce);text-align:center;margin-bottom:4px;line-height:1.2}
+.semaine .pile{height:200px;display:flex;flex-direction:column;justify-content:flex-end}
+.semaine .bas{height:0;background:var(--bleu-nuit);transition:height .9s ease}
+.semaine .haut{height:0;background:repeating-linear-gradient(-45deg,var(--orange) 0 6px,var(--blanc) 6px 12px);border:2px solid var(--orange);border-bottom:0;transition:height .9s ease}
+.semaine .jour{font-family:var(--mono);font-size:13px;font-weight:600;text-align:center;padding:6px 0;color:var(--bleu-nuit)}
+.journee{display:flex;margin-top:14px;min-height:72px;border:2px solid var(--bleu-nuit)}
+.journee .seg{display:flex;flex-direction:column;justify-content:center;padding:8px 12px;gap:2px}
+.journee .avant{background:var(--gris-clair)}
+.journee .pic{background:var(--bleu-nuit);color:var(--blanc);border-left:4px solid var(--orange)}
+.journee strong{font-family:var(--mono);font-size:22px;color:var(--orange-fonce)}
+.journee .pic strong{color:var(--orange)}
+.journee span{font-size:14px}
+.barre .rempli.cible{background:var(--orange)}
+.plan{display:flex;flex-wrap:wrap;gap:6px;margin-top:12px}
+.plan span{border:2px solid var(--bleu-nuit);padding:6px 10px;font-size:14px;position:relative;padding-left:26px}
+.plan span::before{content:"";position:absolute;left:8px;top:50%;width:10px;height:10px;margin-top:-5px;background:var(--orange)}
+.indic{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:12px}
+.indic span{background:var(--bleu-nuit);color:var(--blanc);font-weight:600;padding:14px 12px;border-bottom:4px solid var(--orange);font-size:15px}
+@media (max-width:700px){.jalons{grid-template-columns:repeat(2,1fr)}.jalons button{min-height:0;flex-direction:row;align-items:center}.indic{grid-template-columns:1fr 1fr}.chaine{grid-template-columns:1fr;gap:10px}.chaine li{flex-direction:row;text-align:left}.chaine li::after{display:none}.semaine .val{font-size:10px}}
+.lecture td,.lecture th{text-align:center}
+.lecture td:first-child,.lecture th:first-child{text-align:left}
+.lecture th button{font:inherit;font-family:var(--mono);font-size:16px;font-weight:700;width:36px;height:36px;border:2px solid var(--blanc);background:transparent;color:var(--blanc);cursor:pointer}
+.lecture th button[aria-pressed="true"]{background:var(--orange);border-color:var(--orange);color:var(--bleu-nuit)}
+.lecture td.on,.lecture th.on{background:var(--gris-clair)!important}
+.lecture th.on{background:var(--bleu-2)!important}
+@media (max-width:500px){.lecture th button{width:28px;height:28px;font-size:13px}.lecture td,.lecture th{padding:6px 3px!important}.lecture td:first-child{font-size:13px}}
+.prevu{display:inline-block;width:20px;height:20px;border:2px solid var(--orange);background:repeating-linear-gradient(-45deg,var(--orange) 0 3px,var(--blanc) 3px 6px)}
+
+/* Spécifique VF Solutions */
+.fig{margin:14px 0 0;border:2px solid var(--bleu-nuit);background:var(--blanc)}
+.fig .zoom{display:block;width:100%;padding:0;border:0;background:var(--blanc);cursor:zoom-in}
+.fig img{display:block;width:100%;height:auto}
+.fig figcaption{font-size:14px;padding:8px 12px;background:var(--gris-clair);border-top:2px solid var(--bleu-nuit);text-align:justify}
+.zoom:focus-visible{outline:3px solid var(--orange-fonce);outline-offset:-3px}
+dialog#visionneuse{max-width:96vw;max-height:94vh;padding:0;border:3px solid var(--bleu-nuit);background:var(--blanc)}
+dialog#visionneuse::backdrop{background:rgba(31,42,68,.85)}
+dialog#visionneuse img{display:block;max-width:94vw;max-height:84vh;width:auto;height:auto}
+dialog#visionneuse p{margin:0;padding:8px 12px;font-size:14px;background:var(--gris-clair)}
+dialog#visionneuse .fermer{position:absolute;top:6px;right:6px;width:36px;height:36px;border:0;background:var(--orange);color:var(--bleu-nuit);font-size:24px;font-weight:700;cursor:pointer}
+.scen{margin-top:12px}
+.scen-k{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.scen-k .boite{display:flex;flex-direction:column;gap:4px}
+.gros2{font-family:var(--mono);font-size:24px;font-weight:600;color:var(--orange);line-height:1.1}
+.scen p{margin-top:12px}
+.compar th.b{background:var(--orange);color:var(--bleu-nuit)}
+.compar td.ok{font-weight:600}
+.compar td.ok::before{content:"";display:inline-block;width:10px;height:10px;background:var(--bleu-nuit);margin-right:8px}
+.compar td.ko::before{content:"";display:inline-block;width:10px;height:10px;border:2px solid var(--orange);margin-right:8px;box-sizing:border-box}
+.cycle{display:flex;height:56px;margin-top:14px;gap:2px}
+.cycle .seg{background:var(--bleu-nuit);color:var(--blanc);display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:12px;font-weight:600;min-width:0;cursor:default}
+.cycle .seg.rvide{background:repeating-linear-gradient(-45deg,var(--orange) 0 6px,var(--blanc) 6px 12px);border:2px solid var(--orange);color:var(--bleu-nuit)}
+.cycle .seg.rvide span{background:var(--blanc);padding:0 3px}
+.cycle .seg:focus-visible{outline:2px solid var(--bleu-nuit);outline-offset:2px}
+.etat{display:flex;margin-top:14px;min-height:64px;border:2px solid var(--bleu-nuit)}
+.etseg{display:flex;flex-direction:column;justify-content:center;padding:6px 10px;gap:2px;min-width:0}
+.etseg strong{font-family:var(--mono);font-size:22px}
+.etseg span{font-size:13px;line-height:1.25}
+.etseg.r{background:var(--bleu-nuit);color:var(--blanc)}.etseg.r strong{color:var(--orange)}
+.etseg.e{background:var(--orange);color:var(--bleu-nuit)}
+.etseg.c{background:var(--gris-clair)}.etseg.c strong{color:var(--orange-fonce)}
+.registre{display:grid;gap:6px;margin-top:12px}
+.risque{border-left:6px solid var(--bleu-4);background:var(--gris-clair)}
+.risque.r{border-left-color:var(--bleu-nuit)}.risque.e{border-left-color:var(--orange)}
+.risque summary{display:grid;grid-template-columns:34px 1fr auto;gap:10px;align-items:start;padding:10px 12px;cursor:pointer;font-family:var(--sans);font-size:15px;font-weight:400;color:var(--noir);list-style:none}
+.risque summary::-webkit-details-marker{display:none}
+.risque summary b{color:var(--bleu-nuit)}
+.risque summary i{font-style:normal;font-family:var(--mono);font-size:11px;font-weight:600;color:var(--bleu-nuit);border:2px solid var(--bleu-nuit);padding:2px 6px;white-space:nowrap}
+.risque.r summary i{background:var(--bleu-nuit);color:var(--blanc)}
+.risque.e summary i{background:var(--orange);border-color:var(--orange)}
+.risque[open] summary{border-bottom:1px solid var(--filet)}
+.risque .corps{padding:10px 12px 12px 56px;font-size:15px;display:grid;gap:6px}
+.risque .corps p+p{margin-top:0}
+.kpiv span{display:flex;flex-direction:column;gap:4px}
+.kpiv b{font-family:var(--mono);font-size:22px;color:var(--orange)}
+@media (max-width:700px){.scen-k{grid-template-columns:1fr}.risque summary{grid-template-columns:28px 1fr}.risque summary i{grid-column:2;justify-self:start}.risque .corps{padding-left:12px}.etseg span{font-size:11px}.cycle .seg span{display:none}}
 </style>
 </head>
 <body>
@@ -74,19 +333,21 @@ table,.fictif,.chiffres,header{break-inside:avoid}h2,h3{break-after:avoid}}
 </header>
 <div class="zebra" aria-hidden="true"></div>
 
-<div class="chiffres">
-  <div class="chiffre"><strong>780</strong><span>Emplacements dans l'implantation retenue, dont 180 de réserve pour la croissance</span></div>
-  <div class="chiffre"><strong>4</strong><span>Livrables de sécurité rédigés et mis en place sur le site</span></div>
-  <div class="chiffre"><strong>2</strong><span>Scénarios d'implantation de racks conçus et comparés</span></div>
+<div class="kpis">
+  <div class="kpi"><strong><span data-compte="780">780</span></strong><span>Emplacements dans l'implantation retenue, dont 180 de réserve pour la croissance</span></div>
+  <div class="kpi"><strong><span data-compte="2">2</span></strong><span>Scénarios d'implantation de racks conçus et comparés</span></div>
+  <div class="kpi"><strong><span data-compte="4">4</span></strong><span>Livrables de sécurité rédigés et mis en place sur le site</span></div>
+  <div class="kpi"><strong><span data-compte="29">29</span></strong><span>Situations à risque relevées lors de mon état des lieux</span></div>
+  <div class="kpi"><strong><span data-compte="320">320</span>&nbsp;s</strong><span>Cycle complet d'une palette, que j'ai chronométré sur le terrain</span></div>
+  <div class="kpi"><strong><span data-compte="3">3</span></strong><span>Chariots de catégorie 5 nécessaires ; le site en avait 2</span></div>
 </div>
 
-<section>
+<section id="contexte">
   <h2>Contexte</h2>
-  <p>VF Solutions est une plateforme logistique de 17 000 m², dont 12 000 m² occupés par 17 clients. Pendant mon stage de cinq mois, dans le cadre de ma formation TSMEL, deux sujets m'ont été confiés. Le premier : préparer l'intégration d'un futur client, désigné ici sous le nom de « Matrix » pour des raisons de confidentialité. Le second : sécuriser les opérations de chargement et de déchargement à quai.</p>
-  <p>Le futur client prévoyait un stock initial de 500 à 600 palettes, 150 à 200 palettes à stocker chaque jour, 6 réceptions et 10 expéditions par jour, et une hausse de capacité de 30 %.</p>
+  <p>VF Solutions est une plateforme logistique de 17 000 m², dont 12 000 m² occupés par 17 clients. Pendant mon stage, dans le cadre de ma formation TSMEL, deux sujets m'ont été confiés. Le premier : préparer l'intégration d'un futur client, désigné ici sous le nom de « Matrix » pour des raisons de confidentialité. Le second : sécuriser les opérations de chargement et de déchargement à quai.</p>
 </section>
 
-<section>
+<section id="role">
   <h2>Ce que j'ai fait, et avec qui</h2>
   <ul>
     <li>J'ai travaillé sous la responsabilité d'un manager et d'un chef d'équipe, sans encadrer moi-même d'équipe.</li>
@@ -96,29 +357,161 @@ table,.fictif,.chiffres,header{break-inside:avoid}h2,h3{break-after:avoid}}
   </ul>
 </section>
 
-<section>
-  <h2>Ma démarche</h2>
+<nav class="dmaic" aria-label="Étapes du travail">
+  <ol>
+    <li><a href="#besoin"><b>1</b><em>Besoin</em></a></li>
+    <li><a href="#scenarios"><b>2</b><em>Scénarios</em></a></li>
+    <li><a href="#moyens"><b>3</b><em>Moyens</em></a></li>
+    <li><a href="#risques"><b>4</b><em>Risques</em></a></li>
+    <li><a href="#securite"><b>5</b><em>Sécurité</em></a></li>
+  </ol>
+</nav>
 
-  <h3>Implantation</h3>
-  <p>J'ai traduit le cahier des charges en besoin d'emplacements, en tenant compte de la croissance annoncée. J'ai conçu deux scénarios d'implantation et je les ai comparés sur quatre critères : la capacité de stockage, la circulation des engins et des piétons, l'organisation des zones de réception et d'expédition, et les croisements de flux. Le second scénario a été retenu : <span class="signal">780</span> emplacements, soit 600 pour le besoin initial et 180 de réserve, avec des allées adaptées à la sécurité.</p>
+<!-- 1. BESOIN -->
+<section id="besoin">
+  <div class="phase"><b>1</b><div><span class="etiquette">Étape 1 · Analyser</span><h2>Le cahier des charges du futur client</h2></div></div>
+  <p>J'ai examiné le cahier des charges et posé les questions complémentaires nécessaires. Le futur client voulait externaliser le stockage de ses produits finis et ses flux sortants.</p>
+  <div class="grille3">
+    <div class="kpi"><strong><span data-compte="500">500</span> à <span data-compte="600">600</span></strong><span>Palettes en stock au démarrage</span></div>
+    <div class="kpi"><strong><span data-compte="150">150</span> à <span data-compte="200">200</span></strong><span>Palettes à stocker par jour, du lundi au vendredi</span></div>
+    <div class="kpi"><strong>+<span data-compte="30">30</span>&nbsp;%</strong><span>Hausse d'activité prévue, soit 180 emplacements de plus</span></div>
+  </div>
+  <div class="grille2">
+    <div class="carte"><h4>Flux quotidiens</h4><ul><li><span class="signal">6</span> camions à réceptionner par jour.</li><li><span class="signal">10</span> camions à expédier par jour.</li><li>Des conteneurs à charger chaque semaine : empotage, pesage, contrôle, plan de chargement avec cales.</li></ul></div>
+    <div class="carte"><h4>Exigences</h4><ul><li>Navettes entre l'usine et la plateforme, gestion de la lettre de voiture et du transport vers les clients finaux.</li><li>Respect du planning d'enlèvement et des règles de sécurité du client.</li><li>Un système informatique avec l'information en temps réel.</li></ul></div>
+  </div>
 
-  <h3>Moyens</h3>
-  <p>J'ai dimensionné la charge de travail, les effectifs et les moyens de manutention. Le calcul a conclu à un besoin de 3 chariots de catégorie 5 ; le site en avait 2 et envisageait d'en acheter un troisième.</p>
+  <h3>La zone dédiée à l'implantation</h3>
+  <p>La zone à racker se trouve près de trois portes de quai, à côté d'une zone outillage. Touchez une image pour l'agrandir.</p>
+  <figure class="fig"><button type="button" class="zoom" data-src="img/vf-zone-implantation.jpg" data-legende="Plan du site : la zone dédiée à l'implantation et les trois quais"><img src="img/vf-zone-implantation.jpg" alt="Plan du bâtiment avec la zone dédiée à l'implantation encadrée en rouge et les trois quais en vert" loading="lazy"></button><figcaption>Plan du site : la zone dédiée à l'implantation (en rouge) et les trois quais (en vert).</figcaption></figure>
+</section>
 
-  <h3>Sécurité à quai</h3>
-  <p>J'ai fait l'état des lieux des risques au chargement et au déchargement : chutes, heurts et écrasements, et circulation sur le site. J'ai ensuite rédigé quatre documents :</p>
-  <div class="tableau"><table>
-    <thead><tr><th>Livrable</th><th>Contenu</th></tr></thead>
+<!-- 2. SCENARIOS -->
+<section id="scenarios">
+  <div class="phase"><b>2</b><div><span class="etiquette">Étape 2 · Concevoir</span><h2>Deux scénarios d'implantation des racks</h2></div></div>
+  <p>J'ai conçu deux implantations et je les ai comparées avant de les présenter à mon responsable. Choisissez un scénario pour voir mon plan et ses caractéristiques.</p>
+  <div class="bascule" role="tablist" aria-label="Scénarios d'implantation" id="scenBoutons">
+    <button type="button" role="tab" aria-pressed="true" data-s="0">Option 1 · 600 emplacements</button>
+    <button type="button" role="tab" aria-pressed="false" data-s="1">Option 1 prolongée · 780</button>
+    <button type="button" role="tab" aria-pressed="false" data-s="2">Option 2 retenue · 780</button>
+  </div>
+  <div class="scen" id="scen" aria-live="polite"></div>
+
+  <h3>Matrice de comparaison des scénarios</h3>
+  <div class="tableau"><table class="compar">
+    <thead><tr><th>Critère</th><th>Option 1</th><th>Option 1 prolongée</th><th class="b">Option 2 retenue</th></tr></thead>
     <tbody>
-      <tr><td>Protocole de sécurité</td><td>Responsabilités, informations à échanger, mesures de prévention, consignes en cas d'incident</td></tr>
-      <tr><td>Procédure d'accueil des conducteurs</td><td>Arrivée des chauffeurs et déplacements sur le site</td></tr>
-      <tr><td>Plan de circulation</td><td>Circulation sur le site et opérations à quai</td></tr>
-      <tr><td>Livret d'intégration</td><td>Règles et comportements attendus, dès l'arrivée des nouveaux salariés</td></tr>
+      <tr><td>Emplacements</td><td class="n">600</td><td class="n">780</td><td class="n ok">780</td></tr>
+      <tr><td>Surface de stockage</td><td class="n">415,88 m²</td><td>Agrandie dans l'espace d'extension</td><td class="n ok">558,10 m²</td></tr>
+      <tr><td>Hausse d'activité de 30 %</td><td class="ko">Non couverte</td><td>Couverte</td><td class="ok">Couverte dès l'installation</td></tr>
+      <tr><td>Réception et expédition</td><td>Près des quais</td><td class="ko">Déplacées dans l'espace d'agrandissement : trajets plus longs</td><td class="ok">Près des quais</td></tr>
+      <tr><td>Croisement des flux</td><td class="ko">Risque de collision</td><td class="ko">Risque de collision</td><td class="ok">Sens de circulation unique</td></tr>
+      <tr><td>Surface perdue</td><td class="ko">Contrainte de ventilation</td><td class="ko">Contrainte de ventilation</td><td class="ok">Contrainte levée : porte outillage déplacée avec l'accord de mon responsable</td></tr>
+    </tbody>
+  </table></div>
+  <p style="margin-top:12px">L'équipe a retenu l'option 2 : installer les 780 emplacements en une seule opération réduit les coûts d'achat, de transport et d'installation, et les emplacements en réserve peuvent être occupés par un autre client dès le premier jour.</p>
+
+  <h3>Dimensionnement des racks</h3>
+  <p>J'ai calculé les racks à partir des caractéristiques des palettes et de la hauteur disponible sous ferme. La surface associée à une palette est de <span class="signal">2,55&nbsp;m²</span> : (0,1 + 1,2 + 2,5 / 2) × (0,1 + 0,8 + 0,1).</p>
+  <div class="tableau"><table>
+    <thead><tr><th>Paramètre</th><th>Valeur</th></tr></thead>
+    <tbody>
+      <tr><td>Palette</td><td class="n">800 × 1 200 mm</td></tr>
+      <tr><td>Hauteur sous ferme / hauteur disponible</td><td class="n">6 250 / 5 250 mm</td></tr>
+      <tr><td>Nombre de niveaux</td><td class="n">4</td></tr>
+      <tr><td>Longueur d'une lisse</td><td class="n">2 700 mm</td></tr>
+      <tr><td>Palettes par alvéole</td><td class="n">3</td></tr>
+      <tr><td>Charge par alvéole / par travée</td><td class="n">1 200 / 4 800 kg</td></tr>
+      <tr><td>Profil de lisse</td><td class="n">112 × 50 × 1,5</td></tr>
+      <tr><td>Hauteur minimum de l'échelle d'extrémité</td><td class="n">5 012 mm</td></tr>
+      <tr><td>Profondeur d'échelle</td><td class="n">1 000 mm</td></tr>
+    </tbody>
+  </table></div>
+  <figure class="fig"><button type="button" class="zoom" data-src="img/vf-calcul-racks.png" data-legende="Ma feuille de calcul du dimensionnement des racks"><img src="img/vf-calcul-racks.png" alt="Feuille de calcul : palettes, hauteur des niveaux, choix des échelles, nombre de travées, capacité de 600 palettes" loading="lazy"></button><figcaption>Ma feuille de calcul du dimensionnement (base de l'option 1 : 600 palettes).</figcaption></figure>
+
+  <h3>Caractéristiques de l'option 2</h3>
+  <div class="tableau"><table>
+    <thead><tr><th>Élément</th><th>Valeur</th><th>Contrainte ou justification</th></tr></thead>
+    <tbody>
+      <tr><td>Travées de 2 700 mm</td><td class="n">64</td><td>Aucune</td></tr>
+      <tr><td>Travée de 1 800 mm</td><td class="n">1</td><td>Présence d'un poteau</td></tr>
+      <tr><td>Places par niveau</td><td class="n">3 ou 2</td><td>Présence d'un poteau</td></tr>
+      <tr><td>Niveaux</td><td class="n">4</td><td>Hauteur disponible 5 200 mm</td></tr>
+      <tr><td>Palettiers simples / doubles</td><td class="n">2 / 4</td><td>Aucune</td></tr>
+      <tr><td>Allée de stockage</td><td class="n">2,5 m</td><td>Recommandation du responsable</td></tr>
+      <tr><td>Allée de circulation</td><td class="n">3,8 m</td><td>Respect du règlement</td></tr>
+      <tr><td>Surface de stockage</td><td class="n">558,10 m²</td><td>Théorique (780 / 4) × 2,55 = 497,25 m² ; l'écart vient des contraintes</td></tr>
+      <tr><td>Zone de réception / d'expédition</td><td class="n">46,2 / 94,28 m²</td><td>Aucune</td></tr>
+      <tr><td>Zone litige</td><td class="n">16 palettes</td><td>Recommandation du responsable</td></tr>
+      <tr><td>Zone des engins</td><td class="n">9 m²</td><td>Soit 3 chariots</td></tr>
     </tbody>
   </table></div>
 </section>
 
-<section>
+<!-- 3. MOYENS -->
+<section id="moyens">
+  <div class="phase"><b>3</b><div><span class="etiquette">Étape 3 · Dimensionner</span><h2>Les moyens humains et matériels</h2></div></div>
+  <p>J'ai chronométré moi-même chaque opération avec un opérateur logistique, sur la zone, avec un chariot adapté et une palette de 400 kg. Survolez ou touchez un segment pour voir l'opération.</p>
+
+  <h3>Cycle d'une palette : 320 secondes</h3>
+  <div class="cycle" id="cycle" role="img" aria-label="Cycle d'une palette de 320 secondes décomposé en neuf opérations"></div>
+  <div class="legende"><span><i style="background:var(--bleu-nuit)"></i>Opération avec la palette</span><span><i style="background:repeating-linear-gradient(-45deg,var(--orange) 0 4px,var(--blanc) 4px 8px);outline:2px solid var(--orange);outline-offset:-2px"></i>Retour à vide</span></div>
+  <details><summary>Voir le tableau des temps</summary>
+    <div class="tableau"><table><thead><tr><th>Opération</th><th>Temps par palette</th></tr></thead><tbody id="cycleTable"></tbody></table></div>
+  </details>
+
+  <h3>Charge de travail et effectifs selon le volume</h3>
+  <p>Choisissez un volume journalier :</p>
+  <div class="bascule" role="group" aria-label="Palettes par jour" id="volBoutons">
+    <button type="button" aria-pressed="false" data-v="0">150 palettes</button>
+    <button type="button" aria-pressed="true" data-v="1">200 palettes</button>
+    <button type="button" aria-pressed="false" data-v="2">250 palettes</button>
+  </div>
+  <div class="grille3" id="volKpi"></div>
+  <p class="source">Temps de présence de 7 h, dont 0,5 h improductive, soit 6,5 h de travail effectif par opérateur (engagement de 93 %). Temps administratif : 0,5 h pour la réception et 0,84 h pour l'expédition.</p>
+  <div class="carte" style="margin-top:14px"><h4>Besoin matériel</h4><p>Il faut <span class="signal">3</span> chariots de catégorie 5, adaptés aux allées de stockage de 2,5 m, pour réaliser les opérations à temps et en sécurité. La plateforme en avait 2 et envisageait d'en acheter un troisième.</p></div>
+</section>
+
+<!-- 4. RISQUES -->
+<section id="risques">
+  <div class="phase"><b>4</b><div><span class="etiquette">Étape 4 · Identifier</span><h2>L'état des lieux des risques</h2></div></div>
+  <p>J'ai relevé 29 situations à risque sur le site, avec pour chacune le risque, ma recommandation et la mesure prise. La barre montre l'état des mesures au moment de mon mémoire. Choisissez un filtre pour parcourir le registre.</p>
+  <div class="etat" id="etat"></div>
+  <div class="bascule" role="group" aria-label="Filtrer les risques" id="filtreRisques"></div>
+  <div class="registre" id="registre"></div>
+
+  <h3>Tableau de bord des risques par nature</h3>
+  <div class="barres" id="nature"></div>
+  <p class="source">Répartition établie dans mon tableau de bord des risques.</p>
+</section>
+
+<!-- 5. SECURITE -->
+<section id="securite">
+  <div class="phase"><b>5</b><div><span class="etiquette">Étape 5 · Sécuriser</span><h2>Plan de circulation, accueil et protocole</h2></div></div>
+
+  <h3>Plan de circulation</h3>
+  <p>J'ai proposé un plan de circulation qui sépare les accès piétons et les accès engins, et qui signale les points de croisement à risque élevé. Il a été validé par mon responsable. Les noms des clients de la plateforme sont masqués.</p>
+  <figure class="fig"><button type="button" class="zoom" data-src="img/vf-plan-circulation.png" data-legende="Mon plan de circulation du site"><img src="img/vf-plan-circulation.png" alt="Plan de circulation du site : accès piétons, accès engins, sens des poids lourds, points de collision en triangles rouges, issues de secours" loading="lazy"></button><figcaption>Accès piétons et engins, sens de circulation des poids lourds, points de collision (triangles rouges), issues de secours et point de rassemblement.</figcaption></figure>
+
+  <h3>Procédure d'accueil des conducteurs</h3>
+  <p>Choisissez une étape du parcours du conducteur.</p>
+  <div class="etapes" id="accueil" role="tablist" aria-label="Procédure d'accueil"></div>
+  <div class="detail" id="accueilDetail" aria-live="polite"></div>
+
+  <h3>Protocole de sécurité chargement / déchargement</h3>
+  <div class="grille3">
+    <div class="carte"><h4>Qui, quand, comment</h4><p>L'entreprise d'accueil et l'entreprise de transport, avant les opérations, par un échange préalable : analyse des risques de l'entrée à la sortie du site, mesures de prévention, protocole formalisé et signé.</p></div>
+    <div class="carte"><h4>Contenu</h4><ul><li>Horaires d'accueil, marchandises, véhicules, matériels de manutention.</li><li>Consignes et plan de circulation.</li><li>Qui fait quoi, risques et mesures de prévention.</li><li>Consignes en cas d'incident.</li></ul></div>
+    <div class="carte"><h4>Principaux risques</h4><ul><li>Chutes de hauteur.</li><li>Chutes de plain-pied.</li><li>Heurts et écrasements par les véhicules, engins et charges.</li></ul><p style="margin-top:6px">Prévention : liaison quai-véhicule, calage du véhicule à quai, protection contre les chutes.</p></div>
+  </div>
+
+  <h3>Mon tableau de bord proposé pour la plateforme</h3>
+  <div class="indic kpiv">
+    <span><b>&gt; 90&nbsp;%</b>Satisfaction des clients</span><span><b>&lt; 24&nbsp;h</b>Délai de préparation</span><span><b>&lt; 12&nbsp;h</b>Délai d'expédition</span><span><b>&lt; 1&nbsp;%</b>Erreurs de préparation</span><span><b>&lt; 2&nbsp;%</b>Retours de marchandises</span>
+  </div>
+</section>
+
+<section id="resultat">
   <h2>Le résultat</h2>
   <ul>
     <li>Les quatre livrables de sécurité ont été mis en place sur le site, ainsi que mes recommandations en matière de sécurité et d'hygiène.</li>
@@ -128,7 +521,95 @@ table,.fictif,.chiffres,header{break-inside:avoid}h2,h3{break-after:avoid}}
 </section>
 
 <footer>Contact : zahirachaik@gmail.com</footer>
-
 </main>
+<div id="bulle" role="tooltip"></div>
+<dialog id="visionneuse"><button type="button" class="fermer" aria-label="Fermer">×</button><img alt=""><p></p></dialog>
+
+<script>
+(function(){
+var fr=function(n,d){return n.toLocaleString('fr-FR',{minimumFractionDigits:d||0,maximumFractionDigits:d||0});};
+var reduit=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+function el(t,c,h){var e=document.createElement(t);if(c)e.className=c;if(h!=null)e.innerHTML=h;return e;}
+var vus=new IntersectionObserver(function(es){es.forEach(function(e){if(!e.isIntersecting)return;var t=e.target;vus.unobserve(t);
+  if(t.dataset.compte){var fin=parseFloat(t.dataset.compte);if(reduit){t.textContent=fr(fin);return;}var t0=null;
+    (function pas(ts){if(!t0)t0=ts;var p=Math.min((ts-t0)/1000,1);t.textContent=fr(Math.round(fin*(1-Math.pow(1-p,3))));if(p<1)requestAnimationFrame(pas);})(performance.now());}
+  else if(t.dataset.largeur){t.style.width=t.dataset.largeur;}
+});},{threshold:.3});
+var bulle=document.getElementById('bulle');
+function montrer(h,x,y){bulle.innerHTML=h;bulle.style.display='block';var w=bulle.offsetWidth,hh=bulle.offsetHeight;bulle.style.left=Math.max(8,Math.min(innerWidth-w-8,x+12))+'px';bulle.style.top=Math.max(8,y-hh-12)+'px';}
+function cacher(){bulle.style.display='none';}
+
+/* Visionneuse d'images */
+var dlg=document.getElementById('visionneuse');
+document.addEventListener('click',function(e){var b=e.target.closest('.zoom');if(!b)return;dlg.querySelector('img').src=b.dataset.src;dlg.querySelector('img').alt=b.querySelector('img').alt;dlg.querySelector('p').textContent=b.dataset.legende;if(dlg.showModal)dlg.showModal();});
+dlg.querySelector('.fermer').addEventListener('click',function(){dlg.close();});
+dlg.addEventListener('click',function(e){if(e.target===dlg)dlg.close();});
+
+/* Scénarios */
+var SC=[
+ {img:"img/vf-option1-600.png",alt:"Option 1 : trois rangées de racks parallèles au mur des quais, zone de réception et d'expédition, espace d'agrandissement",t:"Option 1 · 600 emplacements",k:[["600","emplacements"],["415,88 m²","de stockage"],["50","travées sur 4 niveaux"]],
+  d:"Première orientation des racks : 2 palettiers doubles et 1 simple, 150 lisses, 3 palettes par niveau. Allées de stockage de 2,5 m et de circulation de 3,8 m. Sur 415,88 m², il en faut 382,5 en théorie : 33,38 m² sont perdus à cause du système de ventilation. La hausse de 30 % n'est pas couverte."},
+ {img:"img/vf-option1-prolongee-780.png",alt:"Option 1 prolongée : racks allongés, zones de réception et d'expédition déplacées dans l'espace d'agrandissement",t:"Option 1 prolongée · 780 emplacements",k:[["780","emplacements"],["+180","pour la hausse de 30 %"],["114,75 m²","de plus nécessaires"]],
+  d:"Pour ajouter 180 emplacements (15 travées), il faut prolonger les racks. La réception et l'expédition passent alors dans l'espace d'agrandissement : les trajets de chargement et de déchargement s'allongent, les flux se croisent et le risque de collision augmente. D'où la recherche d'une autre solution."},
+ {img:"img/vf-option2-780.png",alt:"Option 2 : racks perpendiculaires aux quais, réception et expédition alignées près des quais, sens de circulation unique",t:"Option 2 retenue · 780 emplacements",k:[["780","emplacements en une opération"],["558,10 m²","de stockage"],["64 + 1","travées"]],
+  d:"Nouvelle orientation des racks, réception et expédition regroupées côte à côte, sens de circulation unique. J'ai obtenu de déplacer l'accès à la zone outillage et de désactiver une porte, ce qui a levé une contrainte. L'équipe a retenu ce scénario."}];
+var sz=document.getElementById('scen');
+function scen(i){var s=SC[i];document.querySelectorAll('#scenBoutons button').forEach(function(b){b.setAttribute('aria-pressed',+b.dataset.s===i);});
+ sz.innerHTML='<div class="scen-k">'+s.k.map(function(k){return '<div class="boite"><strong class="gros2">'+k[0]+'</strong><span>'+k[1]+'</span></div>';}).join('')+'</div><figure class="fig"><button type="button" class="zoom" data-src="'+s.img+'" data-legende="'+s.t+'"><img src="'+s.img+'" alt="'+s.alt+'"></button><figcaption>'+s.t+' : mon plan d\'implantation.</figcaption></figure><p>'+s.d+'</p>';}
+document.querySelectorAll('#scenBoutons button').forEach(function(b){b.addEventListener('click',function(){scen(+b.dataset.s);});});
+scen(0);
+
+/* Cycle d'une palette */
+var CY=[["Déchargement",20,0],["Retour à vide",15,1],["Contrôle visuel",10,0],["Stockage",60,0],["Retour à vide",45,1],["Préparation",60,0],["Retour à vide",45,1],["Chargement",20,0],["Retour à vide",45,1]];
+(function(){var z=document.getElementById('cycle'),tb=document.getElementById('cycleTable');
+ CY.forEach(function(c){var s=el('div','seg'+(c[2]?' rvide':''),c[1]>=20?'<span>'+c[1]+' s</span>':'');s.style.flex=c[1];s.tabIndex=0;var h='<b>'+c[0]+'</b><br>'+c[1]+' secondes par palette';
+  s.addEventListener('pointermove',function(e){montrer(h,e.clientX,e.clientY);});s.addEventListener('pointerleave',cacher);
+  s.addEventListener('focus',function(){var r=s.getBoundingClientRect();montrer(h,r.left,r.top+30);});s.addEventListener('blur',cacher);z.appendChild(s);
+  var tr=el('tr');tr.innerHTML='<td>'+c[0]+'</td><td class="n">'+c[1]+' s</td>';tb.appendChild(tr);});
+ var tr=el('tr');tr.innerHTML='<td><b>Total</b></td><td class="n"><b>320 s</b></td>';tb.appendChild(tr);})();
+
+/* Volumes et effectifs */
+var VO=[[150,13.33,14.673,2.26],[200,17.78,19.12,2.94],[250,22.22,23.56,3.62]];
+function vol(i){var v=VO[i];document.querySelectorAll('#volBoutons button').forEach(function(b){b.setAttribute('aria-pressed',+b.dataset.v===i);});
+ document.getElementById('volKpi').innerHTML='<div class="kpi"><strong>'+fr(v[1],2)+'&nbsp;h</strong><span>Temps de manutention pour '+v[0]+' palettes</span></div><div class="kpi"><strong>'+fr(v[2],2)+'&nbsp;h</strong><span>Charge de travail totale, temps administratif compris</span></div><div class="kpi"><strong>'+fr(v[3],2)+'</strong><span>Opérateurs nécessaires</span></div>';}
+document.querySelectorAll('#volBoutons button').forEach(function(b){b.addEventListener('click',function(){vol(+b.dataset.v);});});
+vol(1);
+
+/* Registre des risques */
+var R=[[1, "Les chauffeurs rentrent au site sans sonner et sans qu’il soit accueilli ni accompagné par un agent VF Solutions", "Accident ou Incident pour les chauffeurs ou les employés de VF Solution", "Élaborer une procédure accueil des chauffeurs. Coller une affiche en français et en anglais pour obliger le chauffeur à sonner et attendre un agent pour l’accueillir. Recommandation validée.", "", "c"], [2, "L’entreprise n’a pas mis en place de document, avec les transporteurs, pour les opérations de chargement et déchargement", "L’entreprise est exposée à des accidents de travail. Sanctions financières de non-respect de la réglementation", "Élaborer un protocole de sécurité en collaboration avec l’entreprise du transport et en faire signer le chauffeur.", "Protocole rédigé, en annexe du mémoire.", "r"], [3, "Les chauffeurs peuvent se positionner au mauvais quai de chargement", "Perte du temps du chauffeur et de l’opérateur VF Solution. Risque de tension et de conflit verbal", "Activer l’interphone déjà installé à l’accueil et activer les barrières d’entrée. Ainsi le chauffeur doit appeler pour rentrer et à ce moment on lui communique le quai adéquat. La recommandation est validée.", "", "c"], [4, "Un poids lourd sortant du site peut en heurter un qui entrait", "Risque de cloison", "Mise en place d’une signalétique et affichage du plan de circulation à l’entrée du site.", "", "c"], [5, "Un chauffeur se rendant au bureau administratif sans qu’il soit accompagné", "Accident de travail", "J’ai recommandé une zone d’attente qui sera dédiée aux chauffeurs pour limiter les déplacements des chauffeurs sur le site. On peut mettre le protocole de sécurité à disposition des chauffeurs et on affiche le plan de circulation avec la procédure accueil des chauffeurs. Recommandation validée est en cours de mise en place.", "", "c"], [6, "La maintenance des chariots élévateurs n’est pas consignée par écrit", "Responsabilité légale pour l’entreprise en cas d’accident. Ne pas pouvoir prouver les maintenances effectuées et leurs dates en cas d’accident.", "Je recommande de mettre en place un système de suivi de maintenance écrit pour chaque chariot élévateur, afin d'enregistrer toutes les opérations de maintenance effectuées, y compris les dates, les pièces remplacées et les réparations effectuées. De cette manière, l'entreprise peut prouver qu'elle a pris les mesures nécessaires pour garantir la sécurité de ses employés et de son matériel.", "", "c"], [7, "Stockage des engins devant les portes de secours", "Blessure et décès en cas d’incendie ou tout autre cas d’urgence. Nuire à l’efficacité de la circulation au sein de l’entreprise et perte de temps et d’argent", "Affichage de l'interdiction et sanction de tout responsable ne respecte pas la réglementation.", "", "c"], [8, "Les employés administratifs utilisant des ordinateurs toute la journée n’ont pas reçu une formation gestes et postures", "Troubles musculosquelettiques. VF peut être tenue responsable en cas de préjudice corporel causé à ses employés en raison de son manque de prévention des risques professionnels.", "Affichage de la posture idéale pour travailler sur l’écran dans les bureaux, dans la salle de pause et dans les toilettes.", "", "c"], [9, "L’entreprise ne dispose pas du registre des accidents bénins", "Sanctions légales. Non identification des risques potentiels. Des lacunes dans l’évaluation et la gestion des risques professionnelles.", "J’ai envoyé un mail dont le registre des accidents bénins à télécharger.", "Registre transmis, en annexe du mémoire.", "r"], [10, "Aucun Marquage au sol au niveaux des voies de circulation poids lourd, zone de stationnement des poids lourds et allée de circulation et allée de piétons.", "Confusion sur les voies de circulation, ce qui peut causer des accidents et dans ce cas l’entreprise est tenu responsable.", "J’ai proposé un plan de circulation détaillant les accès piétons et les accès engins ainsi que les points de croisement à risque élevé. Et le plan a été validé par mon responsable.", "Plan de circulation validé, en annexe du mémoire.", "r"], [11, "Absence d’un plan de circulation", "Risque d’incidents impliquant des véhicules et des piétons.", "Plan de circulation proposé et validé.", "Plan de circulation validé, en annexe du mémoire.", "r"], [12, "Des supports palettes, des cartons et des objets par terre et en désordre", "Risque de chute Risque de dommage pour les produits stockés Entrave la circulation", "J’ai recommandé de sensibiliser les employés aux risques liés à la présence des supports palettes, des cartons ou des objets par terre lors des briefings et de le faire systématiquement dès que cette situation est constatée.", "", "c"], [13, "Des prises électriques non rangés", "Risque d'électrocution Risque d'incendie", "Ranger les prises électriques dans des boîtes prévues à cet effet.", "Recommandation prise en compte.", "r"], [14, "Des cartons ouverts stockés sur des niveaux supérieurs", "Les cartons ouverts peuvent tomber et causer des blessures aux employés situés en dessous ou endommager les produits stockés à proximité.", "Retirer immédiatement les cartons ouverts et de s'assurer que tous les produits sont correctement rangés et sécurisés.", "Sensibiliser les employés à l'importance de ne pas stocker des cartons ouverts sur des niveaux supérieurs et de mettre en place des procédures pour s'assurer que cela ne se reproduise pas à l'avenir.", "c"], [15, "Déchets par terre", "Risques de chute. Risques d'incendie. Entraîner une obstruction des voies de circulation ou des issues de secours. Favoriser la propagation d’incendie.", "Mettre en place une politique de gestion des déchets qui inclut la collecte régulière des déchets, la mise en place de poubelles et le nettoyage régulier des zones de stockage et de circulation. Les employés doivent également être sensibilisés à la gestion des déchets et encouragés à respecter les consignes en matière de tri et de gestion des déchets.", "La proposition sera étudiée dans l’avenir et le responsable est tout à fait d’accord.", "e"], [16, "Des fissures sur le sol", "Un risque de trébuchement pour les employés qui circulent à pied ou avec des équipements de manutention", "Former les employés à la vigilance et de leur demander de signaler immédiatement toute fissure qu'ils détectent afin d'éviter tout incident. Une réparation rapide et urgente. Auditer le sol par un expert et prévoir les interventions urgentes à réaliser.", "Le responsable est au courant.", "e"], [17, "Des transpalettes non rangés", "Le risque dans ce cas est un accident pour les personnes qui circulent dans l'entrepôt et qui pourraient trébucher ou être heurtées par les transpalettes mal rangés", "La mesure à prendre est de ranger les transpalettes dans un endroit dédié et clairement identifié, de préférence en dehors des zones de circulation. Il est également recommandé de sensibiliser les opérateurs à l'importance du rangement et de la sécurité dans l'entrepôt.", "Une zone a été identifiée pour ranger Les matériels de manutention.", "r"], [18, "Porte de quai ouverte pour aération sans aucune barrière de sécurité", "Le risque dans ce cas est qu'une personne puisse accidentellement tomber dans l'ouverture de la porte de quai, ce qui peut entraîner des blessures graves.", "J’ai recommandé de mettre en place une barrière de sécurité autour de la zone de la porte de quai pour empêcher l'accès non autorisé. Les barrières de sécurité doivent être visibles et bien marquées pour alerter les employés et les visiteurs. Il est également important de sensibiliser les employés aux risques liés à l'ouverture des portes de quai sans barrières de sécurité et de leur fournir une formation sur les mesures de sécurité à prendre.", "Recommandations prises en compte.", "r"], [19, "Postes non rangées", "Un risque d'incendie en raison de la présence de documents inflammables tels que des papiers et des cartons. De plus, cela peut causer des pertes de temps et des difficultés pour retrouver des documents importants, ce qui peut impacter la productivité de l'entreprise.", "Les employés doivent être formés et sensibilisés à l'importance du rangement et de l'organisation pour maintenir un environnement de travail sûr et productif.", "Une politique de rangement doit être mise en place. Les postes sont rangés.", "r"], [20, "Stockage dans une zone Devant la zone de manœuvre des camions", "Entraver la circulation des camions et causer des accidents, perte de temps et étranglement.", "Dégager cette zone de tout type de stockage.", "Opération réalisée.", "r"], [21, "Les exercices d’évacuation ne sont pas pratiqués", "Le risque est que les employés ne sachent pas quoi faire en cas d'urgence, ce qui peut causer des blessures ou des pertes de vie", "Organiser des exercices d'évacuation réguliers pour que les employés sachent quoi faire en cas d'urgence et pour s'assurer que les sorties de secours sont bien dégagées.", "Ces exercices vont être planifiés et documentés conformément aux réglementations en matière de sécurité incendie.", "e"], [22, "Stockage devant les portes de secours", "Empêcher l'évacuation rapide en cas d'urgence et augmenter le risque d'accidents en entravant l'accès aux sorties de secours", "Déplacer les palettes et les marchandises stockées devant les portes de secours et de s'assurer que les accès aux sorties de secours restent toujours dégagés.", "Afficher des panneaux de signalisation indiquant l'emplacement des portes de secours et de sensibiliser les employés sur l'importance de maintenir les accès dégagés en cas d'urgence.", "c"], [23, "Stockage devant les RIA", "Obstruer l'accès et la visibilité de ces équipements, ce qui peut entraîner une perte de temps précieux lors d'un incendie et augmenter le risque d'incendie grave", "Former les employés sur les dangers liés à l'obstruction des RIA et à les sensibiliser aux consignes de sécurité en cas d'incendie.", "Sensibilisation prise en compte.", "r"], [24, "Les consignes de sécurité ne sont pas suffisamment affichées", "Le risque est que les employés ne soient pas correctement informés des mesures à prendre en cas d'urgence ou des procédures de sécurité à suivre", "Afficher des panneaux de signalisation et des consignes de sécurité claires et facilement visibles à différents endroits de l'entrepôt.", "Plusieurs panneaux ont été préparés.", "r"], [25, "Matériels endommagés", "Le risque est que l'opérateur ne soit pas correctement protégé contre les chutes d'objets ou les écrasements, ce qui peut entraîner des blessures graves.", "Sensibiliser les employés sur l'importance de signaler tout défaut ou dysfonctionnement des équipements à leur responsable.", "Mettre en place un système de maintenance des équipements.", "c"], [26, "Les cohabitations des piétons et des engins ne sont pas suffisantes", "Risque d’accidents pour les piétons et les caristes.", "Mettre en place des miroirs pour alerter Les utilisateurs des accès sur les points où les flux sont importants.", "Recommandation en cours d’étude.", "e"], [27, "Des cartons mal Empilés", "Les cartons mal empilés puissent tomber et causer des dommages matériels ou des blessures aux employés travaillant à proximité", "La mesure à prendre est de former les employés à bien empiler les cartons et à mettre en place des procédures pour s'assurer que les piles de cartons sont stables et ne risquent pas de tomber.", "La sensibilisation est effectuée.", "r"], [28, "Les supports palettes sont mal empilés", "Risque de chute et d'effondrement, ce qui peut entraîner des blessures pour les travailleurs et endommager les produits stockés à côté.", "Revoir et améliorer le système de stockage en s'assurant que les supports de palettes sont correctement empilés et fixés pour éviter tout risque d'effondrement. Sensibiliser les employés pour éviter ce genre d stockage.", "Aucune modification jusqu’à ce jour.", "e"], [29, "Des fourches non rangées.", "Risque de heurt.", "Ranger les fourches dans une zone sécurisée ou balisée. Sensibiliser les employés à ce genre de stockage à risque levé.", "Le responsable est intervenu pour ranger les fourches.", "r"]];
+var ET={r:["Réalisé ou pris en compte","r"],e:["À l'étude ou en attente","e"],c:["Recommandation formulée","c"]};
+(function(){var n={r:0,e:0,c:0};R.forEach(function(x){n[x[5]]++;});
+ var et=document.getElementById('etat');['r','e','c'].forEach(function(k){var s=el('div','etseg '+k,'<strong>'+n[k]+'</strong><span>'+ET[k][0]+'</span>');s.style.flex=n[k];et.appendChild(s);});
+ var f=document.getElementById('filtreRisques'),reg=document.getElementById('registre');
+ function dessiner(k){reg.innerHTML='';R.filter(function(x){return k==='t'||x[5]===k;}).forEach(function(x){
+  var d=el('details','risque '+x[5]);d.innerHTML='<summary><b class="mono">'+x[0]+'</b><span>'+x[1]+'</span><i>'+ET[x[5]][0]+'</i></summary><div class="corps"><p><strong>Risque :</strong> '+x[2]+'</p><p><strong>Ma recommandation :</strong> '+x[3]+'</p>'+(x[4]?'<p><strong>Mesure prise :</strong> '+x[4]+'</p>':'')+'</div>';reg.appendChild(d);});}
+ [['t','Tous ('+R.length+')'],['r',ET.r[0]+' ('+n.r+')'],['e',ET.e[0]+' ('+n.e+')'],['c',ET.c[0]+' ('+n.c+')']].forEach(function(o,i){var b=el('button','',o[1]);b.type='button';b.setAttribute('aria-pressed',i===0);b.addEventListener('click',function(){[].forEach.call(f.children,function(y){y.setAttribute('aria-pressed',y===b);});dessiner(o[0]);});f.appendChild(b);});
+ dessiner('t');})();
+
+/* Risques par nature */
+var NA=[["Physiques",5],["Professionnels",5],["Organisationnels",5],["Matériels",4],["D'urgence",3]];
+(function(){var z=document.getElementById('nature');NA.forEach(function(a){var d=el('div','barre');d.innerHTML='<span class="lib">'+a[0]+'</span><div class="piste"><div class="rempli" data-largeur="'+(a[1]/5*100)+'%"></div></div><span class="val">'+a[1]+'</span>';z.appendChild(d);});})();
+
+/* Accueil des conducteurs */
+var AC=[
+ ["Arrivée","Le conducteur sonne à l'interphone et se présente. Le responsable vérifie le rendez-vous et lui donne le numéro de quai."],
+ ["Accès au quai","Il suit le chemin d'accès à 20 km/h, attentif à la signalisation et aux véhicules sortants."],
+ ["À quai","Il coupe le moteur, rapporte les clés, ferme la porte de son camion et cale son véhicule."],
+ ["Accès piéton","Il emprunte l'accès piéton avec ses équipements de protection individuelle."],
+ ["Accueil","Il sonne à la porte d'entrée et attend un agent, qui vérifie son identité et contrôle ses documents près des quais."],
+ ["Zone d'attente","L'agent l'accompagne en zone d'attente des conducteurs pendant l'enregistrement de l'opération. Il ne la quitte pas sans être accompagné."],
+ ["Chargement","L'agent le rejoint pour qu'il suive le chargement ou le déchargement. En cas de réserves : photos et document dédié."],
+ ["Départ","Sans réserve, il reprend ses documents, retourne à son camion par l'accès piéton, enlève les cales et sort en ralentissant."]];
+(function(){var l=document.getElementById('accueil'),d=document.getElementById('accueilDetail');
+ AC.forEach(function(x,i){var b=el('button','','<b>'+(i+1)+'</b><span>'+x[0]+'</span>');b.type='button';b.setAttribute('role','tab');b.setAttribute('aria-selected',i===0);
+  b.addEventListener('click',function(){[].forEach.call(l.children,function(y){y.setAttribute('aria-selected',y===b);});d.innerHTML='<b class="mono">'+(i+1)+' · '+x[0]+'</b><br>'+x[1];});l.appendChild(b);});
+ d.innerHTML='<b class="mono">1 · '+AC[0][0]+'</b><br>'+AC[0][1];})();
+
+document.querySelectorAll('[data-compte],[data-largeur]').forEach(function(x){vus.observe(x);});
+var liens=document.querySelectorAll('.dmaic a');
+var vuSec=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){liens.forEach(function(l){l.classList.toggle('actif',l.getAttribute('href')==='#'+e.target.id);});}});},{rootMargin:'-40% 0px -55% 0px'});
+['besoin','scenarios','moyens','risques','securite'].forEach(function(id){vuSec.observe(document.getElementById(id));});
+})();
+</script>
 </body>
 </html>
