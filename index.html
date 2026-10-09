@@ -371,6 +371,11 @@ a.lire:focus-visible{outline:2px solid var(--orange-fonce);outline-offset:3px}
 footer{display:grid;gap:4px}
 footer .mono{font-weight:600;color:var(--bleu-nuit)}
 @media (max-width:700px){.k3{grid-template-columns:1fr}.onglets{grid-template-columns:1fr}.mini3{grid-template-columns:1fr}.frise .ligne{grid-template-columns:1fr;gap:4px}.frise .axe-l .lib{display:none}}
+.video{margin:22px 0 0;border:2px solid var(--bleu-nuit);background:var(--bleu-nuit)}
+.video video{display:block;width:100%;height:auto;aspect-ratio:16/9;background:var(--bleu-nuit)}
+.video figcaption{background:var(--gris-clair);border-top:4px solid var(--orange);padding:8px 12px;font-size:14px}
+.video figcaption .mono{font-weight:600;color:var(--bleu-nuit)}
+@media (prefers-reduced-motion:reduce){.video video{animation:none}}
 </style>
 </head>
 <body>
@@ -382,6 +387,14 @@ footer .mono{font-weight:600;color:var(--bleu-nuit)}
     <p class="accroche">Diplômée Bac+5 en logistique internationale, j'ai mené trois projets d'amélioration de bout en bout dans la chimie, la messagerie et l'entrepôt 3PL, après 11 ans à la tête de ma propre entreprise. Ma formation en gestion et finance m'apporte la maîtrise des coûts et de la budgétisation.</p>
   </header>
   <div class="zebra" aria-hidden="true"></div>
+
+  <figure class="video">
+    <video controls muted playsinline autoplay loop preload="metadata" poster="video/zahira-chaik-presentation-poster.jpg" aria-label="Vidéo de présentation de Zahira Chaik : ses trois projets chez Orrion Chemicals Orgaform, Colis Privé et VF Solutions, en deux minutes">
+      <source src="video/zahira-chaik-presentation.webm" type="video/webm">
+      <source src="video/zahira-chaik-presentation.mp4" type="video/mp4">
+    </video>
+    <figcaption><span class="mono">2 min</span> · Mes trois projets en vidéo : chimie, messagerie, entrepôt 3PL.</figcaption>
+  </figure>
 
   <div class="kpis k3">
     <div class="kpi"><strong><span data-compte="83">83</span>&nbsp;% → <span data-compte="90">90</span>&nbsp;%</strong><span>Fiabilité d'inventaire sur la zone pilote (OCO)</span></div>
@@ -565,6 +578,7 @@ var MP=[
  t.querySelectorAll('tbody button').forEach(function(b){b.addEventListener('click',function(){choisir(+b.closest('tr').dataset.i);});});
  choisir(0);})();
 
+if(reduit){var vv=document.querySelector('.video video');if(vv){vv.removeAttribute('autoplay');vv.pause();}}
 document.querySelectorAll('[data-compte]').forEach(function(x){vus.observe(x);});
 document.querySelectorAll('#p0 [data-hauteur],#semaine [data-hauteur]').forEach(function(x){vus.observe(x);});
 })();
