@@ -5,62 +5,210 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Preuve – Diagnostic DMAIC et pilote WMS (OCO)</title>
 <meta name="author" content="Zahira Chaik">
-<meta name="description" content="Preuve de travail de Zahira Chaik : diagnostic DMAIC des flux et pilote WMS KARMA chez Orrion Chemicals Orgaform.">
+<meta name="description" content="Preuve de travail de Zahira Chaik : diagnostic DMAIC des flux et pilote WMS KARMA chez Orrion Chemicals Orgaform, avec tableaux, Pareto, Ishikawa, matrice de décision, Gantt et RACI.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;600;700&display=swap">
 <style>
 /* Identité « Plan de flux », variante signalétique de quai (marque/identite.md) */
-:root{--bleu-nuit:#1F2A44;--gris-clair:#F4F5F7;--orange:#E07A1F;--orange-fonce:#B45309;--noir:#000000;--blanc:#FFFFFF;--filet:#D5D9E0;
+:root{--bleu-nuit:#1F2A44;--bleu-2:#4C5569;--bleu-3:#8A91A0;--bleu-4:#C7CBD3;--gris-clair:#F4F5F7;--orange:#E07A1F;--orange-fonce:#B45309;--noir:#000000;--blanc:#FFFFFF;--filet:#D5D9E0;
 --sans:"IBM Plex Sans","Helvetica Neue",Arial,sans-serif;--mono:"IBM Plex Mono",Menlo,Consolas,monospace;color-scheme:light}
 @page{size:A4;margin:14mm 16mm}
 *{box-sizing:border-box}
+html{scroll-behavior:smooth}
 html,body{background:var(--blanc)}
 body{margin:0;color:var(--noir);font-family:var(--sans);font-size:16px;line-height:1.55;-webkit-print-color-adjust:exact;print-color-adjust:exact}
-.page{max-width:760px;margin:0 auto;padding:20px 16px 48px}
-h1,h2,h3,p,ul,ol,table{margin:0}
+.page{max-width:860px;margin:0 auto;padding:20px 16px 48px}
+h1,h2,h3,h4,p,ul,ol,table{margin:0}
 .retour{margin:0 0 12px;font-family:var(--mono);font-size:14px}
 .retour a{color:var(--bleu-nuit);font-weight:600;text-decoration:none;border-bottom:2px solid var(--orange)}
 .retour a:hover{color:var(--orange-fonce)}
 header{background:var(--bleu-nuit);color:var(--blanc);padding:24px 22px 20px;display:grid;gap:8px}
 .etiquette{font-family:var(--mono);font-size:12px;letter-spacing:.1em;text-transform:uppercase}
-header .etiquette{color:var(--blanc)}
 h1{color:var(--blanc);font-size:clamp(22px,4.6vw,30px);font-weight:700;line-height:1.2;text-wrap:balance}
-.sous{font-family:var(--mono);font-size:13px;color:var(--blanc)}
+.sous{font-family:var(--mono);font-size:13px}
 .zebra{height:12px;background:repeating-linear-gradient(-45deg,var(--orange) 0 14px,var(--bleu-nuit) 14px 28px)}
-.chiffres{display:grid;gap:10px;margin-top:22px}
-.chiffre{position:relative;border:2px solid var(--bleu-nuit);padding:16px 16px 16px 34px;display:flex;align-items:baseline;gap:16px}
-.chiffre::before{content:"";position:absolute;top:-2px;left:-2px;width:18px;height:18px;background:var(--orange)}
-.chiffre strong{flex:none;font-family:var(--mono);font-weight:600;font-size:22px;line-height:1.15;color:var(--orange)}
-.chiffre span{font-size:15px;line-height:1.4;text-align:justify;hyphens:none}
-section{margin-top:34px}
-h2{display:flex;align-items:center;gap:10px;font-family:var(--mono);font-size:14px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--bleu-nuit);margin-bottom:14px}
-h2::before{content:"";flex:none;width:12px;height:12px;background:var(--orange)}
-h2::after{content:"";flex:1;height:2px;background:var(--bleu-nuit)}
-h3{color:var(--bleu-nuit);font-size:17px;font-weight:600;margin-top:22px;margin-bottom:6px;padding-left:10px;border-left:4px solid var(--bleu-nuit)}
 p,li{text-align:justify;hyphens:none}
 p+p{margin-top:10px}
-ul,ol{padding-left:22px}
-ul{list-style:square}
+ul{padding-left:22px;list-style:square}
 li{margin-top:6px}
 li::marker{color:var(--orange)}
 .signal{display:inline-block;font-family:var(--mono);font-weight:600;color:var(--orange-fonce)}
+.mono{font-family:var(--mono)}
+
+/* Tuiles KPI animées */
+.kpis{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:22px}
+.kpi{position:relative;border:2px solid var(--bleu-nuit);padding:24px 14px 14px;display:flex;flex-direction:column;justify-content:space-between;gap:10px;min-height:140px}
+.kpi::before,.boite::before{content:"";position:absolute;top:-2px;left:-2px;width:18px;height:18px;background:var(--orange)}
+.kpi strong{font-family:var(--mono);font-weight:600;font-size:26px;line-height:1.1;color:var(--orange);font-variant-numeric:tabular-nums}
+.kpi > span{font-size:14px;line-height:1.4}
+.kpi strong span{font:inherit;color:inherit}
+
+/* Navigation DMAIC */
+.dmaic{position:sticky;top:0;z-index:5;background:var(--blanc);margin-top:28px;padding:8px 0;border-bottom:2px solid var(--bleu-nuit)}
+.dmaic ol{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(5,1fr);gap:6px}
+.dmaic a{display:flex;align-items:center;gap:8px;text-decoration:none;color:var(--bleu-nuit);font-family:var(--mono);font-size:12px;font-weight:600;padding:4px;border:2px solid var(--bleu-nuit);background:var(--blanc)}
+.dmaic a em{font-style:normal}
+.dmaic a b{flex:none;width:30px;height:30px;display:flex;align-items:center;justify-content:center;background:var(--bleu-nuit);color:var(--blanc);font-size:16px}
+.dmaic a.actif{background:var(--bleu-nuit);color:var(--blanc)}
+.dmaic a.actif b{background:var(--orange);color:var(--bleu-nuit)}
+.dmaic a:focus-visible{outline:2px solid var(--orange-fonce);outline-offset:2px}
+
+section{margin-top:40px;scroll-margin-top:70px}
+h2{display:flex;align-items:center;gap:10px;font-family:var(--mono);font-size:14px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--bleu-nuit);margin-bottom:14px}
+h2::before{content:"";flex:none;width:12px;height:12px;background:var(--orange)}
+h2::after{content:"";flex:1;height:2px;background:var(--bleu-nuit)}
+.phase{display:grid;grid-template-columns:auto 1fr;gap:0;margin-bottom:16px;border:2px solid var(--bleu-nuit)}
+.phase b{background:var(--bleu-nuit);color:var(--blanc);font-family:var(--mono);font-size:34px;width:64px;display:flex;align-items:center;justify-content:center}
+.phase div{padding:10px 14px;display:grid;gap:2px}
+.phase .etiquette{color:var(--bleu-nuit);font-weight:600}
+.phase h2{margin:0;font-family:var(--sans);font-size:20px;letter-spacing:0;text-transform:none}
+.phase h2::before,.phase h2::after{display:none}
+h3{color:var(--bleu-nuit);font-size:17px;font-weight:600;margin-top:26px;margin-bottom:8px;padding-left:10px;border-left:4px solid var(--bleu-nuit)}
+.source{font-family:var(--mono);font-size:12px;margin-top:6px}
+
+/* Boîtes et grilles */
+.boite{position:relative;border:2px solid var(--bleu-nuit);padding:22px 16px 16px;margin-top:14px}
+.grille2{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-top:14px}
+.grille3{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:14px}
+.carte{background:var(--gris-clair);border-left:6px solid var(--bleu-nuit);padding:12px 14px}
+.carte h4{font-family:var(--mono);font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--bleu-nuit);margin-bottom:6px}
+.carte ul{padding-left:18px}
+.carte li{margin-top:3px;font-size:15px}
+.carte p{font-size:15px}
+
+/* Tableaux */
 .tableau{overflow-x:auto;margin-top:12px}
 table{width:100%;border-collapse:collapse;font-size:15px}
-th{text-align:left;background:var(--bleu-nuit);color:var(--blanc);font-weight:600;padding:8px 10px}
+th{text-align:left;background:var(--bleu-nuit);color:var(--blanc);font-weight:600;padding:8px 10px;vertical-align:bottom}
 td{border-bottom:1px solid var(--filet);padding:8px 10px;vertical-align:top}
 tbody tr:nth-child(even) td{background:var(--gris-clair)}
 td.n{font-family:var(--mono);white-space:nowrap}
+
+/* Boutons de bascule */
+.bascule{display:flex;flex-wrap:wrap;gap:6px;margin-top:12px}
+.bascule button{font-family:var(--mono);font-size:13px;font-weight:600;padding:7px 12px;border:2px solid var(--bleu-nuit);background:var(--blanc);color:var(--bleu-nuit);cursor:pointer}
+.bascule button[aria-pressed="true"]{background:var(--bleu-nuit);color:var(--blanc);box-shadow:inset 0 -3px 0 var(--orange)}
+.bascule button:focus-visible{outline:2px solid var(--orange-fonce);outline-offset:2px}
+
+/* Barres horizontales */
+.barres{display:grid;gap:10px;margin-top:14px}
+.barre{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,2fr) 64px;gap:12px;align-items:center}
+.barre .lib{font-size:14px;line-height:1.3}
+.barre .piste{position:relative;height:22px;background:var(--gris-clair)}
+.barre .rempli{position:absolute;left:0;top:0;bottom:0;width:0;background:var(--bleu-nuit);transition:width .9s ease}
+.barre .repere{position:absolute;top:-4px;bottom:-4px;width:3px;background:var(--orange)}
+.barre .val{font-family:var(--mono);font-weight:600;color:var(--orange-fonce);text-align:right;font-variant-numeric:tabular-nums}
+.legende{display:flex;flex-wrap:wrap;gap:16px;margin-top:10px;font-size:13px}
+.legende i{display:inline-block;width:14px;height:14px;vertical-align:-2px;margin-right:6px}
+
+/* Jauges baseline */
+.jauges{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-top:14px}
+.jauge{border:2px solid var(--bleu-nuit);padding:12px 14px;display:grid;gap:8px}
+.jauge h4{font-size:15px;color:var(--bleu-nuit)}
+.jauge .chif{display:flex;justify-content:space-between;font-family:var(--mono);font-size:14px}
+.jauge .chif strong{color:var(--orange);font-size:22px}
+.jauge .piste{position:relative;height:14px;background:var(--gris-clair)}
+.jauge .rempli{position:absolute;left:0;top:0;bottom:0;width:0;background:var(--bleu-nuit);transition:width .9s ease}
+.jauge .repere{position:absolute;top:-5px;bottom:-5px;width:3px;background:var(--orange)}
+
+/* Matrice B1-B12 */
+.matrice td,.matrice th{text-align:center}
+.matrice td:first-child,.matrice td:nth-child(2),.matrice th:first-child,.matrice th:nth-child(2){text-align:left}
+.carre{display:inline-block;width:20px;height:20px;background:var(--bleu-nuit)}
+.matrice tbody tr:nth-child(even) td{background:var(--blanc)}
+.matrice tbody tr:hover td{background:var(--gris-clair)}
+
+/* Graphique SVG */
+.graph{overflow-x:auto;margin-top:14px}
+.graph svg{display:block;width:100%;min-width:560px;height:auto}
+.graph text{font-family:var(--sans)}
+details{margin-top:10px}
+summary{font-family:var(--mono);font-size:13px;font-weight:600;color:var(--bleu-nuit);cursor:pointer}
+
+/* Ishikawa */
+.ishikawa{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:14px}
+.ishikawa .effet{background:var(--bleu-nuit);color:var(--blanc);padding:14px 16px;display:flex;align-items:center;gap:12px;font-weight:600}
+.ishikawa .effet::before{content:"";flex:none;width:18px;height:18px;background:var(--orange)}
+.ishikawa .m h4{display:flex;justify-content:space-between}
+.ishikawa .m h4 span{font-family:var(--mono);color:var(--orange-fonce)}
+.ishikawa .cle{border-left-color:var(--orange)}
+
+/* Audit 12 x 4 */
+.audit{display:grid;grid-template-columns:minmax(0,1.6fr) repeat(4,minmax(0,1fr));gap:4px;margin-top:14px;font-size:13px}
+.audit .t{font-family:var(--mono);font-weight:600;color:var(--blanc);background:var(--bleu-nuit);padding:6px;display:flex;align-items:flex-end}
+.audit .z{padding:6px;background:var(--gris-clair);font-size:13px;line-height:1.25}
+.audit button{font:inherit;font-family:var(--mono);font-weight:600;border:2px solid var(--bleu-nuit);background:var(--blanc);color:var(--bleu-nuit);cursor:pointer;min-height:34px}
+.audit button.ecart{background:var(--orange);border-color:var(--orange);color:var(--bleu-nuit)}
+.audit button:focus-visible{outline:2px solid var(--bleu-nuit);outline-offset:2px}
+.audit .tot{font-family:var(--mono);font-weight:600;color:var(--orange-fonce);background:var(--gris-clair);padding:6px;text-align:center;font-size:16px}
+.audit .totlib{font-family:var(--mono);font-weight:600;padding:6px;color:var(--bleu-nuit)}
+.detail{margin-top:10px;background:var(--gris-clair);border-left:6px solid var(--orange);padding:10px 14px;font-size:15px;min-height:48px}
+
+/* Matrice de décision */
+.decision td.s{text-align:center;font-family:var(--mono);font-weight:600;font-size:16px}
+.decision .s5{background:var(--bleu-nuit)!important;color:var(--blanc)}
+.decision .s4{background:var(--bleu-2)!important;color:var(--blanc)}
+.decision .s3{background:var(--bleu-4)!important;color:var(--noir)}
+.decision .s2{background:var(--gris-clair)!important;color:var(--noir)}
+.decision th.b{background:var(--orange);color:var(--bleu-nuit)}
+.decision tfoot td{font-family:var(--mono);font-weight:700;font-size:18px;text-align:center;border-top:2px solid var(--bleu-nuit);color:var(--orange-fonce)}
+.decision tfoot td:first-child{text-align:left;font-size:14px;color:var(--bleu-nuit)}
+.decision tfoot td.gagnant{outline:3px solid var(--orange);outline-offset:-3px}
+
+/* Leviers */
+.leviers{list-style:none;padding:0;display:grid;gap:8px;margin-top:14px}
+.leviers li{display:grid;grid-template-columns:44px 1fr;gap:12px;align-items:start;background:var(--gris-clair);padding:10px 12px 10px 0;border-left:6px solid var(--bleu-nuit);margin:0}
+.leviers b{width:36px;height:36px;margin-left:8px;background:var(--orange);color:var(--bleu-nuit);font-family:var(--mono);display:flex;align-items:center;justify-content:center}
+
+/* Gantt */
+.gantt{display:grid;grid-template-columns:minmax(170px,1.6fr) repeat(12,minmax(26px,1fr));gap:3px 0;min-width:640px;font-size:13px}
+.gantt .h{font-family:var(--mono);font-weight:600;color:var(--blanc);background:var(--bleu-nuit);padding:6px 4px;text-align:center}
+.gantt .h:first-child{text-align:left;padding-left:8px}
+.gantt .lib{padding:5px 8px;background:var(--gris-clair);line-height:1.25}
+.gantt .lib span{font-family:var(--mono);font-weight:600;color:var(--bleu-nuit);margin-right:6px}
+.gantt .cell{border-left:1px solid var(--filet);position:relative}
+.gantt .bar{margin:6px 2px;background:var(--bleu-nuit);height:calc(100% - 12px);min-height:14px}
+.gantt .bar.crit{background:var(--orange)}
+.gantt .jalon{width:18px;height:18px;background:var(--orange);transform:rotate(45deg);margin:auto;position:absolute;inset:0}
+
+/* RACI */
+.raci th,.raci td{text-align:center;padding:6px 4px;font-size:13px}
+.raci th:first-child,.raci td:first-child{text-align:left;padding-left:8px;min-width:230px}
+.raci .l{display:inline-flex;width:26px;height:22px;align-items:center;justify-content:center;font-family:var(--mono);font-weight:700;font-size:12px}
+.raci .R{background:var(--bleu-nuit);color:var(--blanc)}
+.raci .A{background:var(--orange);color:var(--bleu-nuit)}
+.raci .AR{background:var(--orange);color:var(--bleu-nuit);box-shadow:inset 0 -4px 0 var(--bleu-nuit);width:34px}
+.raci .C{border:2px solid var(--bleu-nuit);color:var(--bleu-nuit)}
+.raci .I{color:var(--noir)}
+.raci.filtre td:not(:first-child):not(.on),.raci.filtre th:not(:first-child):not(.on){opacity:.25}
+.raci th.on{box-shadow:inset 0 -4px 0 var(--orange)}
+
+/* KISS */
+.kiss{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-top:14px}
+.kiss .carte h4{display:flex;align-items:center;gap:8px;font-size:14px}
+.kiss .carte h4::before{content:"";width:14px;height:14px;background:var(--bleu-nuit)}
+.kiss .start h4::before,.kiss .stop h4::before{background:var(--orange)}
+
 .fictif{position:relative;border:2px solid var(--bleu-nuit);padding:22px 16px 16px;margin-top:16px;background:var(--gris-clair)}
 .fictif::before{content:"";position:absolute;top:-2px;left:-2px;width:18px;height:18px;background:var(--orange)}
 .fictif .etiquette{display:block;margin-bottom:6px;color:var(--bleu-nuit);font-weight:600}
 .fictif tbody tr:nth-child(even) td{background:var(--blanc)}
-footer{margin-top:36px;background:var(--gris-clair);border-left:6px solid var(--bleu-nuit);padding:14px 16px;font-size:14px;text-align:justify;hyphens:none}
-@media (max-width:600px){.chiffre{flex-direction:column;gap:6px;padding:24px 14px 14px}}
-@media print{body{font-size:10pt}.page{padding:0;max-width:none}.retour{display:none}
-header{padding:4mm 5mm}h1{font-size:17pt}.chiffre{padding:3mm 3mm 3mm 7mm}.chiffre strong{font-size:13pt}.chiffre span{font-size:9pt}
-section{margin-top:6mm}h2{font-size:9pt}h3{font-size:10.5pt}table{font-size:9pt}footer{font-size:8.5pt}
-table,.fictif,.chiffres,header{break-inside:avoid}h2,h3{break-after:avoid}}
+
+#bulle{position:fixed;z-index:20;pointer-events:none;background:var(--bleu-nuit);color:var(--blanc);font-size:13px;line-height:1.4;padding:8px 10px;max-width:260px;display:none;border-bottom:3px solid var(--orange)}
+#bulle b{font-family:var(--mono)}
+
+footer{margin-top:40px;background:var(--gris-clair);border-left:6px solid var(--bleu-nuit);padding:14px 16px;font-size:14px}
+
+@media (max-width:700px){
+  .kpis,.grille3{grid-template-columns:1fr 1fr}.ishikawa{grid-template-columns:1fr}
+  .grille2,.jauges,.kiss{grid-template-columns:1fr}
+  .dmaic a{justify-content:center}.dmaic a em{display:none}
+  .barre{grid-template-columns:1fr 64px}.barre .lib{grid-column:1 / -1}
+}
+@media (max-width:440px){.kpis,.grille3{grid-template-columns:1fr}.kpi{min-height:0}}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}.barre .rempli,.jauge .rempli{transition:none}}
+@media print{body{font-size:10pt}.page{padding:0;max-width:none}.retour,.dmaic,.bascule{display:none}section{break-inside:auto}table,.boite,.kpis,header{break-inside:avoid}h2,h3{break-after:avoid}}
 </style>
 </head>
 <body>
@@ -74,19 +222,22 @@ table,.fictif,.chiffres,header{break-inside:avoid}h2,h3{break-after:avoid}}
 </header>
 <div class="zebra" aria-hidden="true"></div>
 
-<div class="chiffres">
-  <div class="chiffre"><strong>83&nbsp;% → 90&nbsp;%</strong><span>Fiabilité d'inventaire sur la zone pilote, obtenue avec les équipes terrain</span></div>
-  <div class="chiffre"><strong>76,8&nbsp;%</strong><span>Part du coût des dysfonctionnements concentrée sur 4 familles d'irritants (Pareto)</span></div>
-  <div class="chiffre"><strong>12</strong><span>Procédures et supports opérationnels rédigés</span></div>
+<div class="kpis">
+  <div class="kpi"><strong><span data-compte="83">83</span>&nbsp;% → <span data-compte="90">90</span>&nbsp;%</strong><span>Fiabilité d'inventaire sur la zone pilote, obtenue avec les équipes terrain</span></div>
+  <div class="kpi"><strong><span data-compte="76.8" data-dec="1">76,8</span>&nbsp;%</strong><span>Part du coût estimé des dysfonctionnements concentrée sur les 4 premiers irritants (Pareto)</span></div>
+  <div class="kpi"><strong><span data-compte="12">12</span></strong><span>Points de blocage identifiés sur la cartographie des flux</span></div>
+  <div class="kpi"><strong><span data-compte="60">60</span></strong><span>Relevés chronométrés sur une semaine type</span></div>
+  <div class="kpi"><strong><span data-compte="24">24</span></strong><span>Réponses au questionnaire des préparateurs</span></div>
+  <div class="kpi"><strong><span data-compte="4.5" data-dec="1">4,5</span>&nbsp;/&nbsp;5</strong><span>Score du scénario retenu dans la matrice de décision</span></div>
 </div>
 
-<section>
+<section id="contexte">
   <h2>Contexte</h2>
   <p>Orrion Chemicals Orgaform est une PME de chimie de spécialité de 49 personnes, classée SEVESO III seuil bas. Elle fabrique à façon pour des clients internationaux. La logistique doit coordonner les matières, les produits finis, les statuts qualité, les documents réglementaires et les transporteurs, avec deux ERP qui ne communiquent pas entre eux : Sage X3 pour le site et SAP côté client. Le site compte plusieurs magasins et peu de quais.</p>
-  <p>Pendant mon stage de huit mois, j'étais rattachée au Responsable Logistique. Ma mission : diagnostiquer et fiabiliser les flux internes (physiques, informationnels et documentaires), puis préparer le pilote du WMS KARMA. Ce travail est devenu mon mémoire de fin d'études.</p>
+  <p>Pendant mon stage de huit mois, j'étais rattachée au Responsable Logistique. Ma mission : diagnostiquer et fiabiliser les flux internes (physiques, informationnels et documentaires), puis préparer le pilote du WMS KARMA. Ce travail est devenu mon mémoire de fin d'études. Je l'ai structuré selon les cinq étapes du DMAIC.</p>
 </section>
 
-<section>
+<section id="role">
   <h2>Ce que j'ai fait, et avec qui</h2>
   <ul>
     <li>J'ai mené seule le diagnostic : questionnaires, 60 chronométrages, collecte des données dans les différents services et analyses sous Excel.</li>
@@ -97,27 +248,177 @@ table,.fictif,.chiffres,header{break-inside:avoid}h2,h3{break-after:avoid}}
   </ul>
 </section>
 
-<section>
-  <h2>Ma démarche</h2>
+<nav class="dmaic" aria-label="Étapes DMAIC">
+  <ol>
+    <li><a href="#define"><b>D</b><em>Définir</em></a></li>
+    <li><a href="#measure"><b>M</b><em>Mesurer</em></a></li>
+    <li><a href="#analyze"><b>A</b><em>Analyser</em></a></li>
+    <li><a href="#improve"><b>I</b><em>Améliorer</em></a></li>
+    <li><a href="#control"><b>C</b><em>Contrôler</em></a></li>
+  </ol>
+</nav>
 
-  <h3>Définir et mesurer</h3>
-  <p>J'ai cadré le projet avec une charte DMAIC et un SIPOC, puis cartographié les flux tels qu'ils fonctionnaient (AS-IS). Faute de données exploitables, j'ai créé mes propres mesures : des questionnaires notés de 1 à 5, et 60 relevés chronométrés sur une semaine type. J'ai fixé une base de départ sur quatre indicateurs.</p>
+<!-- ============ DEFINE ============ -->
+<section id="define">
+  <div class="phase"><b>D</b><div><span class="etiquette">Define · Définir</span><h2>Cadrer le chantier</h2></div></div>
+  <p>J'ai rédigé la charte du chantier KARMA, dont j'étais l'animatrice, pour aligner la direction, l'IT et les équipes terrain sur un cadre commun avant le démarrage.</p>
+
+  <h3>Charte projet</h3>
+  <div class="grille2">
+    <div class="carte"><h4>Périmètre</h4><p>Audit réseau, marquage QR codes et gestion sur PDA de tous les flux physiques : réception, retours production, mouvements, inventaire, préparation des matières premières, colisage des produits finis.</p></div>
+    <div class="carte"><h4>Situation de départ</h4><p>Des flux gérés avec des documents papier (bons de sortie matières, fiches de préparation, feuilles suiveuses) et une saisie différée dans Sage X3, d'où des écarts de stock récurrents et du temps perdu à chercher les emplacements.</p></div>
+    <div class="carte"><h4>Enjeux</h4><ul><li>Supprimer le papier de transition, source d'erreurs.</li><li>Fiabiliser en temps réel les données de stock dans Sage X3.</li><li>Réduire le temps de recherche des palettes et supprimer les doubles saisies.</li></ul></div>
+    <div class="carte"><h4>Objectifs à la semaine 12</h4><ul><li><span class="signal">100&nbsp;%</span> des flux réalisés sur PDA.</li><li><span class="signal">0</span> écart de stock lors des inventaires mobiles.</li><li>Plus de <span class="signal">98&nbsp;%</span> de réussite du scan et de la synchronisation KARMA / X3.</li></ul></div>
+    <div class="carte"><h4>Équipe</h4><p>IT et référent X3, référents magasins, opérateurs réception, équipe production, opérateurs expédition et produits finis, sous l'arbitrage de la direction.</p></div>
+    <div class="carte"><h4>Risques identifiés</h4><ul><li>Technique : synchronisation X3 / KARMA instable.</li><li>Prestataire : bugs corrigés trop lentement.</li><li>Chimie : erreur de lot ou perte de traçabilité en cas de panne des PDA.</li></ul></div>
+  </div>
+
+  <h3>Planning des revues de fin de phase</h3>
   <div class="tableau"><table>
-    <thead><tr><th>Indicateur</th><th>Mesuré au départ</th><th>Cible</th></tr></thead>
+    <thead><tr><th>Étape</th><th>Semaines</th><th>Contenu</th></tr></thead>
     <tbody>
-      <tr><td>Fiabilité des inventaires</td><td class="n">83 %</td><td class="n">95 %</td></tr>
-      <tr><td>Attente moyenne des camions</td><td class="n">30 min</td><td class="n">20 min</td></tr>
-      <tr><td>Dossiers export retouchés</td><td class="n">15 %</td><td class="n">10 %</td></tr>
-      <tr><td>Doubles saisies par dossier</td><td class="n">2</td><td class="n">1</td></tr>
+      <tr><td><b>D</b> · Définir</td><td class="n">S1</td><td>Cadrage et RACI</td></tr>
+      <tr><td><b>M</b> · Mesurer</td><td class="n">S2 – S3</td><td>Audits techniques et implantation</td></tr>
+      <tr><td><b>A</b> · Analyser</td><td class="n">S4</td><td>Maintenance X3 et causes des bugs</td></tr>
+      <tr><td><b>I</b> · Améliorer</td><td class="n">S5 – S11</td><td>Adressage, étiquetage QR codes et flux sur PDA</td></tr>
+      <tr><td><b>C</b> · Contrôler</td><td class="n">S12</td><td>Bilan des indicateurs et standardisation</td></tr>
     </tbody>
   </table></div>
 
-  <h3>Analyser</h3>
-  <p>J'ai identifié 12 points de blocage, regroupés en quatre familles : stocks et emplacements ; ressources physiques et manutention ; flux internationaux, conformité export et prestataires ; systèmes d'information et coordination. L'analyse de Pareto montre que ces quatre familles représentent <span class="signal">76,8&nbsp;%</span> du coût annuel estimé des dysfonctionnements. J'ai ensuite recherché les causes racines avec un Ishikawa 5M et une analyse valeur ajoutée / non-valeur ajoutée. Le coût de non-qualité du site avait augmenté de <span class="signal">25&nbsp;%</span> entre 2024 et 2025, alors que les tonnages n'augmentaient que de <span class="signal">11&nbsp;%</span>.</p>
+  <h3>SIPOC du processus logistique interne</h3>
+  <div class="tableau"><table>
+    <thead><tr><th>Fournisseurs</th><th>Entrées</th><th>Processus</th><th>Sorties</th><th>Clients</th></tr></thead>
+    <tbody>
+      <tr><td>Achats, fournisseurs, transporteurs amont</td><td>Matières, emballages, BL, FDS, créneaux de livraison</td><td>Réception, contrôle, orientation vers la bonne zone</td><td>Matières réceptionnées, identifiées, stock exploitable</td><td>Production, qualité, magasin MP</td></tr>
+      <tr><td>Production, ateliers</td><td>Ordres de fabrication, besoins matières, retours, lots</td><td>Mise à disposition atelier, mouvements internes, retours</td><td>Matières disponibles, retours tracés</td><td>Ateliers, magasins, logistique</td></tr>
+      <tr><td>Qualité, QHSE</td><td>Statuts qualité, FDS, classes de danger, ADR / IMDG / IATA</td><td>Contrôle de conformité, libération qualité</td><td>Produit conforme, statut clair, documents disponibles</td><td>Logistique, ADV / export, QHSE</td></tr>
+      <tr><td>ADV, service client, export</td><td>Commandes, priorités, incoterms, exigences documentaires</td><td>Préparation de commande, contrôle des lots et des documents</td><td>Commande préparée, contrôlée, prête à expédier</td><td>Clients industriels, ADV</td></tr>
+      <tr><td>ERP du site et des clients</td><td>Articles, lots, emplacements, statuts, ordres</td><td>Mise à jour des stocks et des mouvements</td><td>Stock système aligné avec le terrain</td><td>Logistique, ADV, direction</td></tr>
+      <tr><td>Transporteurs, prestataires douane</td><td>Créneaux, planning transport, informations douane</td><td>Chargement, confirmation d'expédition, transmission documentaire</td><td>Expédition conforme, confirmée et traçable</td><td>Clients finaux, prestataires</td></tr>
+    </tbody>
+  </table></div>
+</section>
 
-  <h3>Améliorer</h3>
-  <p>J'ai comparé trois scénarios : standardiser d'abord, réimplanter d'abord, ou un plan global avec un pilote KARMA volontairement limité. J'ai recommandé le troisième, qui combine standardisation, fiabilisation des données, sécurisation documentaire et pilotage par indicateurs. J'ai découpé le pilote en cinq phases, de la préparation terrain jusqu'à la décision Go / No-Go, et j'ai estimé son retour sur investissement selon trois scénarios prudents.</p>
+<!-- ============ MEASURE ============ -->
+<section id="measure">
+  <div class="phase"><b>M</b><div><span class="etiquette">Measure · Mesurer</span><h2>Localiser et chiffrer les irritants</h2></div></div>
+  <p>Faute de données exploitables, j'ai construit mes propres mesures : cartographie des flux tels qu'ils fonctionnaient (AS-IS), plan de collecte de données, questionnaire noté de 1 à 5 et 60 relevés chronométrés sur une semaine type.</p>
 
+  <h3>Matrice des 12 points de blocage par famille</h3>
+  <p>J'ai positionné 12 points de blocage (B1 à B12) sur la cartographie AS-IS, puis je les ai regroupés en quatre familles transversales pour éviter une analyse trop fragmentée. Un même blocage peut toucher plusieurs familles.</p>
+  <div class="tableau"><table class="matrice">
+    <thead><tr><th>Point</th><th>Zone et blocage</th><th>Données, stocks, statuts</th><th>Fluidité physique</th><th>Conformité, douane, export</th><th>Coordination transport</th></tr></thead>
+    <tbody id="matriceB"></tbody>
+  </table></div>
+
+  <h3>Base de départ des 4 indicateurs</h3>
+  <p>Le trait orange marque la cible. Pour les trois derniers indicateurs, plus la barre est courte, mieux c'est.</p>
+  <div class="jauges" id="jauges"></div>
+
+  <h3>Gaspillages mesurés sur une semaine type</h3>
+  <p>Les 60 relevés montrent que les pertes les plus lourdes viennent de l'information, pas des attentes physiques. Le trait orange marque le seuil de référence.</p>
+  <div class="barres" id="chrono"></div>
+  <div class="legende"><span><i style="background:var(--bleu-nuit)"></i>Mesuré</span><span><i style="background:var(--orange)"></i>Seuil de référence</span></div>
+  <p style="margin-top:12px">Les attentes physiques restent maîtrisables : <span class="signal">30&nbsp;min</span> d'attente moyenne aux quais et <span class="signal">18,4&nbsp;min</span> d'attente moyenne des moyens de manutention.</p>
+
+  <h3>Ressenti des préparateurs : les 5 premiers irritants</h3>
+  <p>Sur 24 réponses, cinq irritants dépassent 4 sur 5 et sont classés critiques. Choisissez l'indicateur à afficher :</p>
+  <div class="bascule" role="group" aria-label="Indicateur du questionnaire">
+    <button type="button" data-q="score" aria-pressed="true">Score combiné</button>
+    <button type="button" data-q="freq" aria-pressed="false">Fréquence</button>
+    <button type="button" data-q="impact" aria-pressed="false">Impact</button>
+  </div>
+  <div class="barres" id="questionnaire"></div>
+  <p class="source">Échelle de 1 (irritant faible) à 5 (irritant très marqué). Le score combiné agrège la fréquence, l'impact et la part des notes 4 ou 5.</p>
+
+  <h3>Non-qualité : ce que disent les chiffres du site</h3>
+  <div class="grille3">
+    <div class="kpi"><strong>+<span data-compte="25">25</span>&nbsp;%</strong><span>Hausse du coût de non-qualité entre 2024 et 2025</span></div>
+    <div class="kpi"><strong>+<span data-compte="11">11</span>&nbsp;%</strong><span>Hausse des tonnages traités sur la même période</span></div>
+    <div class="kpi"><strong><span data-compte="66.7" data-dec="1">66,7</span>&nbsp;%</strong><span>Des 12 réclamations clients de 2025 dues aux emballages et aux erreurs de préparation</span></div>
+  </div>
+  <div class="tableau"><table>
+    <thead><tr><th>Réclamations clients 2025</th><th>Nombre</th><th>Part</th><th>Part cumulée</th></tr></thead>
+    <tbody>
+      <tr><td>Emballage défectueux</td><td class="n">5</td><td class="n">41,7 %</td><td class="n">41,7 %</td></tr>
+      <tr><td>Erreurs de préparation</td><td class="n">3</td><td class="n">25,0 %</td><td class="n">66,7 %</td></tr>
+      <tr><td>Problèmes qualité</td><td class="n">2</td><td class="n">16,7 %</td><td class="n">83,3 %</td></tr>
+      <tr><td>Erreur de langue sur l'étiquette</td><td class="n">1</td><td class="n">8,3 %</td><td class="n">91,7 %</td></tr>
+      <tr><td>Problème transport</td><td class="n">1</td><td class="n">8,3 %</td><td class="n">100 %</td></tr>
+    </tbody>
+  </table></div>
+</section>
+
+<!-- ============ ANALYZE ============ -->
+<section id="analyze">
+  <div class="phase"><b>A</b><div><span class="etiquette">Analyze · Analyser</span><h2>Hiérarchiser et remonter aux causes</h2></div></div>
+
+  <h3>Pareto 20/80 des irritants</h3>
+  <p>J'ai extrapolé à l'année les pertes de temps de la semaine type, puis je les ai valorisées et classées. Les quatre premiers irritants concentrent <span class="signal">76,8&nbsp;%</span> du coût annuel estimé des dysfonctionnements. Survolez ou touchez une barre pour voir le détail.</p>
+  <div class="graph" id="pareto" role="img" aria-label="Diagramme de Pareto des six irritants : barres de la part du coût, courbe de la part cumulée, seuil de 80 %"></div>
+  <div class="legende"><span><i style="background:var(--bleu-nuit)"></i>Part du coût annuel estimé</span><span><i style="background:var(--orange)"></i>Part cumulée</span><span><i style="background:repeating-linear-gradient(90deg,var(--bleu-nuit) 0 4px,transparent 4px 7px);height:3px;vertical-align:4px"></i>Seuil de 80 %</span></div>
+  <details><summary>Voir le tableau des données</summary>
+    <div class="tableau"><table>
+      <thead><tr><th>Irritant</th><th>Minutes par semaine</th><th>Heures par an</th><th>Part du coût</th><th>Part cumulée</th></tr></thead>
+      <tbody id="paretoTable"></tbody>
+    </table></div>
+    <p class="source">Les montants en euros sont confidentiels : seules les parts sont publiées.</p>
+  </details>
+
+  <h3>Ishikawa 5M : les causes racines</h3>
+  <p>Les dysfonctionnements ne viennent pas d'une cause unique. La famille « matière / information » est la plus structurante : quand une donnée manque, arrive en retard ou est incohérente, le produit peut être physiquement présent sans être exploitable.</p>
+  <div class="ishikawa">
+    <div class="carte m"><h4>Méthode <span>4</span></h4><ul><li>Pas de protocole formalisé de communication entre services</li><li>Règles de priorité parfois implicites</li><li>Check-lists pas entièrement digitalisées</li><li>Vérifications documentaires insuffisamment clarifiées</li></ul></div>
+    <div class="carte m"><h4>Main-d'œuvre <span>3</span></h4><ul><li>Forte dépendance à l'expérience</li><li>Savoir terrain partiellement formalisé</li><li>Transmission du savoir encore largement orale</li></ul></div>
+    <div class="carte m"><h4>Milieu <span>4</span></h4><ul><li>Plusieurs zones de stockage</li><li>Distances internes</li><li>Quais contraints</li><li>Organisation physique difficile à aligner avec les flux</li></ul></div>
+    <div class="carte m"><h4>Matériel <span>4</span></h4><ul><li>Moyens de manutention limités</li><li>Dépendance au chariot</li><li>Saturation ponctuelle des quais</li><li>Supports physiques insuffisamment standardisés</li></ul></div>
+    <div class="carte m cle"><h4>Matière / Information <span>4</span></h4><ul><li>Données de stock ou d'emplacement parfois inexactes</li><li>Mise à jour tardive des mouvements ou des statuts</li><li>Traçabilité des lots insuffisamment visible</li><li>Informations fournisseurs, transport ou douane parfois incomplètes</li></ul></div>
+    <div class="effet">Effet : fragilité de l'exécution des flux logistiques internes</div>
+  </div>
+</section>
+
+<!-- ============ IMPROVE ============ -->
+<section id="improve">
+  <div class="phase"><b>I</b><div><span class="etiquette">Improve · Améliorer</span><h2>Choisir, fiabiliser, déployer</h2></div></div>
+
+  <h3>Matrice de décision des trois scénarios</h3>
+  <p>J'ai noté trois scénarios de 1 (réponse faible) à 5 (réponse forte) sur huit critères issus du diagnostic. Le scénario B obtient le meilleur score pondéré : il traite en même temps les stocks, la conformité export, les doubles saisies et le pilotage. La direction a lancé le pilote sur cette recommandation. Plus la case est foncée, plus la note est haute.</p>
+  <div class="tableau"><table class="decision">
+    <thead><tr><th>Critère</th><th>A · Standardiser d'abord</th><th class="b">B · Plan global + pilote KARMA</th><th>C · Réimplanter d'abord</th></tr></thead>
+    <tbody id="decision"></tbody>
+    <tfoot><tr><td>Score pondéré</td><td>3,1</td><td class="gagnant">4,5</td><td>2,6</td></tr></tfoot>
+  </table></div>
+
+  <h3>Les cinq leviers du scénario retenu</h3>
+  <ol class="leviers">
+    <li><b>1</b><div><strong>Standardiser les pratiques.</strong> Procédures logistiques, check-list marchandises dangereuses, fiches de poste et modèles transport, construits avec la logistique, l'ADV / export, la qualité et le QHSE.</div></li>
+    <li><b>2</b><div><strong>Sécuriser les documents, le transport et la douane.</strong> Points de contrôle par type de flux : export standard, marchandises dangereuses, enlèvement client, douane, échantillons.</div></li>
+    <li><b>3</b><div><strong>Piloter par indicateurs et management visuel.</strong> Tableau de suivi transport et planning de chargement orientés vers les écarts, les retards et les priorités du jour.</div></li>
+    <li><b>4</b><div><strong>Fiabiliser les données.</strong> Audit terrain / système, réadressage et correction des adresses dans Sage X3, règle de mise à jour des statuts, procédure pour les retours d'atelier.</div></li>
+    <li><b>5</b><div><strong>Digitaliser de façon ciblée avec KARMA.</strong> Un pilote limité à des flux simples et mesurables, avant toute extension.</div></li>
+  </ol>
+
+  <h3>Audit pilote terrain / système : 12 contrôles, 4 dimensions</h3>
+  <p>J'ai conçu cet audit à l'initiative de mon manager et je l'ai réalisé avec les référents magasins, pour « nettoyer » la base avant d'imposer les PDA. Touchez une case pour voir la cause probable.</p>
+  <div class="tableau"><div class="audit" id="audit"></div></div>
+  <div class="detail" id="auditDetail" aria-live="polite">Touchez une case orange pour afficher l'écart constaté et l'action proposée.</div>
+  <p style="margin-top:12px">Le point le plus fragile est la traçabilité des mouvements, à <span class="signal">58,3&nbsp;%</span>. Avec l'IT, la Qualité et la Production, j'ai ensuite mené trois actions correctives : réadressage des zones de staging et de flux matières défaillantes avec correction dans Sage X3, règle de mise à jour du statut système avant tout déplacement d'un lot, et procédure pour les retours d'ordres de fabrication non tracés.</p>
+
+  <h3>Diagramme de Gantt du pilote sur 12 semaines</h3>
+  <div class="tableau"><div class="gantt" id="gantt"></div></div>
+  <div class="legende"><span><i style="background:var(--orange)"></i>Priorité critique</span><span><i style="background:var(--bleu-nuit)"></i>Priorité élevée</span><span><i style="background:var(--orange);transform:rotate(45deg) scale(.8)"></i>Jalon : décision Go / No-Go</span></div>
+
+  <h3>Matrice RACI du pilote KARMA</h3>
+  <p>24 activités, 9 acteurs. Choisissez un acteur pour voir son rôle sur chaque activité.</p>
+  <div class="bascule" role="group" aria-label="Filtrer la matrice RACI par acteur" id="raciFiltre"></div>
+  <div class="legende"><span><span class="l R" style="display:inline-flex;width:22px;height:18px;align-items:center;justify-content:center;font-family:var(--mono);font-size:11px;font-weight:700;background:var(--bleu-nuit);color:#fff;margin-right:6px">R</span>Réalise</span><span><span style="display:inline-flex;width:22px;height:18px;align-items:center;justify-content:center;font-family:var(--mono);font-size:11px;font-weight:700;background:var(--orange);color:var(--bleu-nuit);margin-right:6px">A</span>Approuve, responsable final</span><span><span style="display:inline-flex;width:22px;height:18px;align-items:center;justify-content:center;font-family:var(--mono);font-size:11px;font-weight:700;border:2px solid var(--bleu-nuit);color:var(--bleu-nuit);margin-right:6px">C</span>Consulté</span><span><span style="font-family:var(--mono);font-weight:700;margin-right:6px">I</span>Informé</span></div>
+  <div class="tableau"><table class="raci" id="raci"></table></div>
+
+  <h3>Avancement des chantiers à la remise du mémoire</h3>
+  <div class="barres" id="avancement"></div>
+
+  <h3>Estimation du retour sur investissement</h3>
+  <p>J'ai estimé le retour sur investissement du pilote selon trois scénarios prudents : 10, 15 ou 20 minutes gagnées par opérateur et par jour, sur 220 jours travaillés, plus les gains liés aux tâches administratives évitées.</p>
   <div class="fictif">
     <span class="etiquette">Données fictives</span>
     <p>Les montants réels de l'estimation sont confidentiels. Le tableau ci-dessous reprend uniquement la méthode, avec des chiffres inventés pour l'illustrer.</p>
@@ -132,7 +433,36 @@ table,.fictif,.chiffres,header{break-inside:avoid}h2,h3{break-after:avoid}}
   </div>
 </section>
 
-<section>
+<!-- ============ CONTROL ============ -->
+<section id="control">
+  <div class="phase"><b>C</b><div><span class="etiquette">Control · Contrôler</span><h2>Mesurer, corriger, pérenniser</h2></div></div>
+  <p>Le plan de contrôle évite que les améliorations restent ponctuelles. Il repose sur peu d'indicateurs, chacun avec un responsable, un seuil d'alerte et une action prévue.</p>
+
+  <h3>Plan de contrôle après déploiement</h3>
+  <div class="tableau"><table>
+    <thead><tr><th>Élément contrôlé</th><th>Fréquence</th><th>Responsable</th><th>Seuil d'alerte</th><th>Action si écart</th></tr></thead>
+    <tbody>
+      <tr><td>Mouvements scannés</td><td>Hebdomadaire</td><td>Chef d'équipe, key users</td><td class="n">&lt; 95 %</td><td>Rappel terrain, analyse des non-scans, formation ciblée</td></tr>
+      <tr><td>Scan et synchronisation KARMA / X3</td><td>Hebdomadaire</td><td>IT, chef de projet</td><td class="n">&lt; 98 %</td><td>Ticket prioritaire, test réseau, correction du paramétrage</td></tr>
+      <tr><td>Écarts d'inventaire</td><td>Hebdomadaire, mensuel</td><td>Logistique</td><td>Écart répété</td><td>Analyse de cause, inventaire tournant, correction X3 / terrain</td></tr>
+      <tr><td>Retours d'ordres de fabrication</td><td>Hebdomadaire</td><td>Production, magasin</td><td>Écart de lot, quantité ou emplacement</td><td>Contrôle renforcé, procédure spécifique</td></tr>
+      <tr><td>Temps de recherche d'une palette</td><td>Hebdomadaire</td><td>Logistique, magasins</td><td>Au-dessus de la base de départ</td><td>Vérification de l'adressage, des QR codes et des règles de rangement</td></tr>
+      <tr><td>Retouches d'étiquetage</td><td>Hebdomadaire</td><td>ADV, logistique</td><td>Reprise récurrente</td><td>Check-list en amont, contrôle documentaire</td></tr>
+      <tr><td>Blocages export</td><td>Hebdomadaire, mensuel</td><td>ADV, QHSE, logistique</td><td>Document, statut ou étiquette manquant</td><td>Analyse de cause, mise à jour de la procédure</td></tr>
+      <tr><td>Indicateurs du projet</td><td>Mensuel</td><td>Comité de pilotage</td><td>Objectifs non atteints</td><td>Ajustement, maintien du pilote ou décision Go / No-Go</td></tr>
+    </tbody>
+  </table></div>
+
+  <h3>Retour d'expérience (KISS)</h3>
+  <div class="kiss">
+    <div class="carte keep"><h4>Garder</h4><ul><li>Un responsable unique par action (RACI).</li><li>La mise à jour des indicateurs chaque vendredi après-midi.</li><li>Le lien direct avec l'IT pour régler vite les bugs.</li></ul></div>
+    <div class="carte improve"><h4>Améliorer</h4><ul><li>La couverture et la stabilité du réseau sur tout le site.</li><li>La vitesse de synchronisation des données sur les PDA.</li><li>La réactivité du prestataire sur les tickets complexes.</li></ul></div>
+    <div class="carte start"><h4>Commencer</h4><ul><li>Des « fiches erreurs » pour former plus vite les nouveaux arrivants au scan.</li><li>Des mini-audits de 5 minutes au quai d'expédition pour valider le colisage.</li><li>Un double contrôle réseau avant chaque nouveau flux.</li></ul></div>
+    <div class="carte stop"><h4>Arrêter</h4><ul><li>Le double support papier dès qu'un flux sur PDA est stable.</li><li>L'attente passive des retours du prestataire : relancer chaque jour les tickets bloquants.</li></ul></div>
+  </div>
+</section>
+
+<section id="resultat">
   <h2>Le résultat</h2>
   <ul>
     <li>La fiabilité d'inventaire est passée de <span class="signal">83&nbsp;% à 90&nbsp;%</span> sur la zone pilote, mesurée par rapprochement entre KARMA et Sage X3. C'est le résultat des actions menées avec les équipes terrain. La cible de 95 % n'est pas encore atteinte.</li>
@@ -143,7 +473,124 @@ table,.fictif,.chiffres,header{break-inside:avoid}h2,h3{break-after:avoid}}
 </section>
 
 <footer>Contact : zahirachaik@gmail.com</footer>
-
 </main>
+<div id="bulle" role="tooltip"></div>
+
+<script>
+(function(){
+var fr=function(n,d){return n.toLocaleString('fr-FR',{minimumFractionDigits:d||0,maximumFractionDigits:d||0});};
+var reduit=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+function el(t,c,h){var e=document.createElement(t);if(c)e.className=c;if(h!=null)e.innerHTML=h;return e;}
+
+/* Apparition : compteurs et barres animés quand ils entrent à l'écran */
+var vus=new IntersectionObserver(function(es){es.forEach(function(e){if(!e.isIntersecting)return;var t=e.target;vus.unobserve(t);
+  if(t.dataset.compte){var fin=parseFloat(t.dataset.compte),d=+(t.dataset.dec||0);if(reduit){t.textContent=fr(fin,d);return;}var t0=null;
+    (function pas(ts){if(!t0)t0=ts;var p=Math.min((ts-t0)/1000,1),v=fin*(1-Math.pow(1-p,3));t.textContent=fr(v,d);if(p<1)requestAnimationFrame(pas);})(performance.now());}
+  else if(t.dataset.largeur){t.style.width=t.dataset.largeur;}
+});},{threshold:.3});
+function observer(root){(root||document).querySelectorAll('[data-compte],[data-largeur]').forEach(function(x){vus.observe(x);});}
+
+/* Bulle d'aide partagée */
+var bulle=document.getElementById('bulle');
+function montrer(html,x,y){bulle.innerHTML=html;bulle.style.display='block';var w=bulle.offsetWidth,h=bulle.offsetHeight;bulle.style.left=Math.max(8,Math.min(innerWidth-w-8,x+12))+'px';bulle.style.top=Math.max(8,y-h-12)+'px';}
+function cacher(){bulle.style.display='none';}
+
+/* Matrice B1-B12 */
+var B=[["B1","Réception / stock MP : écart entre stock physique, emplacement réel et système",[1]],["B2","Alimentation des ateliers : dépendance au chariot et aux priorités",[2]],["B3","Libération qualité : produit présent mais statut non libéré",[1]],["B4","Documentation export : documents, étiquettes ou FDS à corriger",[3]],["B5","Expédition / BL : écart entre préparation, BL et système",[1,3]],["B6","Douane : informations dépendantes des prestataires ou du client",[3]],["B7","Planning transport : créneaux à ajuster selon retards ou reports",[4]],["B8","Correction : anomalie à reprendre avant de poursuivre le flux",[4]],["B9","Chargement : quai ou chariot indisponible au bon moment",[2]],["B10","Planning transport : arbitrage entre enlèvement client et transport OCO",[4]],["B11","Facturation transport : écart entre départ, BL, facture et suivi",[1,3]],["B12","Réception quai MP : attente et mise à jour tardive du système",[1,2]]];
+var mb=document.getElementById('matriceB');
+B.forEach(function(r){var tr=el('tr');tr.appendChild(el('td','n',r[0]));tr.appendChild(el('td','',r[1]));for(var k=1;k<=4;k++){tr.appendChild(el('td','',r[2].indexOf(k)>-1?'<span class="carre" role="img" aria-label="oui"></span>':''));}mb.appendChild(tr);});
+
+/* Jauges baseline (échelle propre à chaque indicateur) */
+var J=[["Fiabilité des inventaires","83 %",83,"cible 95 %",95,100],["Attente moyenne des camions","30 min",30,"cible 20 min",20,40],["Dossiers export retouchés","15 %",15,"cible 10 %",10,20],["Doubles saisies par dossier","2",2,"cible 1",1,3]];
+var jg=document.getElementById('jauges');
+J.forEach(function(j){var d=el('div','jauge');d.innerHTML='<h4>'+j[0]+'</h4><div class="chif"><strong>'+j[1]+'</strong><span>'+j[3]+'</span></div><div class="piste"><div class="rempli" data-largeur="'+(j[2]/j[5]*100)+'%"></div><div class="repere" style="left:'+(j[4]/j[5]*100)+'%"></div></div>';jg.appendChild(d);});
+
+/* Chronométrages : mesuré vs seuil */
+var C=[["Recherche d'informations logistiques",622,450],["Reprises documentaires et corrections d'étiquetage",518,350]];
+var ch=document.getElementById('chrono');
+C.forEach(function(c){var d=el('div','barre');d.innerHTML='<span class="lib">'+c[0]+'<br><span class="mono">seuil '+c[2]+' min</span></span><div class="piste"><div class="rempli" data-largeur="'+(c[1]/700*100)+'%"></div><div class="repere" style="left:'+(c[2]/700*100)+'%"></div></div><span class="val">'+c[1]+' min</span>';ch.appendChild(d);});
+
+/* Questionnaire avec bascule */
+var Q=[["Manque d'outils de suivi en temps réel",4.50,4.55,4.36],["Charge difficile à absorber pendant les pics",4.49,4.04,4.54],["Déplacements entre plusieurs zones ou magasins",4.47,4.46,4.25],["Supports papier qui ralentissent le travail",4.43,4.33,4.42],["Temps perdu à chercher des informations",4.20,4.08,4.17]];
+var qz=document.getElementById('questionnaire'),qi={score:1,freq:2,impact:3};
+Q.forEach(function(q){var d=el('div','barre');d.innerHTML='<span class="lib">'+q[0]+'</span><div class="piste"><div class="rempli"></div></div><span class="val"></span>';qz.appendChild(d);});
+function dessinerQ(k){[].forEach.call(qz.children,function(d,i){var v=Q[i][qi[k]];d.querySelector('.rempli').style.width=(v/5*100)+'%';d.querySelector('.val').textContent=fr(v,2);});}
+document.querySelectorAll('[data-q]').forEach(function(b){b.addEventListener('click',function(){document.querySelectorAll('[data-q]').forEach(function(x){x.setAttribute('aria-pressed',x===b);});dessinerQ(b.dataset.q);});});
+new IntersectionObserver(function(es,o){if(es[0].isIntersecting){dessinerQ(document.querySelector('[data-q][aria-pressed="true"]').dataset.q);o.disconnect();}},{threshold:.3}).observe(qz);
+
+/* Pareto (une seule échelle : 0-100 %) */
+var P=[["Attente quai / camion",1409,1080,28.2,28.2,["Attente quai","/ camion"]],["Attente chariot",1107,849,22.1,50.3,["Attente","chariot"]],["Recherche d'info / papier",725.6,556,14.5,64.8,["Recherche info","/ papier"]],["Déplacements inter-magasins",600,460,12.0,76.8,["Déplacements","inter-magasins"]],["Écarts de stock / reprises physiques",586,449,11.7,88.5,["Écarts stock","/ reprises"]],["Reprises documentaires / étiquetage",572,439,11.4,99.9,["Reprises doc.","/ étiquetage"]]];
+(function(){var W=680,H=340,m={l:46,r:16,t:20,b:70},iw=W-m.l-m.r,ih=H-m.t-m.b,n=P.length,bw=iw/n,ns='http://www.w3.org/2000/svg';
+  var s=document.createElementNS(ns,'svg');s.setAttribute('viewBox','0 0 '+W+' '+H);
+  function a(t,at,txt){var e=document.createElementNS(ns,t);for(var k in at)e.setAttribute(k,at[k]);if(txt!=null)e.textContent=txt;s.appendChild(e);return e;}
+  var y=function(v){return m.t+ih-v/100*ih;};
+  [0,20,40,60,80,100].forEach(function(v){a('line',{x1:m.l,x2:W-m.r,y1:y(v),y2:y(v),stroke:'#D5D9E0','stroke-width':1});a('text',{x:m.l-8,y:y(v)+4,'text-anchor':'end','font-size':12,'font-family':'IBM Plex Mono, monospace'},v+' %');});
+  a('line',{x1:m.l,x2:W-m.r,y1:y(80),y2:y(80),stroke:'#1F2A44','stroke-width':1.5,'stroke-dasharray':'5 4'});
+  a('text',{x:W-m.r,y:y(80)-6,'text-anchor':'end','font-size':12,'font-weight':600,fill:'#1F2A44'},'80 %');
+  var pts=[];
+  P.forEach(function(p,i){var x=m.l+i*bw+bw*0.18,w=bw*0.64,h=p[3]/100*ih;
+    var r=a('rect',{x:x,y:y(p[3]),width:w,height:h,fill:'#1F2A44'});
+    a('text',{x:x+w/2,y:y(p[3])+22,'text-anchor':'middle','font-size':13,'font-weight':600,'font-family':'IBM Plex Mono, monospace',fill:'#fff','pointer-events':'none'},fr(p[3],1)+' %');
+    var mots=p[5],lab=a('text',{x:x+w/2,y:H-m.b+18,'text-anchor':'middle','font-size':12});
+    mots.forEach(function(mo,k){var t=document.createElementNS(ns,'tspan');t.setAttribute('x',x+w/2);t.setAttribute('dy',k?15:0);t.textContent=mo;lab.appendChild(t);});
+    pts.push([x+w/2,y(p[4])]);
+    var zone=a('rect',{x:m.l+i*bw,y:m.t,width:bw,height:ih,fill:'transparent',tabindex:0,'aria-label':p[0]+' : '+fr(p[3],1)+' % du coût, cumul '+fr(p[4],1)+' %'});
+    var html='<b>'+p[0]+'</b><br>'+fr(p[3],1)+' % du coût estimé<br>Cumul : '+fr(p[4],1)+' %<br>'+fr(p[1],1)+' min par semaine, '+fr(p[2])+' h par an';
+    zone.addEventListener('pointermove',function(e){montrer(html,e.clientX,e.clientY);r.setAttribute('fill','#4C5569');});
+    zone.addEventListener('pointerleave',function(){cacher();r.setAttribute('fill','#1F2A44');});
+    zone.addEventListener('focus',function(){var b=zone.getBoundingClientRect();montrer(html,b.left+b.width/2,b.top+40);});
+    zone.addEventListener('blur',cacher);
+  });
+  a('polyline',{points:pts.map(function(p){return p.join(',');}).join(' '),fill:'none',stroke:'#E07A1F','stroke-width':2.5});
+  pts.forEach(function(p,i){a('rect',{x:p[0]-5,y:p[1]-5,width:10,height:10,fill:'#E07A1F',stroke:'#fff','stroke-width':2,'pointer-events':'none'});if(i===3)a('text',{x:p[0]+10,y:p[1]+16,'font-size':13,'font-weight':700,'font-family':'IBM Plex Mono, monospace',fill:'#B45309'},'76,8 %');});
+  a('line',{x1:m.l,x2:W-m.r,y1:y(0),y2:y(0),stroke:'#1F2A44','stroke-width':1.5});
+  document.getElementById('pareto').appendChild(s);
+  var tb=document.getElementById('paretoTable');P.forEach(function(p){var tr=el('tr');tr.innerHTML='<td>'+p[0]+'</td><td class="n">'+fr(p[1],1)+'</td><td class="n">'+fr(p[2])+'</td><td class="n">'+fr(p[3],1)+' %</td><td class="n">'+fr(p[4],1)+' %</td>';tb.appendChild(tr);});
+})();
+
+/* Matrice de décision */
+var D=[["Fiabilité des stocks",3,5,3],["Conformité export",3,5,3],["Réduction de la non-valeur ajoutée",2,5,2],["Vitesse de mise en œuvre",4,4,2],["Investissement",5,3,2],["Adhésion terrain",3,4,2],["Risque IT",5,3,5],["Capacité de généralisation",2,5,3]];
+var dt=document.getElementById('decision');
+D.forEach(function(d){var tr=el('tr');tr.appendChild(el('td','',d[0]));for(var k=1;k<4;k++)tr.appendChild(el('td','s s'+d[k],d[k]));dt.appendChild(tr);});
+
+/* Audit 12 x 4 */
+var A=[["Magasin MP","Rangement",[0,0,0,0],""],["Magasin MP","Réception",[1,0,0,1],"Écart de 2 unités après réception, mouvement non tracé. Action : correction du stock."],["Zone PF","Déplacement",[0,1,0,1],"Palette déplacée sans mise à jour. Action : réaligner l'emplacement."],["Zone PF","Préparation",[0,0,1,0],"Statut qualité ambigu (en attente sur le terrain, libéré dans le système). Action : clarifier le statut."],["Staging","Mise à quai",[0,0,0,0],""],["Magasin MP","Retour production",[0,0,0,1],"Retour d'ordre de fabrication non tracé. Action : procédure retour OF."],["Magasin MP","Prélèvement",[0,0,0,0],""],["Zone PF","Déplacement",[1,1,0,1],"Écart de quantité et d'adresse, mouvement non tracé. Action : inventaire et correction de l'emplacement."],["Zone départ","Mise en zone départ",[0,0,1,0],"Statut système non mis à jour. Action : mettre à jour le statut avant le départ."],["Magasin MP","Rangement",[0,0,0,0],""],["Zone PF","Préparation",[0,0,0,0],""],["Staging","Transfert staging",[0,1,0,1],"Mauvais staging dans le système, transfert non tracé. Action : corriger la zone de staging."]];
+var dims=["Quantité","Emplacement","Statut qualité","Mouvement tracé"],au=document.getElementById('audit'),det=document.getElementById('auditDetail');
+au.appendChild(el('div','t','Contrôle'));dims.forEach(function(d){au.appendChild(el('div','t',d));});
+A.forEach(function(r,i){au.appendChild(el('div','z','<b class="mono">'+(i+1)+'</b> · '+r[0]+'<br>'+r[1]));
+  r[2].forEach(function(v,k){var b=el('button',v?'ecart':'',v?'Écart':'OK');b.type='button';b.setAttribute('aria-label','Contrôle '+(i+1)+', '+dims[k]+' : '+(v?'écart':'conforme'));
+    b.addEventListener('click',function(){det.innerHTML='<b class="mono">Contrôle '+(i+1)+' · '+r[0]+' · '+r[1]+'</b><br>'+(v?r[3]:dims[k]+' conforme : terrain et système concordent.');});au.appendChild(b);});});
+au.appendChild(el('div','totlib','Fiabilité'));
+[0,1,2,3].forEach(function(k){var e=A.filter(function(r){return r[2][k];}).length;au.appendChild(el('div','tot',fr((12-e)/12*100,1)+' %'));});
+
+/* Gantt */
+var G=[["A0","Cadrage projet",1,1,1],["A1","Audit technique : accès, réseau, matériels",1,2,1],["A2","Diagnostic terrain : zones, stock, QR",1,3,0],["A3","Maintenance X3 et tickets prestataire",1,4,1],["A4","Adressage et marquage QR des zones pilotes",2,5,1],["A5","Flux réception sur mobile",3,5,0],["A6","Flux retours production / OF",3,6,0],["A7","Mouvements et ajustements de stock",4,7,0],["A8","Inventaire mobile",5,8,0],["A9","Préparation MP / BSM par scan",6,10,1],["A10","Préparation PF / colisage",6,11,0],["A11","Formation terrain",3,11,1],["A12","Bilan Go / No-Go",12,12,2]];
+var gt=document.getElementById('gantt');gt.appendChild(el('div','h','Chantier'));for(var s=1;s<=12;s++)gt.appendChild(el('div','h','S'+s));
+G.forEach(function(g){gt.appendChild(el('div','lib','<span>'+g[0]+'</span>'+g[1]));for(var s=1;s<=12;s++){var c=el('div','cell');if(s>=g[2]&&s<=g[3]){if(g[4]===2)c.appendChild(el('div','jalon'));else{var b=el('div','bar'+(g[4]?' crit':''));if(s===g[2])b.style.marginLeft='2px';c.appendChild(b);b.style.margin='6px 0';}}gt.appendChild(c);}});
+
+/* RACI */
+var roles=["Sponsor","Chef de projet","IT / X3","Logistique / magasins","ADV / export","QHSE / qualité","Production","Key users","Prestataire KARMA"];
+var R=[["Cadrage du projet et validation du périmètre","A R C C C C C I I"],["Validation de la charte projet et des objectifs","A R I I I I I I I"],["Construction du planning pilote","C AR C C C C C I C"],["Définition des CTQ et indicateurs de suivi","A R C C C C C I I"],["Audit technique : accès, réseau, PDA, profils","I C AR C I I I C C"],["Correction des tickets X3 / anomalies techniques","I C AR I I I I C R"],["Fiabilisation des articles, lots et statuts","I A C R C C C C I"],["Fiabilisation des emplacements et zones pilotes","I A C R I C C C I"],["Création et validation des QR codes","I A C R I C I C C"],["Rédaction des procédures terrain","I AR C R C C C C I"],["Création des check-lists export / transport","I A I C R C I C I"],["Validation des règles qualité, lots et blocages","I C I C C AR C I I"],["Tests flux réception sur mobile","I A C R I C I R C"],["Tests mouvements internes / ajustements stock","I A C R I C C R C"],["Tests retours production / OF","I A C C I C R R C"],["Tests inventaire mobile","I A C R I C I R C"],["Tests préparation MP / BSM par scan","I A C R I C C R C"],["Tests préparation PF / zone départ","I A C R C C I R C"],["Formation des utilisateurs terrain","I AR C C I I I R C"],["Remontée des anomalies terrain","I A C R C C C R C"],["Suivi hebdomadaire des indicateurs du pilote","I AR C C C C C I I"],["Arbitrage des blocages projet","A R C C C C C I C"],["Bilan Go / No-Go du pilote","A R C C C C C I C"],["Décision d'extension à une vague 2","A R C C C C C I I"]];
+var rt=document.getElementById('raci'),th='<thead><tr><th>Activité</th>'+roles.map(function(r){return '<th>'+r+'</th>';}).join('')+'</tr></thead><tbody>';
+R.forEach(function(r,i){th+='<tr><td>'+(i+1)+'. '+r[0]+'</td>'+r[1].split(' ').map(function(v){return '<td><span class="l '+v+'">'+(v==='AR'?'A/R':v)+'</span></td>';}).join('')+'</tr>';});
+rt.innerHTML=th+'</tbody>';
+var rf=document.getElementById('raciFiltre');
+['Tous'].concat(roles).forEach(function(r,i){var b=el('button','',r);b.type='button';b.setAttribute('aria-pressed',i===0);b.addEventListener('click',function(){[].forEach.call(rf.children,function(x){x.setAttribute('aria-pressed',x===b);});
+  rt.querySelectorAll('.on').forEach(function(x){x.classList.remove('on');});
+  if(i===0){rt.classList.remove('filtre');return;}rt.classList.add('filtre');rt.querySelectorAll('tr').forEach(function(tr){tr.children[i].classList.add('on');});});rf.appendChild(b);});
+
+/* Avancement des chantiers */
+var V=[["Cadrage du périmètre",100],["Diagnostic terrain",100],["Définition des zones pilotes",100],["Inventaire ciblé",100],["Vérification technique",90],["Adressage",80],["Formation des opérateurs",70],["Tests sur flux simples",60],["Retours utilisateurs",60],["Préparation MP / BSM",40],["Produits finis / zone départ",40],["Bilan pilote",20]];
+var av=document.getElementById('avancement');
+V.forEach(function(v){var d=el('div','barre');d.innerHTML='<span class="lib">'+v[0]+'</span><div class="piste"><div class="rempli" data-largeur="'+v[1]+'%"></div></div><span class="val">'+v[1]+' %</span>';av.appendChild(d);});
+
+observer();
+
+/* Navigation DMAIC active */
+var liens=document.querySelectorAll('.dmaic a');
+var vuSec=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){liens.forEach(function(l){l.classList.toggle('actif',l.getAttribute('href')==='#'+e.target.id);});}});},{rootMargin:'-40% 0px -55% 0px'});
+['define','measure','analyze','improve','control'].forEach(function(id){vuSec.observe(document.getElementById(id));});
+})();
+</script>
 </body>
 </html>
