@@ -265,6 +265,14 @@ footer{margin-top:40px;background:var(--gris-clair);border-left:6px solid var(--
 .indic{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:12px}
 .indic span{background:var(--bleu-nuit);color:var(--blanc);font-weight:600;padding:14px 12px;border-bottom:4px solid var(--orange);font-size:15px}
 @media (max-width:700px){.jalons{grid-template-columns:repeat(2,1fr)}.jalons button{min-height:0;flex-direction:row;align-items:center}.indic{grid-template-columns:1fr 1fr}.chaine{grid-template-columns:1fr;gap:10px}.chaine li{flex-direction:row;text-align:left}.chaine li::after{display:none}.semaine .val{font-size:10px}}
+.lecture td,.lecture th{text-align:center}
+.lecture td:first-child,.lecture th:first-child{text-align:left}
+.lecture th button{font:inherit;font-family:var(--mono);font-size:16px;font-weight:700;width:36px;height:36px;border:2px solid var(--blanc);background:transparent;color:var(--blanc);cursor:pointer}
+.lecture th button[aria-pressed="true"]{background:var(--orange);border-color:var(--orange);color:var(--bleu-nuit)}
+.lecture td.on,.lecture th.on{background:var(--gris-clair)!important}
+.lecture th.on{background:var(--bleu-2)!important}
+@media (max-width:500px){.lecture th button{width:28px;height:28px;font-size:13px}.lecture td,.lecture th{padding:6px 3px!important}.lecture td:first-child{font-size:13px}}
+.prevu{display:inline-block;width:20px;height:20px;border:2px solid var(--orange);background:repeating-linear-gradient(-45deg,var(--orange) 0 3px,var(--blanc) 3px 6px)}
 </style>
 </head>
 <body>
@@ -301,6 +309,14 @@ footer{margin-top:40px;background:var(--gris-clair);border-left:6px solid var(--
     <li>J'ai construit les prévisions de volumes, le dimensionnement du tri et des effectifs, la cartographie du futur hub, les indicateurs et les jalons du projet.</li>
     <li>J'ai décrit les étapes d'appel d'offres et de négociation avec les fournisseurs, mais je ne les ai pas menées moi-même.</li>
   </ul>
+</section>
+
+<section id="dmaic-lecture">
+  <h2>Lecture DMAIC de l'étude</h2>
+  <p>Je n'ai pas construit ce mémoire selon la méthode DMAIC. Je l'ai mené en cinq étapes, présentées ci-dessous. Cette matrice montre comment ces étapes se lisent avec la grille DMAIC. Choisissez une lettre pour voir ce qu'elle recouvre dans l'étude.</p>
+  <div class="tableau"><table class="matrice lecture" id="dmaicMatrice"></table></div>
+  <div class="legende"><span><i style="background:var(--bleu-nuit)"></i>Réalisé dans l'étude</span><span><i style="background:repeating-linear-gradient(-45deg,var(--orange) 0 3px,var(--blanc) 3px 6px);outline:2px solid var(--orange);outline-offset:-2px"></i>Prévu, non réalisé : l'étude n'a pas été mise en œuvre</span></div>
+  <div class="detail" id="dmaicDetail" aria-live="polite"></div>
 </section>
 
 <nav class="dmaic" aria-label="Étapes de l'étude">
@@ -567,6 +583,24 @@ var JL=[
  {t:"Clôture",d:"Rassembler la documentation (manuels, rapports de test, procédures) ; reconnaître le travail des équipes ; passer la main aux équipes opérationnelles."}];
 onglets('jalons','jalonsDetail',JL,'');
 
+
+/* Lecture DMAIC */
+(function(){var L=["D","M","A","I","C"],noms={D:"Définir",M:"Mesurer",A:"Analyser",I:"Améliorer",C:"Contrôler"};
+ var E=[["1 · Le hub",[0,1,0,0,0]],["2 · Volumes",[1,1,0,0,0]],["3 · Dimensionner",[0,0,1,1,2]],["4 · Équiper",[0,0,0,1,0]],["5 · Piloter",[0,0,0,1,2]]];
+ var T={D:"L'objectif de passer de 50 000 à 120 000 colis par jour, l'hypothèse de croissance de 15 % par an sur cinq ans, le périmètre et les contraintes internes et externes.",
+ M:"Le fonctionnement actuel du hub, les profils de volumes par semaine et par journée, la cadence de la machine (5 500 colis par heure) et les capacités actuelles.",
+ A:"L'écart de capacité : la machine actuelle ne permet pas d'atteindre l'objectif, et le tri mécanisé doit passer de 37 500 à 75 000 colis par jour.",
+ I:"Le dimensionnement du tri et des effectifs, les trois équipements proposés, la démarche AGV, la cartographie du futur hub et les jalons du projet.",
+ C:"Les six indicateurs de suivi, la maintenance et le bilan post-projet prévus dans les jalons. Ils n'ont pas été mesurés : l'étude a été validée par le directeur, mais pas encore mise en œuvre."};
+ var t=document.getElementById('dmaicMatrice'),h='<thead><tr><th>Mes étapes</th>'+L.map(function(l){return '<th><button type="button" aria-pressed="false" aria-label="'+noms[l]+'" data-l="'+l+'">'+l+'</button></th>';}).join('')+'</tr></thead><tbody>';
+ E.forEach(function(r){h+='<tr><td><b>'+r[0]+'</b></td>'+r[1].map(function(v){return '<td>'+(v===1?'<span class="carre" role="img" aria-label="réalisé"></span>':v===2?'<span class="prevu" role="img" aria-label="prévu, non réalisé"></span>':'')+'</td>';}).join('')+'</tr>';});
+ t.innerHTML=h+'</tbody>';
+ var det=document.getElementById('dmaicDetail');
+ function choisir(l){var i=L.indexOf(l)+1;t.querySelectorAll('button').forEach(function(b){b.setAttribute('aria-pressed',b.dataset.l===l);});
+  t.querySelectorAll('.on').forEach(function(x){x.classList.remove('on');});t.querySelectorAll('tr').forEach(function(tr){tr.children[i].classList.add('on');});
+  det.innerHTML='<b class="mono">'+l+' · '+noms[l]+'</b><br>'+T[l];}
+ t.querySelectorAll('button').forEach(function(b){b.addEventListener('click',function(){choisir(b.dataset.l);});});
+ choisir('D');})();
 document.querySelectorAll('[data-compte],[data-largeur],[data-hauteur]').forEach(function(x){vus.observe(x);});
 var liens=document.querySelectorAll('.dmaic a');
 var vuSec=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){liens.forEach(function(l){l.classList.toggle('actif',l.getAttribute('href')==='#'+e.target.id);});}});},{rootMargin:'-40% 0px -55% 0px'});
