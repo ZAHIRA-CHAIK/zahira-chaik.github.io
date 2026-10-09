@@ -11,56 +11,260 @@
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;600;700&display=swap">
 <style>
 /* Identité « Plan de flux », variante signalétique de quai (marque/identite.md) */
-:root{--bleu-nuit:#1F2A44;--gris-clair:#F4F5F7;--orange:#E07A1F;--orange-fonce:#B45309;--noir:#000000;--blanc:#FFFFFF;--filet:#D5D9E0;
+:root{--bleu-nuit:#1F2A44;--bleu-2:#4C5569;--bleu-3:#8A91A0;--bleu-4:#C7CBD3;--gris-clair:#F4F5F7;--orange:#E07A1F;--orange-fonce:#B45309;--noir:#000000;--blanc:#FFFFFF;--filet:#D5D9E0;
 --sans:"IBM Plex Sans","Helvetica Neue",Arial,sans-serif;--mono:"IBM Plex Mono",Menlo,Consolas,monospace;color-scheme:light}
 @page{size:A4;margin:14mm 16mm}
 *{box-sizing:border-box}
+html{scroll-behavior:smooth}
 html,body{background:var(--blanc)}
 body{margin:0;color:var(--noir);font-family:var(--sans);font-size:16px;line-height:1.55;-webkit-print-color-adjust:exact;print-color-adjust:exact}
-.page{max-width:760px;margin:0 auto;padding:20px 16px 48px}
-h1,h2,h3,p,ul,ol,table{margin:0}
+.page{max-width:860px;margin:0 auto;padding:20px 16px 48px}
+h1,h2,h3,h4,p,ul,ol,table{margin:0}
 .retour{margin:0 0 12px;font-family:var(--mono);font-size:14px}
 .retour a{color:var(--bleu-nuit);font-weight:600;text-decoration:none;border-bottom:2px solid var(--orange)}
 .retour a:hover{color:var(--orange-fonce)}
 header{background:var(--bleu-nuit);color:var(--blanc);padding:24px 22px 20px;display:grid;gap:8px}
 .etiquette{font-family:var(--mono);font-size:12px;letter-spacing:.1em;text-transform:uppercase}
-header .etiquette{color:var(--blanc)}
 h1{color:var(--blanc);font-size:clamp(22px,4.6vw,30px);font-weight:700;line-height:1.2;text-wrap:balance}
-.sous{font-family:var(--mono);font-size:13px;color:var(--blanc)}
+.sous{font-family:var(--mono);font-size:13px}
 .zebra{height:12px;background:repeating-linear-gradient(-45deg,var(--orange) 0 14px,var(--bleu-nuit) 14px 28px)}
-.chiffres{display:grid;gap:10px;margin-top:22px}
-.chiffre{position:relative;border:2px solid var(--bleu-nuit);padding:16px 16px 16px 34px;display:flex;align-items:baseline;gap:16px}
-.chiffre::before{content:"";position:absolute;top:-2px;left:-2px;width:18px;height:18px;background:var(--orange)}
-.chiffre strong{flex:none;font-family:var(--mono);font-weight:600;font-size:22px;line-height:1.15;color:var(--orange)}
-.chiffre span{font-size:15px;line-height:1.4;text-align:justify;hyphens:none}
-section{margin-top:34px}
-h2{display:flex;align-items:center;gap:10px;font-family:var(--mono);font-size:14px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--bleu-nuit);margin-bottom:14px}
-h2::before{content:"";flex:none;width:12px;height:12px;background:var(--orange)}
-h2::after{content:"";flex:1;height:2px;background:var(--bleu-nuit)}
-h3{color:var(--bleu-nuit);font-size:17px;font-weight:600;margin-top:22px;margin-bottom:6px;padding-left:10px;border-left:4px solid var(--bleu-nuit)}
 p,li{text-align:justify;hyphens:none}
 p+p{margin-top:10px}
-ul,ol{padding-left:22px}
-ul{list-style:square}
+ul{padding-left:22px;list-style:square}
 li{margin-top:6px}
 li::marker{color:var(--orange)}
 .signal{display:inline-block;font-family:var(--mono);font-weight:600;color:var(--orange-fonce)}
+.mono{font-family:var(--mono)}
+
+/* Tuiles KPI animées */
+.kpis{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:22px}
+.kpi{position:relative;border:2px solid var(--bleu-nuit);padding:24px 14px 14px;display:flex;flex-direction:column;justify-content:space-between;gap:10px;min-height:140px}
+.kpi::before,.boite::before{content:"";position:absolute;top:-2px;left:-2px;width:18px;height:18px;background:var(--orange)}
+.kpi strong{font-family:var(--mono);font-weight:600;font-size:26px;line-height:1.1;color:var(--orange);font-variant-numeric:tabular-nums}
+.kpi > span{font-size:14px;line-height:1.4}
+.kpi strong span{font:inherit;color:inherit}
+
+/* Navigation DMAIC */
+.dmaic{position:sticky;top:0;z-index:5;background:var(--blanc);margin-top:28px;padding:8px 0;border-bottom:2px solid var(--bleu-nuit)}
+.dmaic ol{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(5,1fr);gap:6px}
+.dmaic a{display:flex;align-items:center;gap:8px;text-decoration:none;color:var(--bleu-nuit);font-family:var(--mono);font-size:12px;font-weight:600;padding:4px;border:2px solid var(--bleu-nuit);background:var(--blanc)}
+.dmaic a em{font-style:normal}
+.dmaic a b{flex:none;width:30px;height:30px;display:flex;align-items:center;justify-content:center;background:var(--bleu-nuit);color:var(--blanc);font-size:16px}
+.dmaic a.actif{background:var(--bleu-nuit);color:var(--blanc)}
+.dmaic a.actif b{background:var(--orange);color:var(--bleu-nuit)}
+.dmaic a:focus-visible{outline:2px solid var(--orange-fonce);outline-offset:2px}
+
+section{margin-top:40px;scroll-margin-top:70px}
+h2{display:flex;align-items:center;gap:10px;font-family:var(--mono);font-size:14px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--bleu-nuit);margin-bottom:14px}
+h2::before{content:"";flex:none;width:12px;height:12px;background:var(--orange)}
+h2::after{content:"";flex:1;height:2px;background:var(--bleu-nuit)}
+.phase{display:grid;grid-template-columns:auto 1fr;gap:0;margin-bottom:16px;border:2px solid var(--bleu-nuit)}
+.phase b{background:var(--bleu-nuit);color:var(--blanc);font-family:var(--mono);font-size:34px;width:64px;display:flex;align-items:center;justify-content:center}
+.phase div{padding:10px 14px;display:grid;gap:2px}
+.phase .etiquette{color:var(--bleu-nuit);font-weight:600}
+.phase h2{margin:0;font-family:var(--sans);font-size:20px;letter-spacing:0;text-transform:none}
+.phase h2::before,.phase h2::after{display:none}
+h3{color:var(--bleu-nuit);font-size:17px;font-weight:600;margin-top:26px;margin-bottom:8px;padding-left:10px;border-left:4px solid var(--bleu-nuit)}
+.source{font-family:var(--mono);font-size:12px;margin-top:6px}
+
+/* Boîtes et grilles */
+.boite{position:relative;border:2px solid var(--bleu-nuit);padding:22px 16px 16px;margin-top:14px}
+.grille2{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-top:14px}
+.grille3{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:14px}
+.carte{background:var(--gris-clair);border-left:6px solid var(--bleu-nuit);padding:12px 14px}
+.carte h4{font-family:var(--mono);font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--bleu-nuit);margin-bottom:6px}
+.carte ul{padding-left:18px}
+.carte li{margin-top:3px;font-size:15px}
+.carte p{font-size:15px}
+
+/* Tableaux */
 .tableau{overflow-x:auto;margin-top:12px}
 table{width:100%;border-collapse:collapse;font-size:15px}
-th{text-align:left;background:var(--bleu-nuit);color:var(--blanc);font-weight:600;padding:8px 10px}
+th{text-align:left;background:var(--bleu-nuit);color:var(--blanc);font-weight:600;padding:8px 10px;vertical-align:bottom}
 td{border-bottom:1px solid var(--filet);padding:8px 10px;vertical-align:top}
 tbody tr:nth-child(even) td{background:var(--gris-clair)}
 td.n{font-family:var(--mono);white-space:nowrap}
+
+/* Boutons de bascule */
+.bascule{display:flex;flex-wrap:wrap;gap:6px;margin-top:12px}
+.bascule button{font-family:var(--mono);font-size:13px;font-weight:600;padding:7px 12px;border:2px solid var(--bleu-nuit);background:var(--blanc);color:var(--bleu-nuit);cursor:pointer}
+.bascule button[aria-pressed="true"]{background:var(--bleu-nuit);color:var(--blanc);box-shadow:inset 0 -3px 0 var(--orange)}
+.bascule button:focus-visible{outline:2px solid var(--orange-fonce);outline-offset:2px}
+
+/* Barres horizontales */
+.barres{display:grid;gap:10px;margin-top:14px}
+.barre{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,2fr) 64px;gap:12px;align-items:center}
+.barre .lib{font-size:14px;line-height:1.3}
+.barre .piste{position:relative;height:22px;background:var(--gris-clair)}
+.barre .rempli{position:absolute;left:0;top:0;bottom:0;width:0;background:var(--bleu-nuit);transition:width .9s ease}
+.barre .repere{position:absolute;top:-4px;bottom:-4px;width:3px;background:var(--orange)}
+.barre .val{font-family:var(--mono);font-weight:600;color:var(--orange-fonce);text-align:right;font-variant-numeric:tabular-nums}
+.legende{display:flex;flex-wrap:wrap;gap:16px;margin-top:10px;font-size:13px}
+.legende i{display:inline-block;width:14px;height:14px;vertical-align:-2px;margin-right:6px}
+
+/* Jauges baseline */
+.jauges{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-top:14px}
+.jauge{border:2px solid var(--bleu-nuit);padding:12px 14px;display:grid;gap:8px}
+.jauge h4{font-size:15px;color:var(--bleu-nuit)}
+.jauge .chif{display:flex;justify-content:space-between;font-family:var(--mono);font-size:14px}
+.jauge .chif strong{color:var(--orange);font-size:22px}
+.jauge .piste{position:relative;height:14px;background:var(--gris-clair)}
+.jauge .rempli{position:absolute;left:0;top:0;bottom:0;width:0;background:var(--bleu-nuit);transition:width .9s ease}
+.jauge .repere{position:absolute;top:-5px;bottom:-5px;width:3px;background:var(--orange)}
+
+/* Matrice B1-B12 */
+.matrice td,.matrice th{text-align:center}
+.matrice td:first-child,.matrice td:nth-child(2),.matrice th:first-child,.matrice th:nth-child(2){text-align:left}
+.carre{display:inline-block;width:20px;height:20px;background:var(--bleu-nuit)}
+.matrice tbody tr:nth-child(even) td{background:var(--blanc)}
+.matrice tbody tr:hover td{background:var(--gris-clair)}
+
+/* Graphique SVG */
+.graph{overflow-x:auto;margin-top:14px}
+.graph svg{display:block;width:100%;min-width:560px;height:auto}
+.graph text{font-family:var(--sans)}
+details{margin-top:10px}
+summary{font-family:var(--mono);font-size:13px;font-weight:600;color:var(--bleu-nuit);cursor:pointer}
+
+/* Ishikawa */
+.ishikawa{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:14px}
+.ishikawa .effet{background:var(--bleu-nuit);color:var(--blanc);padding:14px 16px;display:flex;align-items:center;gap:12px;font-weight:600}
+.ishikawa .effet::before{content:"";flex:none;width:18px;height:18px;background:var(--orange)}
+.ishikawa .m h4{display:flex;justify-content:space-between}
+.ishikawa .m h4 span{font-family:var(--mono);color:var(--orange-fonce)}
+.ishikawa .cle{border-left-color:var(--orange)}
+
+/* Audit 12 x 4 */
+.audit{display:grid;grid-template-columns:minmax(0,1.6fr) repeat(4,minmax(0,1fr));gap:4px;margin-top:14px;font-size:13px}
+.audit .t{font-family:var(--mono);font-weight:600;color:var(--blanc);background:var(--bleu-nuit);padding:6px;display:flex;align-items:flex-end}
+.audit .z{padding:6px;background:var(--gris-clair);font-size:13px;line-height:1.25}
+.audit button{font:inherit;font-family:var(--mono);font-weight:600;border:2px solid var(--bleu-nuit);background:var(--blanc);color:var(--bleu-nuit);cursor:pointer;min-height:34px}
+.audit button.ecart{background:var(--orange);border-color:var(--orange);color:var(--bleu-nuit)}
+.audit button:focus-visible{outline:2px solid var(--bleu-nuit);outline-offset:2px}
+.audit .tot{font-family:var(--mono);font-weight:600;color:var(--orange-fonce);background:var(--gris-clair);padding:6px;text-align:center;font-size:16px}
+.audit .totlib{font-family:var(--mono);font-weight:600;padding:6px;color:var(--bleu-nuit)}
+.detail{margin-top:10px;background:var(--gris-clair);border-left:6px solid var(--orange);padding:10px 14px;font-size:15px;min-height:48px}
+
+/* Matrice de décision */
+.decision td.s{text-align:center;font-family:var(--mono);font-weight:600;font-size:16px}
+.decision .s5{background:var(--bleu-nuit)!important;color:var(--blanc)}
+.decision .s4{background:var(--bleu-2)!important;color:var(--blanc)}
+.decision .s3{background:var(--bleu-4)!important;color:var(--noir)}
+.decision .s2{background:var(--gris-clair)!important;color:var(--noir)}
+.decision th.b{background:var(--orange);color:var(--bleu-nuit)}
+.decision tfoot td{font-family:var(--mono);font-weight:700;font-size:18px;text-align:center;border-top:2px solid var(--bleu-nuit);color:var(--orange-fonce)}
+.decision tfoot td:first-child{text-align:left;font-size:14px;color:var(--bleu-nuit)}
+.decision tfoot td.gagnant{outline:3px solid var(--orange);outline-offset:-3px}
+
+/* Leviers */
+.leviers{list-style:none;padding:0;display:grid;gap:8px;margin-top:14px}
+.leviers li{display:grid;grid-template-columns:44px 1fr;gap:12px;align-items:start;background:var(--gris-clair);padding:10px 12px 10px 0;border-left:6px solid var(--bleu-nuit);margin:0}
+.leviers b{width:36px;height:36px;margin-left:8px;background:var(--orange);color:var(--bleu-nuit);font-family:var(--mono);display:flex;align-items:center;justify-content:center}
+
+/* Gantt */
+.gantt{display:grid;grid-template-columns:minmax(170px,1.6fr) repeat(12,minmax(26px,1fr));gap:3px 0;min-width:640px;font-size:13px}
+.gantt .h{font-family:var(--mono);font-weight:600;color:var(--blanc);background:var(--bleu-nuit);padding:6px 4px;text-align:center}
+.gantt .h:first-child{text-align:left;padding-left:8px}
+.gantt .lib{padding:5px 8px;background:var(--gris-clair);line-height:1.25}
+.gantt .lib span{font-family:var(--mono);font-weight:600;color:var(--bleu-nuit);margin-right:6px}
+.gantt .cell{border-left:1px solid var(--filet);position:relative}
+.gantt .bar{margin:6px 2px;background:var(--bleu-nuit);height:calc(100% - 12px);min-height:14px}
+.gantt .bar.crit{background:var(--orange)}
+.gantt .jalon{width:18px;height:18px;background:var(--orange);transform:rotate(45deg);margin:auto;position:absolute;inset:0}
+
+/* RACI */
+.raci th,.raci td{text-align:center;padding:6px 4px;font-size:13px}
+.raci th:first-child,.raci td:first-child{text-align:left;padding-left:8px;min-width:230px}
+.raci .l{display:inline-flex;width:26px;height:22px;align-items:center;justify-content:center;font-family:var(--mono);font-weight:700;font-size:12px}
+.raci .R{background:var(--bleu-nuit);color:var(--blanc)}
+.raci .A{background:var(--orange);color:var(--bleu-nuit)}
+.raci .AR{background:var(--orange);color:var(--bleu-nuit);box-shadow:inset 0 -4px 0 var(--bleu-nuit);width:34px}
+.raci .C{border:2px solid var(--bleu-nuit);color:var(--bleu-nuit)}
+.raci .I{color:var(--noir)}
+.raci.filtre td:not(:first-child):not(.on),.raci.filtre th:not(:first-child):not(.on){opacity:.25}
+.raci th.on{box-shadow:inset 0 -4px 0 var(--orange)}
+
+/* KISS */
+.kiss{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-top:14px}
+.kiss .carte h4{display:flex;align-items:center;gap:8px;font-size:14px}
+.kiss .carte h4::before{content:"";width:14px;height:14px;background:var(--bleu-nuit)}
+.kiss .start h4::before,.kiss .stop h4::before{background:var(--orange)}
+
 .fictif{position:relative;border:2px solid var(--bleu-nuit);padding:22px 16px 16px;margin-top:16px;background:var(--gris-clair)}
 .fictif::before{content:"";position:absolute;top:-2px;left:-2px;width:18px;height:18px;background:var(--orange)}
 .fictif .etiquette{display:block;margin-bottom:6px;color:var(--bleu-nuit);font-weight:600}
 .fictif tbody tr:nth-child(even) td{background:var(--blanc)}
-footer{margin-top:36px;background:var(--gris-clair);border-left:6px solid var(--bleu-nuit);padding:14px 16px;font-size:14px;text-align:justify;hyphens:none}
-@media (max-width:600px){.chiffre{flex-direction:column;gap:6px;padding:24px 14px 14px}}
-@media print{body{font-size:10pt}.page{padding:0;max-width:none}.retour{display:none}
-header{padding:4mm 5mm}h1{font-size:17pt}.chiffre{padding:3mm 3mm 3mm 7mm}.chiffre strong{font-size:13pt}.chiffre span{font-size:9pt}
-section{margin-top:6mm}h2{font-size:9pt}h3{font-size:10.5pt}table{font-size:9pt}footer{font-size:8.5pt}
-table,.fictif,.chiffres,header{break-inside:avoid}h2,h3{break-after:avoid}}
+
+#bulle{position:fixed;z-index:20;pointer-events:none;background:var(--bleu-nuit);color:var(--blanc);font-size:13px;line-height:1.4;padding:8px 10px;max-width:260px;display:none;border-bottom:3px solid var(--orange)}
+#bulle b{font-family:var(--mono)}
+
+footer{margin-top:40px;background:var(--gris-clair);border-left:6px solid var(--bleu-nuit);padding:14px 16px;font-size:14px}
+
+@media (max-width:700px){
+  .kpis,.grille3{grid-template-columns:1fr 1fr}.ishikawa{grid-template-columns:1fr}
+  .grille2,.jauges,.kiss{grid-template-columns:1fr}
+  .dmaic a{justify-content:center}.dmaic a em{display:none}
+  .barre{grid-template-columns:1fr 64px}.barre .lib{grid-column:1 / -1}
+}
+@media (max-width:440px){.kpis,.grille3{grid-template-columns:1fr}.kpi{min-height:0}}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}.barre .rempli,.jauge .rempli{transition:none}}
+@media print{body{font-size:10pt}.page{padding:0;max-width:none}.retour,.dmaic,.bascule{display:none}section{break-inside:auto}table,.boite,.kpis,header{break-inside:avoid}h2,h3{break-after:avoid}}
+
+/* Spécifique Colis Privé */
+.machine .boite{display:flex;flex-direction:column;gap:4px}
+.gros{font-family:var(--mono);font-size:34px;font-weight:600;color:var(--orange);line-height:1}
+.gros span{font:inherit;color:inherit}
+.vide{display:inline-block;width:20px;height:20px;border:2px solid var(--bleu-4)}
+.carre.o{background:var(--orange)}
+.equip td:nth-child(2),.equip th:nth-child(2){text-align:center!important}
+.axe2{display:flex;justify-content:space-between;font-family:var(--mono);font-size:12px;font-weight:600;color:var(--bleu-nuit);margin-top:6px}
+.etapes{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:6px;margin-top:12px}
+.etapes button,.jalons button{font:inherit;text-align:left;display:flex;align-items:center;gap:8px;padding:6px;border:2px solid var(--bleu-nuit);background:var(--blanc);color:var(--bleu-nuit);cursor:pointer;font-size:13px;font-weight:600;line-height:1.25}
+.etapes button b,.jalons button b{flex:none;width:28px;height:28px;display:flex;align-items:center;justify-content:center;background:var(--bleu-nuit);color:var(--blanc);font-family:var(--mono)}
+.etapes button[aria-selected="true"],.jalons button[aria-selected="true"]{background:var(--bleu-nuit);color:var(--blanc)}
+.etapes button[aria-selected="true"] b,.jalons button[aria-selected="true"] b{background:var(--orange);color:var(--bleu-nuit)}
+.etapes button:focus-visible,.jalons button:focus-visible,.logi button:focus-visible{outline:2px solid var(--orange-fonce);outline-offset:2px}
+.jalons{display:grid;grid-template-columns:repeat(7,1fr);gap:4px;margin-top:14px}
+.jalons button{flex-direction:column;align-items:flex-start;min-height:92px}
+.montee{margin-top:10px;height:34px;background:linear-gradient(90deg,var(--bleu-4),var(--bleu-nuit));clip-path:polygon(0 70%,100% 0,100% 100%,0 100%);position:relative}
+.montee .axe{position:absolute;inset:auto 0 -22px 0;display:flex;justify-content:space-between;font-family:var(--mono);font-size:12px;font-weight:600;color:var(--bleu-nuit)}
+#piloter{padding-bottom:20px}
+.logi{margin-top:14px;border:2px solid var(--bleu-nuit);padding:14px}
+.fil{list-style:none;padding:0;margin:0;display:grid;gap:6px}
+.fil li{margin:0;padding:8px 12px;background:var(--gris-clair);border-left:6px solid var(--bleu-4);font-size:15px}
+.fil li.cour{border-left-color:var(--orange);background:var(--blanc);outline:2px solid var(--bleu-nuit);font-weight:600}
+.choix{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
+.choix button{font-family:var(--mono);font-size:14px;font-weight:600;padding:8px 16px;background:var(--bleu-nuit);color:var(--blanc);border:0;border-bottom:3px solid var(--orange);cursor:pointer}
+.chaine{list-style:none;padding:0;margin:14px 0 0;display:grid;grid-template-columns:repeat(5,1fr);gap:0}
+.chaine li{margin:0;position:relative;display:flex;flex-direction:column;align-items:center;gap:4px;text-align:center;padding:0 4px}
+.chaine li::after{content:"";position:absolute;top:22px;left:calc(50% + 24px);right:calc(-50% + 24px);height:3px;background:var(--orange)}
+.chaine li:last-child::after{display:none}
+.chaine b{width:44px;height:44px;display:flex;align-items:center;justify-content:center;background:var(--bleu-nuit);color:var(--blanc);font-family:var(--mono);font-size:18px}
+.chaine .fin b{background:var(--orange);color:var(--bleu-nuit)}
+.chaine span{font-weight:600;color:var(--bleu-nuit);font-size:14px;text-align:center}
+.chaine em{font-style:normal;font-size:13px;text-align:center}
+.semaine{display:grid;grid-template-columns:repeat(7,1fr);gap:8px;align-items:end;height:280px;margin-top:14px;border-bottom:2px solid var(--bleu-nuit);padding-top:10px}
+.semaine .col{display:flex;flex-direction:column;justify-content:flex-end;height:100%;cursor:default}
+.semaine .col:focus-visible{outline:2px solid var(--orange-fonce)}
+.semaine .val{font-family:var(--mono);font-size:12px;font-weight:600;color:var(--orange-fonce);text-align:center;margin-bottom:4px;line-height:1.2}
+.semaine .pile{height:200px;display:flex;flex-direction:column;justify-content:flex-end}
+.semaine .bas{height:0;background:var(--bleu-nuit);transition:height .9s ease}
+.semaine .haut{height:0;background:repeating-linear-gradient(-45deg,var(--orange) 0 6px,var(--blanc) 6px 12px);border:2px solid var(--orange);border-bottom:0;transition:height .9s ease}
+.semaine .jour{font-family:var(--mono);font-size:13px;font-weight:600;text-align:center;padding:6px 0;color:var(--bleu-nuit)}
+.journee{display:flex;margin-top:14px;min-height:72px;border:2px solid var(--bleu-nuit)}
+.journee .seg{display:flex;flex-direction:column;justify-content:center;padding:8px 12px;gap:2px}
+.journee .avant{background:var(--gris-clair)}
+.journee .pic{background:var(--bleu-nuit);color:var(--blanc);border-left:4px solid var(--orange)}
+.journee strong{font-family:var(--mono);font-size:22px;color:var(--orange-fonce)}
+.journee .pic strong{color:var(--orange)}
+.journee span{font-size:14px}
+.barre .rempli.cible{background:var(--orange)}
+.plan{display:flex;flex-wrap:wrap;gap:6px;margin-top:12px}
+.plan span{border:2px solid var(--bleu-nuit);padding:6px 10px;font-size:14px;position:relative;padding-left:26px}
+.plan span::before{content:"";position:absolute;left:8px;top:50%;width:10px;height:10px;margin-top:-5px;background:var(--orange)}
+.indic{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:12px}
+.indic span{background:var(--bleu-nuit);color:var(--blanc);font-weight:600;padding:14px 12px;border-bottom:4px solid var(--orange);font-size:15px}
+@media (max-width:700px){.jalons{grid-template-columns:repeat(2,1fr)}.jalons button{min-height:0;flex-direction:row;align-items:center}.indic{grid-template-columns:1fr 1fr}.chaine{grid-template-columns:1fr;gap:10px}.chaine li{flex-direction:row;text-align:left}.chaine li::after{display:none}.semaine .val{font-size:10px}}
 </style>
 </head>
 <body>
@@ -74,19 +278,22 @@ table,.fictif,.chiffres,header{break-inside:avoid}h2,h3{break-after:avoid}}
 </header>
 <div class="zebra" aria-hidden="true"></div>
 
-<div class="chiffres">
-  <div class="chiffre"><strong>50&nbsp;000 → 120&nbsp;000</strong><span>Colis par jour : capacité cible du futur hub, étude validée par le directeur</span></div>
-  <div class="chiffre"><strong>37&nbsp;500 → 75&nbsp;000</strong><span>Colis par jour sur le tri mécanisé, qui traite 75 % des volumes</span></div>
-  <div class="chiffre"><strong>+15&nbsp;%</strong><span>Croissance annuelle du marché retenue comme hypothèse, sur 5 ans</span></div>
+<div class="kpis">
+  <div class="kpi"><strong><span data-compte="50000">50 000</span> → <span data-compte="120000">120 000</span></strong><span>Colis par jour : capacité cible du futur hub, étude validée par le directeur</span></div>
+  <div class="kpi"><strong><span data-compte="37500">37 500</span> → <span data-compte="75000">75 000</span></strong><span>Colis par jour sur le tri mécanisé, qui traite 75 % des volumes</span></div>
+  <div class="kpi"><strong>+<span data-compte="15">15</span>&nbsp;%</strong><span>Croissance annuelle du marché retenue comme hypothèse, sur 5 ans</span></div>
+  <div class="kpi"><strong><span data-compte="75">75</span>&nbsp;%</strong><span>Des volumes concentrés entre 17 h et 22 h, heure d'arrêt de la machine</span></div>
+  <div class="kpi"><strong><span data-compte="5500">5 500</span>&nbsp;/&nbsp;h</strong><span>Cadence de la machine de tri actuelle, insuffisante pour l'objectif</span></div>
+  <div class="kpi"><strong><span data-compte="24">24</span></strong><span>Agences régionales livrées chaque soir depuis le hub</span></div>
 </div>
 
-<section>
+<section id="contexte">
   <h2>Contexte</h2>
-  <p>Le hub d'Artenay, à 20 km d'Orléans, reçoit chaque jour les colis des clients e-commerce et des points de collecte, les trie, puis les envoie chaque soir vers les agences régionales. Le tri mécanisé traite 75 % des volumes ; le reste passe par le tri manuel et le traitement des rejets.</p>
+  <p>Le hub d'Artenay, à 20 km d'Orléans, reçoit chaque jour les colis des clients e-commerce et des points de collecte, les trie, puis les envoie chaque soir vers les 24 agences régionales. Le tri mécanisé traite 75 % des volumes ; le reste passe par le tri manuel et le traitement des rejets.</p>
   <p>Pendant mon alternance d'un an, le directeur du hub, qui était aussi mon tuteur, m'a confié une étude : préparer un futur hub capable de traiter 120 000 colis par jour au lieu de 50 000, en partant d'une hypothèse de croissance du marché de 15 % par an sur cinq ans. Cette étude est devenue mon mémoire de Responsable en Logistique.</p>
 </section>
 
-<section>
+<section id="role">
   <h2>Ce que j'ai fait, et avec qui</h2>
   <ul>
     <li>J'ai mené et rédigé l'étude seule, avec un point chaque semaine avec le directeur du hub.</li>
@@ -96,38 +303,152 @@ table,.fictif,.chiffres,header{break-inside:avoid}h2,h3{break-after:avoid}}
   </ul>
 </section>
 
-<section>
-  <h2>Ma démarche</h2>
+<nav class="dmaic" aria-label="Étapes de l'étude">
+  <ol>
+    <li><a href="#hub"><b>1</b><em>Le hub</em></a></li>
+    <li><a href="#volumes"><b>2</b><em>Volumes</em></a></li>
+    <li><a href="#dimensionner"><b>3</b><em>Dimensionner</em></a></li>
+    <li><a href="#equiper"><b>4</b><em>Équiper</em></a></li>
+    <li><a href="#piloter"><b>5</b><em>Piloter</em></a></li>
+  </ol>
+</nav>
 
-  <h3>Comprendre les volumes et les contraintes</h3>
-  <p>J'ai rassemblé l'historique des volumes, la capacité de la machine de tri et les plannings des équipes en place. Les volumes varient beaucoup : selon la saison (soldes, Black Friday, fêtes de fin d'année, ventes flash), selon le jour de la semaine, et dans la journée, puisque 75 % des volumes arrivent entre 17&nbsp;h et 22&nbsp;h.</p>
-  <div class="tableau"><table>
-    <thead><tr><th>Contrainte prise en compte</th><th>Valeur retenue</th></tr></thead>
-    <tbody>
-      <tr><td>Volume du lundi et du vendredi</td><td class="n">40 000 colis/jour</td></tr>
-      <tr><td>Volume du mardi au jeudi</td><td class="n">50 000 colis/jour</td></tr>
-      <tr><td>Volume du week-end</td><td class="n">10 000 à 20 000 colis/jour</td></tr>
-      <tr><td>Amplitude de travail du site</td><td class="n">16 h/jour</td></tr>
-      <tr><td>Maintenance de la machine de tri</td><td class="n">4 h/semaine</td></tr>
-      <tr><td>Pannes de la machine</td><td class="n">40 h/an</td></tr>
-      <tr><td>Taux d'engagement des équipes</td><td class="n">90 %</td></tr>
-    </tbody>
-  </table></div>
+<!-- ============ 1. HUB ============ -->
+<section id="hub">
+  <div class="phase"><b>1</b><div><span class="etiquette">Étape 1 · Comprendre</span><h2>Le hub tel qu'il fonctionne</h2></div></div>
+  <p>Avant de dimensionner le futur hub, j'ai décrit le fonctionnement actuel : les chantiers de tri, le circuit du colis, les processus et la chaîne de traçabilité.</p>
 
-  <h3>Prévoir et dimensionner</h3>
-  <p>J'ai élaboré sous Excel des prévisions journalières, hebdomadaires, mensuelles et annuelles, en intégrant les pics et la concentration des volumes en fin de journée. Sur cette base, j'ai dimensionné le tri mécanisé pour passer de <span class="signal">37&nbsp;500 à 75&nbsp;000</span> colis par jour, en tenant compte des horaires du site, de la disponibilité de la machine, de la maintenance, de l'engagement des équipes et de la capacité de travail d'un opérateur. J'en ai déduit les besoins en effectifs et l'organisation des équipes et des horaires.</p>
+  <h3>Le site en chiffres</h3>
+  <div class="grille3">
+    <div class="kpi"><strong><span data-compte="8000">8 000</span>&nbsp;m²</strong><span>Surface du hub</span></div>
+    <div class="kpi"><strong><span data-compte="60">60</span> à <span data-compte="80">80</span></strong><span>Camions reçus par jour</span></div>
+    <div class="kpi"><strong><span data-compte="60">60</span> à <span data-compte="100">100</span></strong><span>Salariés en CDI et intérimaires, encadrés par 11 managers</span></div>
+  </div>
 
-  <h3>Choisir les équipements</h3>
-  <p>La machine actuelle ne permettait pas d'atteindre l'objectif. J'ai donc proposé une nouvelle machine de tri, des AGV (véhicules à guidage automatique) dans la zone des goulottes pour les flux sortants, et des basculeurs de palettes à l'injection pour réduire les manipulations pénibles. Pour les AGV, j'ai décrit la démarche complète : expression du besoin, analyse fonctionnelle, préparation du site, tests, installation et validation.</p>
+  <h3>La machine de tri</h3>
+  <div class="grille3 machine">
+    <div class="boite"><strong class="gros"><span data-compte="6">6</span></strong><span>injecteurs</span></div>
+    <div class="boite"><strong class="gros"><span data-compte="252">252</span></strong><span>plateaux</span></div>
+    <div class="boite"><strong class="gros"><span data-compte="156">156</span></strong><span>goulottes vers les boxes des agences</span></div>
+  </div>
+  <p style="margin-top:12px">Sur chaque plateau, le colis est pesé, mesuré, scanné en « reçu hub » et appairé à sa goulotte. Les boxes sous les goulottes portent l'agence de destination et une priorité (P1, P2 ou P3). Certains boxes sont en tri fin, jusqu'au distributeur, pour les agences aux plus forts volumes sur certains codes postaux.</p>
 
-  <h3>Cartographier le futur hub</h3>
-  <p>J'ai dessiné le plan du futur hub : zones de chargement et de déchargement, chantiers de tri, quais, allées, stations de charge des AGV, intersections de flux et zones à risque. Ce plan sert à définir des itinéraires sécurisés et à mesurer les distances parcourues.</p>
+  <h3>Matrice des chantiers de tri</h3>
+  <p>Chaque chantier traite un type de colis différent. Les cases indiquent les opérations réalisées sur le chantier.</p>
+  <div class="tableau"><table class="matrice" id="chantiers"></table></div>
 
-  <h3>Piloter le projet</h3>
-  <p>J'ai défini les indicateurs de suivi : capacité de traitement, disponibilité de la machine, temps moyen de réparation, utilisation des AGV, taux de service et taux d'erreur. J'ai ensuite structuré le projet en jalons, de la définition du besoin au suivi : cahier des charges, étude de faisabilité, sélection des fournisseurs, préparation du site, installation, tests, formation, pilote, montée en charge, stabilisation.</p>
+  <h3>Circuit du colis sur le hub</h3>
+  <p>Choisissez une étape pour la détailler.</p>
+  <div class="etapes" id="circuit" role="tablist" aria-label="Circuit du colis"></div>
+  <div class="detail" id="circuitDetail" aria-live="polite"></div>
+
+  <h3>Processus de réception : suivez un colis</h3>
+  <p>Ce logigramme reprend les décisions prises sur chaque palette et chaque colis. Répondez aux questions pour suivre le chemin d'un colis.</p>
+  <div class="logi" id="logi" aria-live="polite"></div>
+
+  <h3>Chaîne de traçabilité, de la réception au départ</h3>
+  <ol class="chaine">
+    <li><b>1</b><span>Réception</span><em>Colis</em></li>
+    <li><b>2</b><span>Appairage</span><em>Feuille palette</em></li>
+    <li><b>3</b><span>Appairage</span><em>Feuille camion</em></li>
+    <li><b>4</b><span>Appairage</span><em>Feuille traction</em></li>
+    <li class="fin"><b>→</b><span>Départ</span><em>Suivi client</em></li>
+  </ol>
 </section>
 
-<section>
+<!-- ============ 2. VOLUMES ============ -->
+<section id="volumes">
+  <div class="phase"><b>2</b><div><span class="etiquette">Étape 2 · Prévoir</span><h2>Des volumes qui varient fortement</h2></div></div>
+  <p>J'ai construit sous Excel des prévisions journalières, hebdomadaires, mensuelles et annuelles. Les volumes varient selon la saison (soldes, Black Friday, fêtes de fin d'année, ventes flash), selon la semaine du mois (la première et la dernière sont les plus chargées), selon le jour, et dans la journée.</p>
+
+  <h3>Profil d'une semaine type</h3>
+  <p>Survolez ou touchez une colonne. Le week-end est une fourchette : la partie hachurée montre l'écart entre le bas et le haut.</p>
+  <div class="semaine" id="semaine" role="img" aria-label="Volumes par jour : lundi 40 000, mardi à jeudi 50 000, vendredi 40 000, samedi et dimanche 10 000 à 20 000 colis"></div>
+  <details><summary>Voir le tableau des données</summary>
+    <div class="tableau"><table>
+      <thead><tr><th>Jour</th><th>Colis par jour</th></tr></thead>
+      <tbody><tr><td>Lundi et vendredi</td><td class="n">40 000</td></tr><tr><td>Mardi, mercredi, jeudi</td><td class="n">50 000</td></tr><tr><td>Samedi et dimanche</td><td class="n">10 000 à 20 000</td></tr></tbody>
+    </table></div>
+  </details>
+
+  <h3>Profil d'une journée</h3>
+  <div class="journee" role="img" aria-label="25 % des volumes avant 17 h, 75 % entre 17 h et 22 h">
+    <div class="seg avant" style="flex:25"><strong>25&nbsp;%</strong><span>avant 17 h</span></div>
+    <div class="seg pic" style="flex:75"><strong>75&nbsp;%</strong><span>entre 17 h et 22 h</span></div>
+  </div>
+  <p style="margin-top:12px">Tous les colis doivent être traités et expédiés avant <span class="signal">22&nbsp;h</span>, heure d'arrêt de la machine.</p>
+
+  <h3>Contraintes prises en compte</h3>
+  <div class="tableau"><table>
+    <thead><tr><th>Contrainte</th><th>Type</th><th>Valeur retenue</th></tr></thead>
+    <tbody>
+      <tr><td>Croissance du marché</td><td>Externe</td><td class="n">+15 % par an sur 5 ans</td></tr>
+      <tr><td>Concentration des volumes</td><td>Externe</td><td class="n">75 % entre 17 h et 22 h</td></tr>
+      <tr><td>Amplitude de travail du site</td><td>Interne</td><td class="n">16 h par jour</td></tr>
+      <tr><td>Modulation des horaires</td><td>Interne</td><td>Flexibilité selon les volumes</td></tr>
+      <tr><td>Maintenance de la machine de tri</td><td>Interne</td><td class="n">4 h par semaine</td></tr>
+      <tr><td>Pannes de la machine</td><td>Interne</td><td class="n">40 h par an</td></tr>
+      <tr><td>Taux d'engagement des équipes</td><td>Interne</td><td class="n">90 %</td></tr>
+    </tbody>
+  </table></div>
+</section>
+
+<!-- ============ 3. DIMENSIONNER ============ -->
+<section id="dimensionner">
+  <div class="phase"><b>3</b><div><span class="etiquette">Étape 3 · Dimensionner</span><h2>Doubler la capacité du tri mécanisé</h2></div></div>
+  <p>Le tri mécanisé traite 75 % des volumes. Pour un hub à 120 000 colis par jour, il doit passer de <span class="signal">37&nbsp;500 à 75&nbsp;000</span> colis par jour. J'ai dimensionné le tri en tenant compte des horaires du site, de la disponibilité de la machine, de la maintenance, de l'engagement des équipes et de la capacité de travail d'un opérateur, puis j'en ai déduit les besoins en effectifs et l'organisation des équipes et des horaires.</p>
+
+  <h3>Capacité à atteindre sur le tri mécanisé</h3>
+  <div class="barres" id="capacite"></div>
+  <div class="legende"><span><i style="background:var(--bleu-nuit)"></i>Aujourd'hui</span><span><i style="background:var(--orange)"></i>Cible</span></div>
+
+  <h3>Deux modes de tri, deux cadences</h3>
+  <div class="grille2">
+    <div class="carte"><h4>Tri mécanisé</h4><p>Une machine à <span class="signal">5&nbsp;500</span> colis par heure, avec 6 injecteurs. Elle traite 75 % des volumes et s'arrête à 22 h.</p></div>
+    <div class="carte"><h4>Tri manuel</h4><p>Quatre chantiers manuels pour <span class="signal">1&nbsp;500</span> colis par heure, pour les colis que la machine ne peut pas traiter.</p></div>
+  </div>
+
+  <h3>Les indicateurs de suivi que j'ai définis</h3>
+  <div class="indic">
+    <span>Capacité de traitement</span><span>Disponibilité de la machine</span><span>Temps moyen de réparation</span><span>Utilisation des AGV</span><span>Taux de service</span><span>Taux d'erreur</span>
+  </div>
+</section>
+
+<!-- ============ 4. EQUIPER ============ -->
+<section id="equiper">
+  <div class="phase"><b>4</b><div><span class="etiquette">Étape 4 · Équiper et cartographier</span><h2>Choisir les équipements, dessiner le futur hub</h2></div></div>
+  <p>La machine actuelle ne permettait pas d'atteindre l'objectif. J'ai proposé trois équipements, chacun en réponse à un besoin précis.</p>
+
+  <h3>Matrice besoins × équipements proposés</h3>
+  <div class="tableau"><table class="matrice equip" id="equipements"></table></div>
+
+  <h3>Déployer les AGV : la démarche en 9 étapes</h3>
+  <p>Pour les AGV, j'ai décrit la démarche complète, de la commande à la mise en service. Choisissez une étape.</p>
+  <div class="etapes" id="agv" role="tablist" aria-label="Démarche AGV"></div>
+  <div class="detail" id="agvDetail" aria-live="polite"></div>
+
+  <h3>Cartographier le futur hub</h3>
+  <p>J'ai dessiné le plan du futur hub pour définir des itinéraires sécurisés et mesurer les distances parcourues par les AGV. Le plan fait apparaître :</p>
+  <div class="plan">
+    <span>Zones de chargement et de déchargement</span><span>Chantiers de tri mécanique, manuel et rejets</span><span>Quais</span><span>Stations de charge des AGV</span><span>Allées de circulation</span><span>Intersections de flux</span><span>Points dangereux et virages</span><span>Points fixes : murs, poteaux, portes coupe-feu</span>
+  </div>
+  <div class="grille2" style="margin-top:14px">
+    <div class="carte"><h4>Calculer les distances</h4><ul><li>Mesure directe sur le plan à l'échelle, dimensions réelles du bâtiment.</li><li>Distance d'un cycle complet multipliée par le nombre de cycles par jour.</li></ul></div>
+    <div class="carte"><h4>Valider et optimiser</h4><ul><li>Suivre un AGV sur son parcours réel et comparer à la distance théorique.</li><li>Supprimer les détours pour réduire les distances et l'énergie consommée.</li></ul></div>
+  </div>
+</section>
+
+<!-- ============ 5. PILOTER ============ -->
+<section id="piloter">
+  <div class="phase"><b>5</b><div><span class="etiquette">Étape 5 · Piloter</span><h2>Les jalons du projet</h2></div></div>
+  <p>J'ai structuré le passage de 50 000 à 120 000 colis par jour en sept phases, de la définition du besoin à la passation aux équipes opérationnelles. Choisissez une phase pour voir son contenu.</p>
+  <div class="jalons" id="jalons" role="tablist" aria-label="Phases du projet"></div>
+  <div class="detail" id="jalonsDetail" aria-live="polite"></div>
+  <div class="montee" aria-hidden="true"></div>
+  <div class="axe2" aria-hidden="true"><span>50 000 colis / jour</span><span>Montée en charge</span><span>120 000 colis / jour</span></div>
+</section>
+
+<section id="resultat">
   <h2>Le résultat</h2>
   <ul>
     <li>Le directeur du hub a validé l'étude en totalité, comme base de décision pour un futur hub. Elle n'a pas encore été mise en œuvre.</li>
@@ -136,7 +457,121 @@ table,.fictif,.chiffres,header{break-inside:avoid}h2,h3{break-after:avoid}}
 </section>
 
 <footer>Contact : zahirachaik@gmail.com</footer>
-
 </main>
+<div id="bulle" role="tooltip"></div>
+
+<script>
+(function(){
+var fr=function(n,d){return n.toLocaleString('fr-FR',{minimumFractionDigits:d||0,maximumFractionDigits:d||0});};
+var reduit=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+function el(t,c,h){var e=document.createElement(t);if(c)e.className=c;if(h!=null)e.innerHTML=h;return e;}
+var vus=new IntersectionObserver(function(es){es.forEach(function(e){if(!e.isIntersecting)return;var t=e.target;vus.unobserve(t);
+  if(t.dataset.compte){var fin=parseFloat(t.dataset.compte);if(reduit){t.textContent=fr(fin);return;}var t0=null;
+    (function pas(ts){if(!t0)t0=ts;var p=Math.min((ts-t0)/1000,1);t.textContent=fr(Math.round(fin*(1-Math.pow(1-p,3))));if(p<1)requestAnimationFrame(pas);})(performance.now());}
+  else if(t.dataset.largeur){t.style.width=t.dataset.largeur;}
+  else if(t.dataset.hauteur){t.style.height=t.dataset.hauteur;}
+});},{threshold:.3});
+var bulle=document.getElementById('bulle');
+function montrer(h,x,y){bulle.innerHTML=h;bulle.style.display='block';var w=bulle.offsetWidth,hh=bulle.offsetHeight;bulle.style.left=Math.max(8,Math.min(innerWidth-w-8,x+12))+'px';bulle.style.top=Math.max(8,y-hh-12)+'px';}
+function cacher(){bulle.style.display='none';}
+
+/* Onglets génériques (circuit, AGV, jalons) */
+function onglets(idListe,idDet,data,classe){var l=document.getElementById(idListe),d=document.getElementById(idDet);
+  data.forEach(function(x,i){var b=el('button',classe||'','<b>'+(x.n||i+1)+'</b><span>'+x.t+'</span>');b.type='button';b.setAttribute('role','tab');b.setAttribute('aria-selected',i===0);
+    b.addEventListener('click',function(){[].forEach.call(l.children,function(y){y.setAttribute('aria-selected',y===b);});d.innerHTML='<b class="mono">'+(x.n||i+1)+' · '+x.t+'</b><br>'+x.d;});l.appendChild(b);});
+  d.innerHTML='<b class="mono">'+(data[0].n||1)+' · '+data[0].t+'</b><br>'+data[0].d;}
+
+/* Matrice des chantiers */
+var CH={cols:["Pesée et mesure","Lecture « reçu hub »","Appairage","Mode"],rows:[
+ ["Tri machine","Colis standards, injectés sur 6 injecteurs",[1,1,1,"Automatique"]],
+ ["Convoyeur","Colis pesés par un portail, triés par les collaborateurs",[1,1,1,"Manuel, PDA"]],
+ ["Ventilation au sol","Gros cartons de 40 à 50 articles, regroupés par agence ; palettes homogènes en cross-dock",[0,1,1,"Manuel"]],
+ ["Rejets et sachets","Étiquettes illisibles, codes-barres défaillants, sachets ; colis ré-étiquetés ou lus à la main",[0,1,1,"Manuel, PDA"]]]};
+(function(){var t=document.getElementById('chantiers'),h='<thead><tr><th>Chantier</th><th>Colis traités</th>'+CH.cols.map(function(c){return '<th>'+c+'</th>';}).join('')+'</tr></thead><tbody>';
+ CH.rows.forEach(function(r){h+='<tr><td><b>'+r[0]+'</b></td><td>'+r[1]+'</td>'+r[2].map(function(v,k){return '<td>'+(k===3?'<span class="mono">'+v+'</span>':(v?'<span class="carre" role="img" aria-label="oui"></span>':'<span class="vide" role="img" aria-label="non"></span>'))+'</td>';}).join('')+'</tr>';});
+ t.innerHTML=h+'</tbody>';})();
+
+/* Circuit du colis */
+onglets('circuit','circuitDetail',[
+ {t:"Réception injection",d:"Les colis envoyés directement par les clients chargeurs, notamment les plateformes e-commerce, sont reçus et injectés sur le hub."},
+ {t:"Réception collecte",d:"Les colis collectés auprès des clients chargeurs arrivent au hub, plutôt qu'en réception directe."},
+ {t:"Tri machine",d:"Les colis passent sur la machine de tri : ils sont classés et mis en box selon leur agence de destination."},
+ {t:"Tri manuel",d:"Quand le tri automatisé n'est pas possible, les colis sont triés à la main et palettisés par destination."},
+ {t:"Optimisation et départ",d:"Les palettes et les box sont optimisées avant l'expédition, puis chargées dans les camions vers les agences."}]);
+
+/* Logigramme de réception */
+var N={
+ a:{q:"La palette est-elle à trier sur le chantier mécanique ?",o:[["Oui","b"],["Non","m"]]},
+ b:{q:"La palette est-elle en priorité P1 ?",o:[["Oui","c"],["Non : P2 ou P3","t"]]},
+ t:{f:"Zone tampon : la palette sera triée après les P1.",o:[["Continuer","c"]]},
+ c:{q:"Le colis respecte-t-il les conditions du tri mécanisable ?",o:[["Oui","d"],["Non","m"]]},
+ d:{q:"Le colis est posé sur le tapis d'injection, la machine scanne le code-barres et détecte la destination. Tombe-t-il dans la bonne goulotte ?",o:[["Oui","e"],["Non","r"]]},
+ e:{f:"Box agence ou box tri fin, puis expédition vers l'agence.",fin:1},
+ r:{f:"Box non lu ou box rejets : le colis part vers la zone de tri manuel.",fin:1},
+ m:{f:"Transfert vers la zone de tri manuel.",fin:1}};
+(function(){var z=document.getElementById('logi');
+ function aller(k,chemin){var n=N[k];chemin=chemin.concat([k]);z.innerHTML='';
+  var fil=el('ol','fil');chemin.forEach(function(c,i){var m=N[c];fil.appendChild(el('li',i===chemin.length-1?'cour':'',m.q||m.f));});z.appendChild(fil);
+  var act=el('div','choix');
+  if(n.fin){var b=el('button','',"Recommencer");b.type='button';b.onclick=function(){aller('a',[]);};act.appendChild(b);}
+  else n.o.forEach(function(o){var b=el('button','',o[0]);b.type='button';b.onclick=function(){aller(o[1],chemin);};act.appendChild(b);});
+  z.appendChild(act);}
+ aller('a',[]);})();
+
+/* Semaine type */
+var S=[["Lun",40000],["Mar",50000],["Mer",50000],["Jeu",50000],["Ven",40000],["Sam",10000,20000],["Dim",10000,20000]];
+(function(){var z=document.getElementById('semaine');
+ S.forEach(function(j){var c=el('div','col'),p=el('div','pile');
+  var v=el('div','val',j[2]?fr(j[1])+' à '+fr(j[2]):fr(j[1]));
+  if(j[2]){var h=el('div','haut');h.dataset.hauteur=((j[2]-j[1])/50000*100)+'%';p.appendChild(h);}
+  var b=el('div','bas');b.dataset.hauteur=(j[1]/50000*100)+'%';p.appendChild(b);
+  c.appendChild(v);c.appendChild(p);c.appendChild(el('div','jour',j[0]));c.tabIndex=0;
+  var txt='<b>'+j[0]+'</b><br>'+(j[2]?fr(j[1])+' à '+fr(j[2]):fr(j[1]))+' colis';
+  c.addEventListener('pointermove',function(e){montrer(txt,e.clientX,e.clientY);});c.addEventListener('pointerleave',cacher);
+  c.addEventListener('focus',function(){var r=c.getBoundingClientRect();montrer(txt,r.left,r.top+40);});c.addEventListener('blur',cacher);
+  z.appendChild(c);});})();
+
+/* Capacité */
+var K=[["Tri mécanisé aujourd'hui",37500],["Tri mécanisé cible",75000],["Hub aujourd'hui",50000],["Hub cible",120000]];
+(function(){var z=document.getElementById('capacite');K.forEach(function(k,i){var d=el('div','barre');d.innerHTML='<span class="lib">'+k[0]+'</span><div class="piste"><div class="rempli'+(i%2?' cible':'')+'" data-largeur="'+(k[1]/120000*100)+'%"></div></div><span class="val">'+fr(k[1])+'</span>';z.appendChild(d);});})();
+
+/* Matrice équipements */
+var EQ={cols:["Nouvelle machine de tri","AGV (véhicules à guidage automatique)","Basculeurs de palettes"],rows:[
+ ["Atteindre 75 000 colis par jour en tri mécanisé",[1,0,0]],
+ ["Fluidifier les flux sortants dans la zone des goulottes",[0,1,0]],
+ ["Réduire les manipulations pénibles à l'injection",[0,0,1]]]};
+(function(){var t=document.getElementById('equipements'),h='<thead><tr><th>Besoin</th>'+EQ.cols.map(function(c){return '<th>'+c+'</th>';}).join('')+'</tr></thead><tbody>';
+ EQ.rows.forEach(function(r){h+='<tr><td>'+r[0]+'</td>'+r[1].map(function(v){return '<td>'+(v?'<span class="carre o" role="img" aria-label="oui"></span>':'')+'</td>';}).join('')+'</tr>';});
+ t.innerHTML=h+'</tbody>';})();
+
+/* AGV */
+onglets('agv','agvDetail',[
+ {t:"Commande",d:"Identifier les besoins en AGV et les formaliser sous forme de commande."},
+ {t:"Analyse fonctionnelle",d:"Analyser les besoins en détail pour préciser les fonctions et les caractéristiques techniques et opérationnelles des véhicules."},
+ {t:"Validation du besoin",d:"Revoir l'analyse fonctionnelle avec les demandeurs et confirmer la faisabilité."},
+ {t:"Préparation du site",d:"Aménager le site : travaux, installation des balises de guidage."},
+ {t:"Tests unitaires",d:"Tester chaque AGV seul pour vérifier son fonctionnement et corriger les défauts avant le déploiement."},
+ {t:"Validation des AGV",d:"Tester les AGV dans leur environnement, avec les autres équipements et les systèmes du site."},
+ {t:"Installation",d:"Installer les AGV de façon définitive : paramétrage, connexion aux systèmes de contrôle, mise en service."},
+ {t:"Validation fonctionnelle",d:"Vérifier que l'ensemble AGV et infrastructure répond aux besoins définis au départ."},
+ {t:"Corrections finales",d:"Ajuster le fonctionnement des AGV si nécessaire."}]);
+
+/* Jalons */
+var JL=[
+ {t:"Conception et planification",d:"Définir les besoins et les objectifs ; rédiger le cahier des charges de la machine et des AGV ; analyser la faisabilité technique, financière et logistique ; établir le calendrier, les ressources et le budget."},
+ {t:"Acquisition",d:"Sélectionner les fournisseurs ; commander la machine, les AGV et les autres équipements ; préparer le site."},
+ {t:"Préparation du hub",d:"Installer et mettre en service la machine ; installer les pistes, capteurs et systèmes de contrôle des AGV ; tester sans charge opérationnelle."},
+ {t:"Transition",d:"Former les opérateurs et la maintenance ; lancer une phase pilote avec une charge progressive ; corriger les problèmes identifiés."},
+ {t:"Montée en charge",d:"Passer progressivement de 50 000 à 120 000 colis par jour selon les résultats des tests ; ajuster les flux entrants, internes et sortants ; suivre les performances."},
+ {t:"Stabilisation",d:"Fonctionner à pleine capacité ; mettre en place la maintenance régulière de la machine et des AGV ; faire le bilan face aux objectifs."},
+ {t:"Clôture",d:"Rassembler la documentation (manuels, rapports de test, procédures) ; reconnaître le travail des équipes ; passer la main aux équipes opérationnelles."}];
+onglets('jalons','jalonsDetail',JL,'');
+
+document.querySelectorAll('[data-compte],[data-largeur],[data-hauteur]').forEach(function(x){vus.observe(x);});
+var liens=document.querySelectorAll('.dmaic a');
+var vuSec=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){liens.forEach(function(l){l.classList.toggle('actif',l.getAttribute('href')==='#'+e.target.id);});}});},{rootMargin:'-40% 0px -55% 0px'});
+['hub','volumes','dimensionner','equiper','piloter'].forEach(function(id){vuSec.observe(document.getElementById(id));});
+})();
+</script>
 </body>
 </html>
